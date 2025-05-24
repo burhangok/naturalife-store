@@ -1,6 +1,6 @@
 <v-range-slider <?php echo e($attributes); ?>></v-range-slider>
 
-<?php if (! $__env->hasRenderedOnce('046d7d07-4507-43e2-acb0-c7b85f54071d')): $__env->markAsRenderedOnce('046d7d07-4507-43e2-acb0-c7b85f54071d');
+<?php if (! $__env->hasRenderedOnce('19b007da-aaa6-4329-a498-304df5a75d2a')): $__env->markAsRenderedOnce('19b007da-aaa6-4329-a498-304df5a75d2a');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

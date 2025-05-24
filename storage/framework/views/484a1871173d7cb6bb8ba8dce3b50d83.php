@@ -8,7 +8,7 @@
 <?php echo view_render_event('bagisto.admin.catalog.product.edit.form.types.downloadable.after', ['product' => $product]); ?>
 
 
-<?php if (! $__env->hasRenderedOnce('b545c2c9-b6ea-42dc-93a1-3017aa7c80e4')): $__env->markAsRenderedOnce('b545c2c9-b6ea-42dc-93a1-3017aa7c80e4');
+<?php if (! $__env->hasRenderedOnce('fb119338-4e8b-4837-af2c-163a51b67bfd')): $__env->markAsRenderedOnce('fb119338-4e8b-4837-af2c-163a51b67bfd');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

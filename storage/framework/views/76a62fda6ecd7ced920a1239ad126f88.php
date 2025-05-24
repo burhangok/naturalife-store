@@ -47,7 +47,7 @@
     </div>
 </v-image-search-result-component>
 
-<?php if (! $__env->hasRenderedOnce('7bac24a8-dcbe-4b3e-951a-c509881d0384')): $__env->markAsRenderedOnce('7bac24a8-dcbe-4b3e-951a-c509881d0384');
+<?php if (! $__env->hasRenderedOnce('2962a176-f671-48e2-86dc-e540fb60d89c')): $__env->markAsRenderedOnce('2962a176-f671-48e2-86dc-e540fb60d89c');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

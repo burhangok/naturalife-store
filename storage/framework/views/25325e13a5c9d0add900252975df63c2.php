@@ -32,7 +32,7 @@
 <?php echo view_render_event('bagisto.admin.sales.order.create.recent_order_items.after'); ?>
 
 
-<?php if (! $__env->hasRenderedOnce('f3fd736b-1b42-46e6-8738-12942d3677ef')): $__env->markAsRenderedOnce('f3fd736b-1b42-46e6-8738-12942d3677ef');
+<?php if (! $__env->hasRenderedOnce('ff0b1e7a-352b-4a49-9df1-da1681b1cb74')): $__env->markAsRenderedOnce('ff0b1e7a-352b-4a49-9df1-da1681b1cb74');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

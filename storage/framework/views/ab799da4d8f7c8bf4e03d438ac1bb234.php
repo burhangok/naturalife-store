@@ -47,7 +47,7 @@
     <?php echo view_render_event('bagisto.admin.customers.gdpr.list.after'); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('42b2bc73-7691-4702-8998-3c73c3bb5fd7')): $__env->markAsRenderedOnce('42b2bc73-7691-4702-8998-3c73c3bb5fd7');
+    <?php if (! $__env->hasRenderedOnce('a613ee15-bcc6-4001-9cc0-18b198b4ae40')): $__env->markAsRenderedOnce('a613ee15-bcc6-4001-9cc0-18b198b4ae40');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

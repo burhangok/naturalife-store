@@ -88,7 +88,7 @@
     <?php echo view_render_event('bagisto.admin.catalog.attributes.edit.after', ['attribute' => $attribute]); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('c72edc4c-2675-4730-a2ca-8c3ed0201721')): $__env->markAsRenderedOnce('c72edc4c-2675-4730-a2ca-8c3ed0201721');
+    <?php if (! $__env->hasRenderedOnce('22338dcd-abcc-49d1-8321-764b4619a70d')): $__env->markAsRenderedOnce('22338dcd-abcc-49d1-8321-764b4619a70d');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

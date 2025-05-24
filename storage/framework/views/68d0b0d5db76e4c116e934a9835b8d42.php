@@ -1,6 +1,6 @@
 <v-book-slots :bookingProduct = "<?php echo e($bookingProduct); ?>" />
 
-<?php if (! $__env->hasRenderedOnce('f0d2364f-ee7a-4781-b013-45654b42e70c')): $__env->markAsRenderedOnce('f0d2364f-ee7a-4781-b013-45654b42e70c');
+<?php if (! $__env->hasRenderedOnce('63d0f9c4-9ddc-4dc5-bb4c-1654907e715c')): $__env->markAsRenderedOnce('63d0f9c4-9ddc-4dc5-bb4c-1654907e715c');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

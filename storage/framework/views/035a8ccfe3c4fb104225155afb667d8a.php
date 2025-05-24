@@ -95,7 +95,7 @@
     <?php echo view_render_event('bagisto.admin.marketing.promotions.catalog_rules.edit.after', ['catalogRule' => $catalogRule]); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('97506e44-d6ae-4849-8301-b9c511c0eb74')): $__env->markAsRenderedOnce('97506e44-d6ae-4849-8301-b9c511c0eb74');
+    <?php if (! $__env->hasRenderedOnce('373e509e-de89-453c-a10a-e8025f144905')): $__env->markAsRenderedOnce('373e509e-de89-453c-a10a-e8025f144905');
 $__env->startPush('scripts'); ?>
         <!-- v catalog rule edit form template -->
         <script

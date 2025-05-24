@@ -23,7 +23,7 @@
 <?php endif; ?>
 </v-reporting-products-with-most-visits>
 
-<?php if (! $__env->hasRenderedOnce('301bebc7-5d1d-4142-a736-157cece698c2')): $__env->markAsRenderedOnce('301bebc7-5d1d-4142-a736-157cece698c2');
+<?php if (! $__env->hasRenderedOnce('fbdc580b-5618-4481-8ab2-616df582a107')): $__env->markAsRenderedOnce('fbdc580b-5618-4481-8ab2-616df582a107');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

@@ -23,7 +23,7 @@
 <?php endif; ?>
 </v-dashboard-stock-threshold-products>
 
-<?php if (! $__env->hasRenderedOnce('15e536d8-d587-417f-ae8b-af56d4c141a1')): $__env->markAsRenderedOnce('15e536d8-d587-417f-ae8b-af56d4c141a1');
+<?php if (! $__env->hasRenderedOnce('7fec8fe2-e8e9-48cb-abd0-f4b0e6185c1c')): $__env->markAsRenderedOnce('7fec8fe2-e8e9-48cb-abd0-f4b0e6185c1c');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

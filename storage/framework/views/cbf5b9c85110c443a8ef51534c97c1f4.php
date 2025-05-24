@@ -6,7 +6,7 @@
 <?php echo view_render_event('bagisto.shop.settings.gdpr.modal.before'); ?>
 
 
-<?php if (! $__env->hasRenderedOnce('a4c7d730-847d-4fbd-9753-4efd2298eac6')): $__env->markAsRenderedOnce('a4c7d730-847d-4fbd-9753-4efd2298eac6');
+<?php if (! $__env->hasRenderedOnce('0248aa6d-ff0c-48ca-9ec8-77cb0bfc4e29')): $__env->markAsRenderedOnce('0248aa6d-ff0c-48ca-9ec8-77cb0bfc4e29');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

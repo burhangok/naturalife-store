@@ -26,7 +26,7 @@
     <?php echo view_render_event('bagisto.admin.customers.groups.edit.after'); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('7231ddbb-66d6-4c70-8706-63546c971639')): $__env->markAsRenderedOnce('7231ddbb-66d6-4c70-8706-63546c971639');
+    <?php if (! $__env->hasRenderedOnce('d64ebaf2-166d-4885-9414-459d4e9b1326')): $__env->markAsRenderedOnce('d64ebaf2-166d-4885-9414-459d4e9b1326');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

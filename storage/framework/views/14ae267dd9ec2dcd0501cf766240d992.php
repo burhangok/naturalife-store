@@ -23,7 +23,7 @@
 <?php endif; ?>
 </v-reporting-customers-top-customer-groups>
 
-<?php if (! $__env->hasRenderedOnce('5905707f-f8da-4d11-bed0-f48b543f01fe')): $__env->markAsRenderedOnce('5905707f-f8da-4d11-bed0-f48b543f01fe');
+<?php if (! $__env->hasRenderedOnce('b0a9ed4c-2863-4776-b77c-331ed1f1f25a')): $__env->markAsRenderedOnce('b0a9ed4c-2863-4776-b77c-331ed1f1f25a');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

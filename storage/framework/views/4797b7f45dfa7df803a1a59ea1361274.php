@@ -336,7 +336,7 @@
     <?php echo view_render_event('bagisto.admin.settings.roles.edit.after', ['role' => $role]); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('8df931a1-7ec1-43da-b2f2-55527dbad1b2')): $__env->markAsRenderedOnce('8df931a1-7ec1-43da-b2f2-55527dbad1b2');
+    <?php if (! $__env->hasRenderedOnce('84010281-d0a4-4895-a96d-1e98e71c9c15')): $__env->markAsRenderedOnce('84010281-d0a4-4895-a96d-1e98e71c9c15');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

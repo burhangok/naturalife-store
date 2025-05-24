@@ -42,7 +42,7 @@
 <?php endif; ?>
     </v-subscribers>
 
-    <?php if (! $__env->hasRenderedOnce('54999cf3-9f82-4c7b-bf36-1c73077a1ea5')): $__env->markAsRenderedOnce('54999cf3-9f82-4c7b-bf36-1c73077a1ea5');
+    <?php if (! $__env->hasRenderedOnce('ae37ef1f-9353-4a09-8a10-34944a60d456')): $__env->markAsRenderedOnce('ae37ef1f-9353-4a09-8a10-34944a60d456');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

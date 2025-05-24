@@ -23,7 +23,7 @@
 <?php endif; ?>
 </v-reporting-sales-shipping-collected>
 
-<?php if (! $__env->hasRenderedOnce('e7ac8bf3-d8fe-4dd3-a158-3b744efe0644')): $__env->markAsRenderedOnce('e7ac8bf3-d8fe-4dd3-a158-3b744efe0644');
+<?php if (! $__env->hasRenderedOnce('71f4d2f2-1fcb-48f2-ada4-3771fccc8a82')): $__env->markAsRenderedOnce('71f4d2f2-1fcb-48f2-ada4-3771fccc8a82');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

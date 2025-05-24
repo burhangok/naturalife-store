@@ -29,7 +29,7 @@
 <?php echo view_render_event('bagisto.shop.products.view.reviews.after', ['product' => $product]); ?>
 
 
-<?php if (! $__env->hasRenderedOnce('5150cfb2-76b7-438d-ace3-38e437481e27')): $__env->markAsRenderedOnce('5150cfb2-76b7-438d-ace3-38e437481e27');
+<?php if (! $__env->hasRenderedOnce('d31c1661-3ae8-4c90-a67b-936e465ee301')): $__env->markAsRenderedOnce('d31c1661-3ae8-4c90-a67b-936e465ee301');
 $__env->startPush('scripts'); ?>
     <!-- Product Review Template -->
     <script

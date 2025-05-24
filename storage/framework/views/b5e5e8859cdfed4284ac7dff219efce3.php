@@ -56,7 +56,7 @@
     <?php echo view_render_event('bagisto.admin.marketing.search_seo.url_rewrites.create.after'); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('be777db3-ac08-4240-9d43-92d836cc8f14')): $__env->markAsRenderedOnce('be777db3-ac08-4240-9d43-92d836cc8f14');
+    <?php if (! $__env->hasRenderedOnce('fdced9fc-cdcf-4141-8e4e-e0b98a6313f4')): $__env->markAsRenderedOnce('fdced9fc-cdcf-4141-8e4e-e0b98a6313f4');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

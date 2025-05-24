@@ -10,7 +10,7 @@
 <?php echo view_render_event('bagisto.admin.catalog.product.edit.form.types.configurable.after', ['product' => $product]); ?>
 
 
-<?php if (! $__env->hasRenderedOnce('8f16b258-0807-42fc-a819-82cffda82692')): $__env->markAsRenderedOnce('8f16b258-0807-42fc-a819-82cffda82692');
+<?php if (! $__env->hasRenderedOnce('f846cabb-ac21-4412-883a-0c7202ea9374')): $__env->markAsRenderedOnce('f846cabb-ac21-4412-883a-0c7202ea9374');
 $__env->startPush('scripts'); ?>
     <!-- Variations Template -->
     <script

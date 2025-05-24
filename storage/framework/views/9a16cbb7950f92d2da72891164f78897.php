@@ -7,7 +7,7 @@
 <?php echo view_render_event('bagisto.admin.catalog.product.edit.booking.appointment.after', ['product' => $product]); ?>
 
 
-<?php if (! $__env->hasRenderedOnce('fefd3206-30d0-47c4-bb43-81e432eb10b6')): $__env->markAsRenderedOnce('fefd3206-30d0-47c4-bb43-81e432eb10b6');
+<?php if (! $__env->hasRenderedOnce('77f66bc0-fd9e-46bf-be88-2fbef72dc439')): $__env->markAsRenderedOnce('77f66bc0-fd9e-46bf-be88-2fbef72dc439');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

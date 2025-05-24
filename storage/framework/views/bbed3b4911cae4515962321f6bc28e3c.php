@@ -5,7 +5,7 @@
     <div class="flex cursor-pointer items-center justify-between gap-1.5 px-2.5 text-blue-600 transition-all hover:underline"></div>
 </v-customer-edit>
 
-<?php if (! $__env->hasRenderedOnce('07e1c2e2-4191-4b09-8413-ffc577206392')): $__env->markAsRenderedOnce('07e1c2e2-4191-4b09-8413-ffc577206392');
+<?php if (! $__env->hasRenderedOnce('66570c97-86e2-43e1-ab08-9f404b12ca56')): $__env->markAsRenderedOnce('66570c97-86e2-43e1-ab08-9f404b12ca56');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

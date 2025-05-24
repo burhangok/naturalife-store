@@ -22,7 +22,7 @@
 </v-product-carousel>
 
 <!-- Product Carousel Vue Component -->
-<?php if (! $__env->hasRenderedOnce('e4d37e4c-8de7-40de-9136-7f99112c0577')): $__env->markAsRenderedOnce('e4d37e4c-8de7-40de-9136-7f99112c0577');
+<?php if (! $__env->hasRenderedOnce('085895b7-837e-44c9-be59-978ab7e9cb32')): $__env->markAsRenderedOnce('085895b7-837e-44c9-be59-978ab7e9cb32');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

@@ -9,7 +9,7 @@
 <?php echo view_render_event('bagisto.admin.sales.order.create.types.virtual.after'); ?>
 
 
-<?php if (! $__env->hasRenderedOnce('cd2e122c-a299-4fe9-bb1d-83f815775ce0')): $__env->markAsRenderedOnce('cd2e122c-a299-4fe9-bb1d-83f815775ce0');
+<?php if (! $__env->hasRenderedOnce('eebf7794-9381-469f-9f1f-10080c42978e')): $__env->markAsRenderedOnce('eebf7794-9381-469f-9f1f-10080c42978e');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

@@ -51,7 +51,7 @@
 <?php endif; ?>
     </v-events>
 
-    <?php if (! $__env->hasRenderedOnce('02d4c1d7-0009-4ab8-80e8-677cc29290a1')): $__env->markAsRenderedOnce('02d4c1d7-0009-4ab8-80e8-677cc29290a1');
+    <?php if (! $__env->hasRenderedOnce('60c77dc8-50bf-49ee-98b4-e466188b03e2')): $__env->markAsRenderedOnce('60c77dc8-50bf-49ee-98b4-e466188b03e2');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

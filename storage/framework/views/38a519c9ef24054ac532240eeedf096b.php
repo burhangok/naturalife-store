@@ -76,6 +76,10 @@
                                 data-bs-target="#profile" type="button">
                                 <i class="fas fa-user-cog me-2"></i> Profil Bilgileri
                             </button>
+                            <button class="nav-link text-start py-3 px-4" id="payment-tab" data-bs-toggle="pill"
+                            data-bs-target="#payment" type="button">
+                            <i class="fas fa-money-bill me-2"></i> Ödeme Bilgileri
+                        </button>
                         </div>
                     </div>
                 </div>
@@ -666,6 +670,232 @@
                         </div>
                     </div>
 
+                      <!-- Profil Bilgileri Tab -->
+                      <div class="tab-pane fade" id="payment" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="mb-0"><i class="fas fa-user-cog me-2"></i>Ödeme Bilgileri</h3>
+                            </div>
+                            <div class="card-body">
+                                <form action="<?php echo e(route('shop.customers.affiliatemodule.paymentmethod',$affiliate->id)); ?>" method="POST">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('POST'); ?>
+                                    <!-- Temel Ödeme Tercihleri -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <label class="form-label required">Tercih Edilen Ödeme Yöntemi</label>
+                                            <select class="form-select" id="paymentMethod" required>
+                                                <option value="">Seçiniz...</option>
+                                                <option value="sepa" selected>SEPA Transfer (Avrupa)</option>
+                                                <option value="bank">Uluslararası Banka Transferi</option>
+                                                <option value="paypal">PayPal</option>
+                                                <option value="wise">Wise (eski TransferWise)</option>
+                                                <option value="revolut">Revolut Business</option>
+                                                <option value="stripe">Stripe Connect</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Para Birimi</label>
+                                            <select class="form-select">
+                                                <option value="EUR" selected>Euro (EUR)</option>
+                                                <option value="USD">Amerikan Doları (USD)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Minimum Ödeme Tutarı -->
+                                    <div class="row mb-4">
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Vergi Durumu</label>
+                                            <select class="form-select">
+                                                <option value="individual">Bireysel</option>
+                                                <option value="company">Şirket</option>
+                                                <option value="freelancer">Serbest Meslek</option>
+                                                <option value="vat_registered">KDV Kayıtlı</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- SEPA / Banka Bilgileri -->
+                                    <div class="card mb-4" id="bankDetails">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Banka / SEPA Bilgileri</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label required">Hesap Sahibi Adı</label>
+                                                    <input type="text" class="form-control" placeholder="Hans Mueller" value="Hans Mueller" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label required">Banka Adı</label>
+                                                    <input type="text" class="form-control" placeholder="Deutsche Bank AG" value="Deutsche Bank AG" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label required">IBAN</label>
+                                                    <input type="text" class="form-control" placeholder="DE89 3704 0044 0532 0130 00" value="DE89 3704 0044 0532 0130 00" required>
+                                                    <small class="form-hint">Almanya, Fransa, Hollanda IBAN formatı desteklenir</small>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label required">BIC/SWIFT Kodu</label>
+                                                    <input type="text" class="form-control" placeholder="DEUTDEDBXXX" value="DEUTDEDBXXX" required>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label class="form-label">Banka Adresi</label>
+                                                    <textarea class="form-control" rows="2" placeholder="Taunusanlage 12, 60325 Frankfurt am Main, Deutschland">Taunusanlage 12, 60325 Frankfurt am Main, Deutschland</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- PayPal Bilgileri -->
+                                    <div class="card mb-4" id="paypalDetails" style="display: none;">
+                                        <div class="card-header">
+                                            <h4 class="card-title">PayPal Bilgileri</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label required">PayPal E-posta Adresi</label>
+                                                    <input type="email" class="form-control" placeholder="hans.mueller@example.com" value="hans.mueller@example.com">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">PayPal İş Hesabı ID</label>
+                                                    <input type="text" class="form-control" placeholder="PayPal Merchant ID (opsiyonel)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Wise/Revolut Bilgileri -->
+                                    <div class="card mb-4" id="digitalWalletDetails" style="display: none;">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Dijital Cüzdan Bilgileri</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label required">E-posta Adresi</label>
+                                                    <input type="email" class="form-control" placeholder="hesap@example.com">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Hesap ID/Numarası</label>
+                                                    <input type="text" class="form-control" placeholder="Wise/Revolut hesap numarası">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Vergi ve Kimlik Bilgileri -->
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Vergi ve Kimlik Bilgileri</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Vergi Numarası</label>
+                                                    <input type="text" class="form-control" placeholder="DE123456789" value="DE123456789">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label">KDV Numarası</label>
+                                                    <input type="text" class="form-control" placeholder="DE987654321" value="DE987654321">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Ülke</label>
+                                                    <select class="form-select">
+                                                        <option value="DE" selected>Almanya</option>
+                                                        <option value="FR">Fransa</option>
+                                                        <option value="NL">Hollanda</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Şirket Adı (varsa)</label>
+                                                    <input type="text" class="form-control" placeholder="Mueller Marketing GmbH">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Şirket Kayıt Numarası</label>
+                                                    <input type="text" class="form-control" placeholder="HRB 123456">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Fatura Adresi -->
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Fatura Adresi</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label required">Ad Soyad/Şirket</label>
+                                                    <input type="text" class="form-control" placeholder="Hans Mueller" value="Hans Mueller" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label required">Cadde/Sokak</label>
+                                                    <input type="text" class="form-control" placeholder="Muster Straße 123" value="Muster Straße 123" required>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label required">Posta Kodu</label>
+                                                    <input type="text" class="form-control" placeholder="10115" value="10115" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label required">Şehir</label>
+                                                    <input type="text" class="form-control" placeholder="Berlin" value="Berlin" required>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label required">Ülke</label>
+                                                    <select class="form-select" required>
+                                                        <option value="DE" selected>Almanya</option>
+                                                        <option value="FR">Fransa</option>
+                                                        <option value="NL">Hollanda</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Ödeme Koşulları ve Notlar -->
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Ödeme Birimi ve Notlar</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-3">
+
+
+                                                <div class="col-md-12">
+                                                    <label class="form-label">Özel Notlar</label>
+                                                    <textarea class="form-control" rows="3" placeholder="Ödeme ile ilgili özel notlar, koşullar veya talimatlar..."></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Kaydet Butonu -->
+                                    <div class="text-end">
+                                        <button type="button" class="btn btn-outline-secondary me-2">İptal</button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <svg class="icon me-2" width="24" height="24">
+                                                <use xlink:href="#tabler-device-floppy"></use>
+                                            </svg>
+                                            Ödeme Bilgilerini Kaydet
+                                        </button>
+                                    </div>
+                                </form>
+
+
+                                <div class="alert alert-info mt-3">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Profil bilgilerinizi güncellemek için lütfen müşteri hesabınızdan düzenleyiniz.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -756,7 +986,32 @@
             });
         });
     </script>
+<script>
+    // Ödeme yöntemi değiştiğinde ilgili alanları göster/gizle
+    document.getElementById('paymentMethod').addEventListener('change', function() {
+        const value = this.value;
+        const bankDetails = document.getElementById('bankDetails');
+        const paypalDetails = document.getElementById('paypalDetails');
+        const digitalWalletDetails = document.getElementById('digitalWalletDetails');
 
+        // Tüm detay alanlarını gizle
+        bankDetails.style.display = 'none';
+        paypalDetails.style.display = 'none';
+        digitalWalletDetails.style.display = 'none';
+
+        // Seçilen yönteme göre ilgili alanı göster
+        if (value === 'sepa' || value === 'bank') {
+            bankDetails.style.display = 'block';
+        } else if (value === 'paypal') {
+            paypalDetails.style.display = 'block';
+        } else if (value === 'wise' || value === 'revolut') {
+            digitalWalletDetails.style.display = 'block';
+        }
+    });
+
+    // Sayfa yüklendiğinde varsayılan seçimi tetikle
+    document.getElementById('paymentMethod').dispatchEvent(new Event('change'));
+</script>
     <style>
         /* Özel CSS */
         .card {

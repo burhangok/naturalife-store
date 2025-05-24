@@ -15,7 +15,7 @@
 
     <v-booking-products></v-booking-products>
 
-    <?php if (! $__env->hasRenderedOnce('4ffc5052-143f-4d2f-b9b9-18b132e3053b')): $__env->markAsRenderedOnce('4ffc5052-143f-4d2f-b9b9-18b132e3053b');
+    <?php if (! $__env->hasRenderedOnce('65bb8f01-8fb9-48c8-9784-2c9f5a945a62')): $__env->markAsRenderedOnce('65bb8f01-8fb9-48c8-9784-2c9f5a945a62');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

@@ -23,7 +23,7 @@
 <?php endif; ?>
 </v-reporting-sales-total-sales>
 
-<?php if (! $__env->hasRenderedOnce('441f5574-b836-4d3f-b002-aba94e39db50')): $__env->markAsRenderedOnce('441f5574-b836-4d3f-b002-aba94e39db50');
+<?php if (! $__env->hasRenderedOnce('0af676f5-b83e-4444-be11-ccd2cdb2b55a')): $__env->markAsRenderedOnce('0af676f5-b83e-4444-be11-ccd2cdb2b55a');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

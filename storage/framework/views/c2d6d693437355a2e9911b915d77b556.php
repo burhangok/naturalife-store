@@ -1,6 +1,6 @@
 <v-flash-group ref='flashes'></v-flash-group>
 
-<?php if (! $__env->hasRenderedOnce('7f68f0f8-f8d1-469b-90ce-739d120e5eb1')): $__env->markAsRenderedOnce('7f68f0f8-f8d1-469b-90ce-739d120e5eb1');
+<?php if (! $__env->hasRenderedOnce('3b73fed7-1bd9-4c87-8138-8868ff4a9e24')): $__env->markAsRenderedOnce('3b73fed7-1bd9-4c87-8138-8868ff4a9e24');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

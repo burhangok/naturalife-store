@@ -89,7 +89,7 @@
         </v-wishlist-products>
     </div>
 
-    <?php if (! $__env->hasRenderedOnce('76e54b42-1bdd-46fd-82d7-8a8ae4cc70d3')): $__env->markAsRenderedOnce('76e54b42-1bdd-46fd-82d7-8a8ae4cc70d3');
+    <?php if (! $__env->hasRenderedOnce('d9aee66f-324f-48e2-9cdb-e2f130897b06')): $__env->markAsRenderedOnce('d9aee66f-324f-48e2-9cdb-e2f130897b06');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

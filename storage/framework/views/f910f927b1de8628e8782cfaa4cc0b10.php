@@ -1,6 +1,6 @@
 <v-seo-helper <?php echo e($attributes); ?>></v-seo-helper>
 
-<?php if (! $__env->hasRenderedOnce('cdabe0bc-3ab7-4eda-8495-7f928e9081cb')): $__env->markAsRenderedOnce('cdabe0bc-3ab7-4eda-8495-7f928e9081cb');
+<?php if (! $__env->hasRenderedOnce('26f066c0-0acc-4a98-8eaa-2a0e27032768')): $__env->markAsRenderedOnce('26f066c0-0acc-4a98-8eaa-2a0e27032768');
 $__env->startPush('scripts'); ?>
     <!-- SEO Vue Component Template -->
     <script

@@ -68,7 +68,7 @@
     <?php echo view_render_event('bagisto.admin.settings.exchange_rates.create.after'); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('b5eed6e4-46d4-46fc-b25d-0a8dd565328c')): $__env->markAsRenderedOnce('b5eed6e4-46d4-46fc-b25d-0a8dd565328c');
+    <?php if (! $__env->hasRenderedOnce('d120b251-abfd-4a8f-af8f-af6701a6f155')): $__env->markAsRenderedOnce('d120b251-abfd-4a8f-af8f-af6701a6f155');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

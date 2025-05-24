@@ -23,7 +23,7 @@
 <?php endif; ?>
 </v-reporting-customers-with-most-orders>
 
-<?php if (! $__env->hasRenderedOnce('220faf73-da3c-4695-9c4d-0bbf65dcfac2')): $__env->markAsRenderedOnce('220faf73-da3c-4695-9c4d-0bbf65dcfac2');
+<?php if (! $__env->hasRenderedOnce('d9098c4f-b53f-488e-8757-1ca612e2bf57')): $__env->markAsRenderedOnce('d9098c4f-b53f-488e-8757-1ca612e2bf57');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

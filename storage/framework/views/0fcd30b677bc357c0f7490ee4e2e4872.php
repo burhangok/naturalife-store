@@ -5,7 +5,7 @@
 >
 </v-product-card>
 
-<?php if (! $__env->hasRenderedOnce('bead2132-6210-4a25-bd49-3fc3a88d5c85')): $__env->markAsRenderedOnce('bead2132-6210-4a25-bd49-3fc3a88d5c85');
+<?php if (! $__env->hasRenderedOnce('098f25d7-d7ac-4f38-af1b-c2fc24c77677')): $__env->markAsRenderedOnce('098f25d7-d7ac-4f38-af1b-c2fc24c77677');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

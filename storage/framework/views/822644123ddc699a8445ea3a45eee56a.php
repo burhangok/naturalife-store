@@ -254,7 +254,7 @@
 
     <?php echo $__env->make('admin::customers.customers.index.create', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
-    <?php if (! $__env->hasRenderedOnce('34bf94fd-d893-4ca8-abc6-1cad172e963c')): $__env->markAsRenderedOnce('34bf94fd-d893-4ca8-abc6-1cad172e963c');
+    <?php if (! $__env->hasRenderedOnce('49b8c7c6-af47-4be2-a8e8-75c5d406c5e9')): $__env->markAsRenderedOnce('49b8c7c6-af47-4be2-a8e8-75c5d406c5e9');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

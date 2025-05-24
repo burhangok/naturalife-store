@@ -97,7 +97,7 @@
     <?php echo view_render_event('bagisto.admin.marketing.promotions.cart_rules.edit.after', ['cartRule' => $cartRule]); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('59d2adef-5cd9-479e-93d0-93cdd7ebdcfc')): $__env->markAsRenderedOnce('59d2adef-5cd9-479e-93d0-93cdd7ebdcfc');
+    <?php if (! $__env->hasRenderedOnce('70e14e4d-0a35-4de1-8e59-2afebb7b6037')): $__env->markAsRenderedOnce('70e14e4d-0a35-4de1-8e59-2afebb7b6037');
 $__env->startPush('scripts'); ?>
         <!-- v cart rules edit form template -->
         <script

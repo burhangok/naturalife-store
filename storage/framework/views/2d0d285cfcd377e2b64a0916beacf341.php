@@ -23,7 +23,7 @@
 <?php endif; ?> 
 </v-reporting-customers-total-customers>
 
-<?php if (! $__env->hasRenderedOnce('746f645c-b2a4-48ec-baec-1940260cd189')): $__env->markAsRenderedOnce('746f645c-b2a4-48ec-baec-1940260cd189');
+<?php if (! $__env->hasRenderedOnce('c72f7c5e-89f0-40e4-98aa-2f28d688dc66')): $__env->markAsRenderedOnce('c72f7c5e-89f0-40e4-98aa-2f28d688dc66');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

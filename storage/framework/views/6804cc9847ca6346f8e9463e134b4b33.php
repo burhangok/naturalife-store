@@ -1194,7 +1194,7 @@
     <?php echo view_render_event('bagisto.admin.catalog.categories.edit.after', ['category' => $category]); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('e8ec3ed1-b07e-4b24-8865-4ee1a343217e')): $__env->markAsRenderedOnce('e8ec3ed1-b07e-4b24-8865-4ee1a343217e');
+    <?php if (! $__env->hasRenderedOnce('9baf0a72-2621-4738-8096-a2885115f76a')): $__env->markAsRenderedOnce('9baf0a72-2621-4738-8096-a2885115f76a');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

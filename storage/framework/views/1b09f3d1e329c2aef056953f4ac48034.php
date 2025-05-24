@@ -1117,7 +1117,7 @@
     <?php echo view_render_event('bagisto.admin.settings.inventory_sources.edit.after', ['inventorySource' => $inventorySource]); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('6d3f4b1b-a322-4838-8777-b4c8929b9d39')): $__env->markAsRenderedOnce('6d3f4b1b-a322-4838-8777-b4c8929b9d39');
+    <?php if (! $__env->hasRenderedOnce('2dff1c0f-e552-481f-8cd3-69b2c17ec29e')): $__env->markAsRenderedOnce('2dff1c0f-e552-481f-8cd3-69b2c17ec29e');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

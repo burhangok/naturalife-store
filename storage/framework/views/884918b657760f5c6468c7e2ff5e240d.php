@@ -86,7 +86,7 @@
     <?php echo view_render_event('bagisto.admin.settings.taxes.rates.create.after'); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('7a22abea-251a-4db7-81d5-e733df5e6d1e')): $__env->markAsRenderedOnce('7a22abea-251a-4db7-81d5-e733df5e6d1e');
+    <?php if (! $__env->hasRenderedOnce('e0563f7d-e722-4ecc-8f6b-2cc7e225deb5')): $__env->markAsRenderedOnce('e0563f7d-e722-4ecc-8f6b-2cc7e225deb5');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

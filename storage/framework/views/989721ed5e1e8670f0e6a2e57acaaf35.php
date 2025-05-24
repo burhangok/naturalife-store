@@ -23,7 +23,7 @@
 <?php endif; ?>
 </v-reporting-products-top-search-terms>
 
-<?php if (! $__env->hasRenderedOnce('fd524cf1-20fb-48f7-afe1-04183e8ba743')): $__env->markAsRenderedOnce('fd524cf1-20fb-48f7-afe1-04183e8ba743');
+<?php if (! $__env->hasRenderedOnce('f28af921-c72d-4f0b-bb2a-0c144d7bd5c3')): $__env->markAsRenderedOnce('f28af921-c72d-4f0b-bb2a-0c144d7bd5c3');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

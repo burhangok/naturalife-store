@@ -20,7 +20,7 @@
     <v-event-tickets></v-event-tickets>
 </div>
 
-<?php if (! $__env->hasRenderedOnce('086e5a04-b216-4ead-bdb2-94945e8d281c')): $__env->markAsRenderedOnce('086e5a04-b216-4ead-bdb2-94945e8d281c');
+<?php if (! $__env->hasRenderedOnce('47704e74-0872-4f38-b2bb-1c8d716fc73d')): $__env->markAsRenderedOnce('47704e74-0872-4f38-b2bb-1c8d716fc73d');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

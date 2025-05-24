@@ -23,7 +23,7 @@
 <?php endif; ?>
 </v-reporting-customers-with-most-reviews>
 
-<?php if (! $__env->hasRenderedOnce('4114c97a-20f6-4288-9f4f-e5a2977e5390')): $__env->markAsRenderedOnce('4114c97a-20f6-4288-9f4f-e5a2977e5390');
+<?php if (! $__env->hasRenderedOnce('3f3b8a23-0bcc-497f-b697-ca87099873de')): $__env->markAsRenderedOnce('3f3b8a23-0bcc-497f-b697-ca87099873de');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

@@ -1,6 +1,6 @@
 <v-calendar></v-calendar>
 
-<?php if (! $__env->hasRenderedOnce('814a2344-7474-4da5-93b5-c0d41c01a04c')): $__env->markAsRenderedOnce('814a2344-7474-4da5-93b5-c0d41c01a04c');
+<?php if (! $__env->hasRenderedOnce('53882436-0abd-422d-ac51-a464c5754241')): $__env->markAsRenderedOnce('53882436-0abd-422d-ac51-a464c5754241');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"
@@ -286,7 +286,7 @@ $__env->startPush('scripts'); ?>
     </script>
 <?php $__env->stopPush(); endif; ?>
 
-<?php if (! $__env->hasRenderedOnce('636aeb7e-c749-4341-9573-fb4cab0eba49')): $__env->markAsRenderedOnce('636aeb7e-c749-4341-9573-fb4cab0eba49');
+<?php if (! $__env->hasRenderedOnce('d89734c9-680d-444b-b127-0733cd93d6c9')): $__env->markAsRenderedOnce('d89734c9-680d-444b-b127-0733cd93d6c9');
 $__env->startPush('styles'); ?>
     <style>
         .vuecal__title-bar {

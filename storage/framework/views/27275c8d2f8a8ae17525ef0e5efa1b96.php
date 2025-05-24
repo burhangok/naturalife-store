@@ -40,7 +40,7 @@
     <?php echo $__env->make('shop::products.view.types.booking.slots', ['bookingProduct' => $bookingProduct], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </div>
 
-<?php if (! $__env->hasRenderedOnce('a4af00d4-feee-4853-b1cf-dfbcb4c4f1d9')): $__env->markAsRenderedOnce('a4af00d4-feee-4853-b1cf-dfbcb4c4f1d9');
+<?php if (! $__env->hasRenderedOnce('90a01c88-7525-4c9b-b067-1ad58fc4f404')): $__env->markAsRenderedOnce('90a01c88-7525-4c9b-b067-1ad58fc4f404');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

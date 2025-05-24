@@ -23,7 +23,7 @@
 <?php endif; ?>
 </v-reporting-sales-top-payment-methods>
 
-<?php if (! $__env->hasRenderedOnce('7a0491fd-4897-481a-9f94-9649bd3bab7f')): $__env->markAsRenderedOnce('7a0491fd-4897-481a-9f94-9649bd3bab7f');
+<?php if (! $__env->hasRenderedOnce('c229e7a6-ec0f-452d-8eb0-b30787cf155d')): $__env->markAsRenderedOnce('c229e7a6-ec0f-452d-8eb0-b30787cf155d');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

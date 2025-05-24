@@ -74,7 +74,7 @@
         </div>
     </div>
 
-    <?php if (! $__env->hasRenderedOnce('fd1010d5-4e03-4cac-92c0-d4f0f6696c5b')): $__env->markAsRenderedOnce('fd1010d5-4e03-4cac-92c0-d4f0f6696c5b');
+    <?php if (! $__env->hasRenderedOnce('fdb08a31-acfc-4738-9816-29602a7ab905')): $__env->markAsRenderedOnce('fdb08a31-acfc-4738-9816-29602a7ab905');
 $__env->startPush('scripts'); ?>
         <script type="module" src="<?php echo e(bagisto_asset('js/chart.js')); ?>"></script>
 

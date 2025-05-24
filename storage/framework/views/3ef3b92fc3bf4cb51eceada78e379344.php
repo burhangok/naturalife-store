@@ -22,7 +22,7 @@
 </v-image-carousel>
 
 <!-- Image Carousel Vue Component -->
-<?php if (! $__env->hasRenderedOnce('9e24dcff-6e37-45ea-9393-cbf83edd640c')): $__env->markAsRenderedOnce('9e24dcff-6e37-45ea-9393-cbf83edd640c');
+<?php if (! $__env->hasRenderedOnce('a8428305-130b-407a-a8ae-e619fd782e38')): $__env->markAsRenderedOnce('a8428305-130b-407a-a8ae-e619fd782e38');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

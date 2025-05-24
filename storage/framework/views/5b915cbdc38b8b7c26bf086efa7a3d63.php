@@ -1,6 +1,6 @@
 <v-rental-slots :bookingProduct = "<?php echo e($bookingProduct); ?>"></v-rental-slots>
 
-<?php if (! $__env->hasRenderedOnce('9668f7f5-9b5f-4ac3-b032-7863ad614f14')): $__env->markAsRenderedOnce('9668f7f5-9b5f-4ac3-b032-7863ad614f14');
+<?php if (! $__env->hasRenderedOnce('69f07b36-3b6c-4ecd-838e-67b6cf8db964')): $__env->markAsRenderedOnce('69f07b36-3b6c-4ecd-838e-67b6cf8db964');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

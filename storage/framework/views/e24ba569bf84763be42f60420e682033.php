@@ -1,6 +1,6 @@
 <v-product-search <?php echo e($attributes); ?>></v-product-search>
 
-<?php if (! $__env->hasRenderedOnce('7f46ac6a-a441-4e77-a5eb-1d5377dad04d')): $__env->markAsRenderedOnce('7f46ac6a-a441-4e77-a5eb-1d5377dad04d');
+<?php if (! $__env->hasRenderedOnce('041748f0-0fd1-4469-a33c-e0652649bf1f')): $__env->markAsRenderedOnce('041748f0-0fd1-4469-a33c-e0652649bf1f');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

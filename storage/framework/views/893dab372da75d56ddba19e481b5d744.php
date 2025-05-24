@@ -1111,7 +1111,7 @@
     <?php echo view_render_event('bagisto.admin.settings.inventory_sources.create.after'); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('16e47c20-1fc1-403a-9550-523fde63408b')): $__env->markAsRenderedOnce('16e47c20-1fc1-403a-9550-523fde63408b');
+    <?php if (! $__env->hasRenderedOnce('213bc0e5-ef0a-4c49-8742-2d33deb3e7d5')): $__env->markAsRenderedOnce('213bc0e5-ef0a-4c49-8742-2d33deb3e7d5');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

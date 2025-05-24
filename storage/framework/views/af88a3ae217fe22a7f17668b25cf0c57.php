@@ -1,6 +1,6 @@
 <v-tinymce <?php echo e($attributes); ?>></v-tinymce>
 
-<?php if (! $__env->hasRenderedOnce('5faecf43-927d-4fb5-be33-2e6587ac642e')): $__env->markAsRenderedOnce('5faecf43-927d-4fb5-be33-2e6587ac642e');
+<?php if (! $__env->hasRenderedOnce('00776bd9-397a-4d8f-af55-5a704e395758')): $__env->markAsRenderedOnce('00776bd9-397a-4d8f-af55-5a704e395758');
 $__env->startPush('scripts'); ?>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.6.2/tinymce.min.js"

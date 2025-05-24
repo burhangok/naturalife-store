@@ -23,7 +23,7 @@
 <?php endif; ?> 
 </v-reporting-customers-total-traffic>
 
-<?php if (! $__env->hasRenderedOnce('b53df8e2-1274-4c22-ba3a-a14f037312bb')): $__env->markAsRenderedOnce('b53df8e2-1274-4c22-ba3a-a14f037312bb');
+<?php if (! $__env->hasRenderedOnce('4cd25144-743a-4e96-9ea0-7ed5c006acd1')): $__env->markAsRenderedOnce('4cd25144-743a-4e96-9ea0-7ed5c006acd1');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

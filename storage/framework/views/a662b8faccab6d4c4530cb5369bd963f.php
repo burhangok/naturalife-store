@@ -31,7 +31,7 @@
 <?php echo view_render_event('bagisto.shop.checkout.onepage.payment_methods.after'); ?>
 
 
-<?php if (! $__env->hasRenderedOnce('b7cb23ed-a7be-486f-91d6-c8ad59bc5179')): $__env->markAsRenderedOnce('b7cb23ed-a7be-486f-91d6-c8ad59bc5179');
+<?php if (! $__env->hasRenderedOnce('c9542a50-04a4-4444-be80-554cb8d104c2')): $__env->markAsRenderedOnce('c9542a50-04a4-4444-be80-554cb8d104c2');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

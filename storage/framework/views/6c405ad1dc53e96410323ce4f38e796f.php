@@ -23,7 +23,7 @@
 <?php endif; ?>
 </v-reporting-products-with-most-reviews>
 
-<?php if (! $__env->hasRenderedOnce('8b996d2d-ed86-4a78-8f0b-c4705c5e0806')): $__env->markAsRenderedOnce('8b996d2d-ed86-4a78-8f0b-c4705c5e0806');
+<?php if (! $__env->hasRenderedOnce('5bc7fb67-e5c4-4763-adae-b26948c53880')): $__env->markAsRenderedOnce('5bc7fb67-e5c4-4763-adae-b26948c53880');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

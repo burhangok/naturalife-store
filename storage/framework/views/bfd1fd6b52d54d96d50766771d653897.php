@@ -88,7 +88,7 @@
     <?php echo view_render_event('bagisto.admin.settings.taxes.rates.edit.after', ['taxRate' => $taxRate]); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('3e391c04-a567-464d-80e6-788515633dbf')): $__env->markAsRenderedOnce('3e391c04-a567-464d-80e6-788515633dbf');
+    <?php if (! $__env->hasRenderedOnce('979e9917-1f6b-4172-83a4-e687e28648fd')): $__env->markAsRenderedOnce('979e9917-1f6b-4172-83a4-e687e28648fd');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

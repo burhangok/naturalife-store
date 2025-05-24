@@ -45,7 +45,7 @@ unset($__defined_vars); ?>
 >
 </v-star-rating>
 
-<?php if (! $__env->hasRenderedOnce('6c9cacdd-0729-4f88-a9ab-0c29301bb55c')): $__env->markAsRenderedOnce('6c9cacdd-0729-4f88-a9ab-0c29301bb55c');
+<?php if (! $__env->hasRenderedOnce('65a73616-67c9-4a13-809a-4a1ace2d9c52')): $__env->markAsRenderedOnce('65a73616-67c9-4a13-809a-4a1ace2d9c52');
 $__env->startPush("scripts"); ?>
     <script
         type="text/x-template"

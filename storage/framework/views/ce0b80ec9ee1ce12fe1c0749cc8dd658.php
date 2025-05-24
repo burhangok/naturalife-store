@@ -6,7 +6,7 @@
 <?php echo view_render_event('bagisto.admin.catalog.product.edit.form.types.grouped.after', ['product' => $product]); ?>
 
 
-<?php if (! $__env->hasRenderedOnce('9e1da38b-480c-435b-bdcd-71028387ab57')): $__env->markAsRenderedOnce('9e1da38b-480c-435b-bdcd-71028387ab57');
+<?php if (! $__env->hasRenderedOnce('af2dd7fd-52f7-42aa-ae99-c02573da706e')): $__env->markAsRenderedOnce('af2dd7fd-52f7-42aa-ae99-c02573da706e');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

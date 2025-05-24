@@ -451,7 +451,7 @@
     <?php echo view_render_event('bagisto.shop.products.view.after', ['product' => $product]); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('688ba4a8-083a-46d2-b51a-5687ecfe10ed')): $__env->markAsRenderedOnce('688ba4a8-083a-46d2-b51a-5687ecfe10ed');
+    <?php if (! $__env->hasRenderedOnce('30595dc0-3bcb-44ab-a223-8f9dd4cdbf58')): $__env->markAsRenderedOnce('30595dc0-3bcb-44ab-a223-8f9dd4cdbf58');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

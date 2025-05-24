@@ -65,7 +65,7 @@
     <?php echo view_render_event('bagisto.admin.settings.themes.list.after'); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('3a167207-a036-45ce-bd8d-fe0899864d42')): $__env->markAsRenderedOnce('3a167207-a036-45ce-bd8d-fe0899864d42');
+    <?php if (! $__env->hasRenderedOnce('9c877eca-e7dd-45da-8ecf-fdf93198a222')): $__env->markAsRenderedOnce('9c877eca-e7dd-45da-8ecf-fdf93198a222');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

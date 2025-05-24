@@ -60,7 +60,7 @@
     <?php echo view_render_event('bagisto.admin.settings.currencies.create.after'); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('05277908-f83f-4fe0-a9ef-95e2e690eb98')): $__env->markAsRenderedOnce('05277908-f83f-4fe0-a9ef-95e2e690eb98');
+    <?php if (! $__env->hasRenderedOnce('bafc244e-b733-40a0-b41c-f16311a6ca49')): $__env->markAsRenderedOnce('bafc244e-b733-40a0-b41c-f16311a6ca49');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

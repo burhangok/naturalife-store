@@ -348,7 +348,7 @@
     <?php echo view_render_event('bagisto.admin.catalog.products.list.after'); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('22ca1c2e-c138-444c-a13e-449f32378017')): $__env->markAsRenderedOnce('22ca1c2e-c138-444c-a13e-449f32378017');
+    <?php if (! $__env->hasRenderedOnce('9a2b1689-25a9-4dbf-954f-90db3eb7b4ba')): $__env->markAsRenderedOnce('9a2b1689-25a9-4dbf-954f-90db3eb7b4ba');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

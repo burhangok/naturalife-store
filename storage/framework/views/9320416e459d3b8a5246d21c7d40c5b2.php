@@ -56,7 +56,7 @@
     <v-transaction-drawer ref="transactionDrawer"/>
 
     <!-- Transaction View Component -->
-    <?php if (! $__env->hasRenderedOnce('e306b057-4e33-41df-9ee2-2a2e125fa064')): $__env->markAsRenderedOnce('e306b057-4e33-41df-9ee2-2a2e125fa064');
+    <?php if (! $__env->hasRenderedOnce('3f9a717b-4a37-40c2-994f-2db90e6cf65f')): $__env->markAsRenderedOnce('3f9a717b-4a37-40c2-994f-2db90e6cf65f');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

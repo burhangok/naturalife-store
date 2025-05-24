@@ -22,7 +22,7 @@
 </v-footer-links>
 
 <!-- Footer Link Vue Component -->
-<?php if (! $__env->hasRenderedOnce('a4e135a6-57e2-462a-bcfd-221e697e7c3e')): $__env->markAsRenderedOnce('a4e135a6-57e2-462a-bcfd-221e697e7c3e');
+<?php if (! $__env->hasRenderedOnce('3f8796fc-31d3-4075-9f60-82ee920318ab')): $__env->markAsRenderedOnce('3f8796fc-31d3-4075-9f60-82ee920318ab');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

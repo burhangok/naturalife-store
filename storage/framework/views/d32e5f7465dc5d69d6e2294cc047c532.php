@@ -12,7 +12,7 @@
     <?php echo view_render_event('bagisto.shop.products.view.booking.before', ['product' => $product]); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('66e9d466-d702-45d4-9f16-fed351717814')): $__env->markAsRenderedOnce('66e9d466-d702-45d4-9f16-fed351717814');
+    <?php if (! $__env->hasRenderedOnce('d4e54a25-16e3-4fc9-a7db-d211a62d68fd')): $__env->markAsRenderedOnce('d4e54a25-16e3-4fc9-a7db-d211a62d68fd');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

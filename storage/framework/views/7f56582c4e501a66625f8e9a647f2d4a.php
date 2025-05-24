@@ -23,7 +23,7 @@
 <?php endif; ?>
 </v-dashboard-top-selling-products>
 
-<?php if (! $__env->hasRenderedOnce('7bd7a7e1-dc32-44a4-ab88-4181667e98b1')): $__env->markAsRenderedOnce('7bd7a7e1-dc32-44a4-ab88-4181667e98b1');
+<?php if (! $__env->hasRenderedOnce('4b474509-6344-427a-b334-d31e897f3908')): $__env->markAsRenderedOnce('4b474509-6344-427a-b334-d31e897f3908');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

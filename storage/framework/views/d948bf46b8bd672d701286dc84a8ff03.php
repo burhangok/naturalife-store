@@ -23,7 +23,7 @@
 <?php endif; ?>
 </v-reporting-products-last-search-terms>
 
-<?php if (! $__env->hasRenderedOnce('1109fbb6-f3a7-46ca-a3d9-cb5a2a4c2b66')): $__env->markAsRenderedOnce('1109fbb6-f3a7-46ca-a3d9-cb5a2a4c2b66');
+<?php if (! $__env->hasRenderedOnce('30947d64-e4c8-4e75-9a98-2ff8cca4d1c5')): $__env->markAsRenderedOnce('30947d64-e4c8-4e75-9a98-2ff8cca4d1c5');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

@@ -23,7 +23,7 @@
 <?php endif; ?>
 </v-reporting-customers-with-most-sales>
 
-<?php if (! $__env->hasRenderedOnce('a0cedf2b-f5a9-48bb-a3c5-37cbba182ecc')): $__env->markAsRenderedOnce('a0cedf2b-f5a9-48bb-a3c5-37cbba182ecc');
+<?php if (! $__env->hasRenderedOnce('7fd1b67c-7216-4d69-aa06-993e2d487b12')): $__env->markAsRenderedOnce('7fd1b67c-7216-4d69-aa06-993e2d487b12');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

@@ -32,7 +32,7 @@
 <?php endif; ?>
     </v-customer-view>
 
-    <?php if (! $__env->hasRenderedOnce('de74f864-9198-4eef-9706-2e2b346555f7')): $__env->markAsRenderedOnce('de74f864-9198-4eef-9706-2e2b346555f7');
+    <?php if (! $__env->hasRenderedOnce('2d468e44-e4b2-43d0-a3f4-e03da17b78fc')): $__env->markAsRenderedOnce('2d468e44-e4b2-43d0-a3f4-e03da17b78fc');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

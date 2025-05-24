@@ -43,7 +43,7 @@
     <?php echo view_render_event('bagisto.admin.marketing.notifications.create.after'); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('31e6ebf9-734f-4a2f-afe2-7c14cbda17d2')): $__env->markAsRenderedOnce('31e6ebf9-734f-4a2f-afe2-7c14cbda17d2');
+    <?php if (! $__env->hasRenderedOnce('0dcf169d-1896-4cb8-a415-9f4308f13bff')): $__env->markAsRenderedOnce('0dcf169d-1896-4cb8-a415-9f4308f13bff');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

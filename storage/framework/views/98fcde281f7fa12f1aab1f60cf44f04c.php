@@ -26,7 +26,7 @@
 
 <?php $customerGroupRepository = app('Webkul\Customer\Repositories\CustomerGroupRepository'); ?>
 
-<?php if (! $__env->hasRenderedOnce('b711e13a-bf36-43c4-9636-3451e01f200a')): $__env->markAsRenderedOnce('b711e13a-bf36-43c4-9636-3451e01f200a');
+<?php if (! $__env->hasRenderedOnce('8d84d4a8-ee7b-4b28-8d6b-9194daf8ad75')): $__env->markAsRenderedOnce('8d84d4a8-ee7b-4b28-8d6b-9194daf8ad75');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

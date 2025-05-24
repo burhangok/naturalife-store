@@ -20,7 +20,7 @@
     <?php echo view_render_event('bagisto.admin.customers.groups.create.after'); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('084478af-3a24-4a95-aa94-b1d8710ca17e')): $__env->markAsRenderedOnce('084478af-3a24-4a95-aa94-b1d8710ca17e');
+    <?php if (! $__env->hasRenderedOnce('7beaadd3-53f1-48fe-b058-45634011b117')): $__env->markAsRenderedOnce('7beaadd3-53f1-48fe-b058-45634011b117');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

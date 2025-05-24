@@ -115,7 +115,7 @@
 <?php echo view_render_event('bagisto.admin.catalog.product.edit.form.inventories.controls.after', ['product' => $product]); ?>
 
 
-<?php if (! $__env->hasRenderedOnce('4a6b6788-ebeb-4ecb-a341-e00f91549062')): $__env->markAsRenderedOnce('4a6b6788-ebeb-4ecb-a341-e00f91549062');
+<?php if (! $__env->hasRenderedOnce('dca25f33-b94d-4aaf-a62d-efd1ce1b7d7b')): $__env->markAsRenderedOnce('dca25f33-b94d-4aaf-a62d-efd1ce1b7d7b');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

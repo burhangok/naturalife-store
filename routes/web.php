@@ -6,6 +6,7 @@ use App\Http\Controllers\Affiliate\AffiliateController;
 use App\Http\Controllers\Affiliate\AffiliateShopController;
 use App\Http\Controllers\Affiliate\CommissionRuleController;
 use App\Http\Controllers\Affiliate\AffiliateCommissionController;
+use App\Http\Controllers\AffiliatePaymentMethodController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HelperController;
 
@@ -29,6 +30,7 @@ Route::prefix('customer')->group(function () {
             });
 
             Route::get('/commissions/{affiliate}', [AffiliateCommissionShopController::class, 'showcommissions'])->name('shop.customers.affiliatemodule.commissions');
+            Route::post('/paymentmethod/{affiliate}', [AffiliatePaymentMethodController::class, 'store'])->name('shop.customers.affiliatemodule.paymentmethod');
 
 
 

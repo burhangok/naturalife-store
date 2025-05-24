@@ -23,7 +23,7 @@
 <?php endif; ?>
 </v-reporting-product-top-selling-by-quantity>
 
-<?php if (! $__env->hasRenderedOnce('0e2ee380-4a09-4438-bad3-397a8919849a')): $__env->markAsRenderedOnce('0e2ee380-4a09-4438-bad3-397a8919849a');
+<?php if (! $__env->hasRenderedOnce('763a1621-d36a-4281-a67b-f922098ae90d')): $__env->markAsRenderedOnce('763a1621-d36a-4281-a67b-f922098ae90d');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

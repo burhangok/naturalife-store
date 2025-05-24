@@ -33,7 +33,7 @@
 <?php echo view_render_event('bagisto.shop.checkout.onepage.address.customer.after'); ?>
 
 
-<?php if (! $__env->hasRenderedOnce('f3f12f46-b5e6-4328-a021-168d9fb18111')): $__env->markAsRenderedOnce('f3f12f46-b5e6-4328-a021-168d9fb18111');
+<?php if (! $__env->hasRenderedOnce('6380dfad-04a9-44ba-9ab7-c07e13cb80e5')): $__env->markAsRenderedOnce('6380dfad-04a9-44ba-9ab7-c07e13cb80e5');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

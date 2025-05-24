@@ -1,6 +1,6 @@
 <v-charts-bar <?php echo e($attributes); ?>></v-charts-bar>
 
-<?php if (! $__env->hasRenderedOnce('79a9c103-c6b8-4a1a-b632-b489f6d1b5c5')): $__env->markAsRenderedOnce('79a9c103-c6b8-4a1a-b632-b489f6d1b5c5');
+<?php if (! $__env->hasRenderedOnce('a099639f-8fd9-4f69-939a-f520ed1a3b44')): $__env->markAsRenderedOnce('a099639f-8fd9-4f69-939a-f520ed1a3b44');
 $__env->startPush('scripts'); ?>
     <!-- SEO Vue Component Template -->
     <script

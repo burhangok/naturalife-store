@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\AffiliatePaymentMethod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Webkul\Customer\Models\Customer;
@@ -222,5 +223,10 @@ class Affiliate extends Model
             return 0;
 
         return round($totalRevenue / $totalClicks, 4);
+    }
+
+    public function paymentMethod()
+    {
+        return $this->hasOne(AffiliatePaymentMethod::class);
     }
 }

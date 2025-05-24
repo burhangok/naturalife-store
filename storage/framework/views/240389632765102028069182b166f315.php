@@ -87,7 +87,7 @@
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
 
-    <?php if (! $__env->hasRenderedOnce('b63db3d6-53a0-4807-a2ba-8934edaf9de1')): $__env->markAsRenderedOnce('b63db3d6-53a0-4807-a2ba-8934edaf9de1');
+    <?php if (! $__env->hasRenderedOnce('afbe267f-cff6-4e61-8d1b-3b66e89c6144')): $__env->markAsRenderedOnce('afbe267f-cff6-4e61-8d1b-3b66e89c6144');
 $__env->startPush('scripts'); ?>
         <script type="text/x-template" id="v-configuration-search-template">
             <div class="relative flex w-[525px] max-w-[525px] items-center max-lg:w-[400px] ltr:ml-2.5 rtl:mr-2.5">

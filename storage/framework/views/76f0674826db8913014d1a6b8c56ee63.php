@@ -23,7 +23,7 @@
 <?php endif; ?>
 </v-reporting-products-wishlist-products>
 
-<?php if (! $__env->hasRenderedOnce('fb5f1abc-8138-47a2-8f94-51f1fa8452a0')): $__env->markAsRenderedOnce('fb5f1abc-8138-47a2-8f94-51f1fa8452a0');
+<?php if (! $__env->hasRenderedOnce('72bc265b-dcae-4bb4-b88b-adabe55211e9')): $__env->markAsRenderedOnce('72bc265b-dcae-4bb4-b88b-adabe55211e9');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

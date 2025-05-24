@@ -22,7 +22,7 @@
 </v-category-carousel>
 
 <!-- Category Carousel Vue Component -->
-<?php if (! $__env->hasRenderedOnce('b0b45cc5-061d-4c9a-9c24-f9d0a70b9d60')): $__env->markAsRenderedOnce('b0b45cc5-061d-4c9a-9c24-f9d0a70b9d60');
+<?php if (! $__env->hasRenderedOnce('cac4f7cb-6ad5-4e20-96ef-deae2a2d7457')): $__env->markAsRenderedOnce('cac4f7cb-6ad5-4e20-96ef-deae2a2d7457');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

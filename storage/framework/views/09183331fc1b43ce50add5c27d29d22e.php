@@ -36,7 +36,7 @@
 <?php endif; ?>
     </v-reporting-stats-table>
 
-    <?php if (! $__env->hasRenderedOnce('c3119e9d-e51c-4af7-8296-0f159dee373f')): $__env->markAsRenderedOnce('c3119e9d-e51c-4af7-8296-0f159dee373f');
+    <?php if (! $__env->hasRenderedOnce('dbc6943c-4f4c-4940-8210-c991fb6609f5')): $__env->markAsRenderedOnce('dbc6943c-4f4c-4940-8210-c991fb6609f5');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

@@ -108,7 +108,7 @@
         </v-category>
     <?php endif; ?>
 
-    <?php if (! $__env->hasRenderedOnce('36b30f91-10d6-4402-b5a8-9418da00a639')): $__env->markAsRenderedOnce('36b30f91-10d6-4402-b5a8-9418da00a639');
+    <?php if (! $__env->hasRenderedOnce('bf02ec3e-a5e7-47ea-b55b-ca35a342c46c')): $__env->markAsRenderedOnce('bf02ec3e-a5e7-47ea-b55b-ca35a342c46c');
 $__env->startPush('scripts'); ?>
         <script 
             type="text/x-template" 

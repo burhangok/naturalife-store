@@ -36,7 +36,7 @@
 <?php echo view_render_event('bagisto.shop.checkout.cart.summary.estimate_shipping.after'); ?>
 
 
-<?php if (! $__env->hasRenderedOnce('a5fbb022-8cd0-43b3-8bc6-882aee46d0b2')): $__env->markAsRenderedOnce('a5fbb022-8cd0-43b3-8bc6-882aee46d0b2');
+<?php if (! $__env->hasRenderedOnce('de147e65-cc10-4cbe-842c-4beeefb36aba')): $__env->markAsRenderedOnce('de147e65-cc10-4cbe-842c-4beeefb36aba');
 $__env->startPush('scripts'); ?>
     <script type="text/x-template" id="v-estimate-tax-shipping-template">
         <!-- Destination Location Form -->
