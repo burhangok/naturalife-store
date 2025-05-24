@@ -221,88 +221,6 @@ class AffiliateShopController extends Controller
         return response()->json($commissions);
     }
 
-    /**
-     * Alt temsilci detaylarını getir
-     */
-    public function getDownlineDetails(Request $request, Affiliate $affiliate)
-    {
-
-
-        if (!$affiliate) {
-            return response()->json(['error' => 'Affiliate kaydınız bulunamadı.'], 404);
-        }
-
-        // Bu alt temsilcinin gerçekten bu kullanıcının altında olup olmadığını kontrol et
-        $downlineAffiliate = $affiliate->children()
-            ->with([
-                'customer.orders',
-                'children.customer',
-                'commissions',
-                'generatedCommissions.affiliate.customer'
-            ])
-            ->find($affiliate->id);
-
-        if (!$downlineAffiliate) {
-            return response()->json(['error' => 'Alt temsilci bulunamadı.'], 404);
-        }
-
-        $details = [
-            'affiliate' => $downlineAffiliate,
-            'total_earnings' => $downlineAffiliate->commissions->sum('amount'),
-            'total_sales' => $downlineAffiliate->customer->orders()
-                ->whereNotIn('status', ['canceled', 'closed'])
-                ->sum('base_grand_total_invoiced'),
-            'generated_commissions' => $downlineAffiliate->generatedCommissions->sum('amount'),
-            'children_count' => $downlineAffiliate->children->count(),
-            'recent_commissions' => $downlineAffiliate->commissions()
-                ->with('fromAffiliate.customer')
-                ->latest()
-                ->take(10)
-                ->get()
-        ];
-
-        return response()->json($details);
-    }
-
-    /**
-     * Dashboard verilerini yenile (AJAX)
-     */
-    public function refreshDashboard(Request $request,Affiliate $affiliate)
-    {
-
-
-        $affiliate = Affiliate::with([
-            'commissions',
-            'clicks',
-            'children'
-        ])->first($affiliate);
-
-        if (!$affiliate) {
-            return response()->json(['error' => 'Affiliate kaydınız bulunamadı.'], 404);
-        }
-
-        // Güncel istatistikler
-        $stats = [
-            'total_earnings' => $affiliate->commissions->sum('amount'),
-            'total_clicks' => $affiliate->clicks->count(),
-            'total_conversions' => $affiliate->clicks->where('converted', true)->count(),
-            'total_downline' => $affiliate->children->count(),
-            'this_month_earnings' => $affiliate->commissions()
-                ->where('created_at', '>=', Carbon::now()->startOfMonth())
-                ->sum('amount'),
-            'this_month_clicks' => $affiliate->clicks()
-                ->where('created_at', '>=', Carbon::now()->startOfMonth())
-                ->count(),
-            'conversion_rate' => $this->calculateConversionRate($affiliate->clicks),
-            'last_commission_date' => $affiliate->commissions()->latest('created_at')->first()?->created_at?->format('d.m.Y H:i')
-        ];
-
-        return response()->json([
-            'success' => true,
-            'stats' => $stats,
-            'message' => 'Veriler güncellendi!'
-        ]);
-    }
 
     /**
      * Tıklama geçmişini getir
@@ -354,59 +272,25 @@ class AffiliateShopController extends Controller
     public function myaffiliates() {
 
         $customer = auth()->guard('customer')->user();
-        $currentAffiliate = Affiliate::where('customer_id', $customer->id)->first();
+        $affiliate = Affiliate::where('customer_id', $customer->id)->first();
 
-        if (!$currentAffiliate) {
+        if (!$affiliate) {
             return redirect()->back()->with('error', 'Temsilci kaydınız bulunamadı.');
         }
+        $downlineAffiliates = $affiliate->children()->with([
+            'customer.orders',
+            'children',
+            'commissions',
+            'generatedCommissions'
+        ])->get();
 
-        // Alt temsilcileri getir
-        $query = $currentAffiliate->children()
-            ->with(['customer', 'commissions', 'clicks'])
-            ->orderBy('created_at', 'desc');
-
-        // Filtreleme işlemleri
-
-
-
-
-        // Sayfalama
-        $representatives = $query->paginate(15);
-
-        // İstatistikleri hesapla
-        $stats = $this->calculateStats($currentAffiliate);
-
-        // View'e gönderilecek verileri hazırla
-        $representativesData = $representatives->map(function($affiliate) {
-            return [
-                'id' => $affiliate->id,
-                'name' => $affiliate->customer ? $affiliate->customer->first_name . ' ' . $affiliate->customer->last_name : 'Bilinmiyor',
-                'email' => $affiliate->customer->email ?? 'Bilinmiyor',
-                'phone' => $affiliate->customer->phone ?? 'Bilinmiyor',
-                'code' => $affiliate->affiliate_code,
-                'avatar' => $affiliate->customer->avatar ?? null,
-                'region' => $this->getRegionFromCustomer($affiliate->customer),
-                'city' => $affiliate->customer->city ?? 'Bilinmiyor',
-                'district' => $affiliate->customer->district ?? 'Bilinmiyor',
-                'performance' => $affiliate->conversion_rate,
-                'sales' => $affiliate->total_commission_earned,
-                'created_at' => $affiliate->created_at->format('d.m.Y'),
-                'days_ago' => $affiliate->created_at->diffInDays(now()),
-                'status' => $affiliate->status,
-                'status_text' => $this->getStatusText($affiliate->status),
-                'total_clicks' => $affiliate->total_clicks,
-                'total_conversions' => $affiliate->total_conversions,
-                'this_month_earnings' => $affiliate->this_month_earnings,
-                'conversion_rate' => $affiliate->conversion_rate,
-                'revenue_per_click' => $affiliate->revenue_per_click,
-            ];
-        });
+        if (!$downlineAffiliates) {
+            return redirect()->back()->with('error', 'Alt temsilciniz bulunamadı.');
+        }
 
         return view('affiliatemodule.shop.affiliate_downaffiliates', compact(
-            'representatives',
-            'representativesData',
-            'stats',
-            'currentAffiliate'
+            'downlineAffiliates',
+            'affiliate'
         ));
 
 
@@ -416,6 +300,7 @@ class AffiliateShopController extends Controller
            private function calculateStats($affiliate)
     {
         $children = $affiliate->children;
+
 
         return [
             'totalRepresentatives' => $children->count(),
