@@ -1,0 +1,564 @@
+<?php
+
+namespace App\Http\Controllers\Affiliate;
+
+use App\Models\Affiliate;
+use App\Models\AffiliateClick;
+use App\Models\CommissionRule;
+use App\Models\User;
+use App\Services\AffiliateTrackingService;
+use Carbon\Carbon;
+use Cookie;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Log;
+use Webkul\Customer\Models\Customer;
+
+class AffiliateShopController extends Controller
+{
+
+    public function profile(Affiliate $affiliate) {
+
+
+        // Tıklama verilerini getir
+        $clicks = $affiliate->clicks;
+
+        // Alt temsilcileri getir (eager loading ile)
+        $downlineAffiliates = $affiliate->children()->with([
+            'customer.orders',
+            'children',
+            'commissions',
+            'generatedCommissions'
+        ])->get();
+
+        // Dönüşüm oranını hesapla
+        $conversionRate = $this->calculateConversionRate($clicks);
+
+        // Komisyon kurallarını getir
+        $rules = $this->getCommissionRules();
+
+        // Aylık kazanç verilerini hazırla
+        $monthlyEarnings = $this->getMonthlyEarnings($affiliate);
+
+        // Toplam değerleri hesapla
+        $totalEarnings = $affiliate->commissions->sum('amount');
+
+        return view('affiliatemodule.shop.affiliate_profile', compact(
+            'affiliate',
+            'clicks',
+            'downlineAffiliates',
+            'conversionRate',
+            'rules',
+            'monthlyEarnings',
+            'totalEarnings'
+        ));
+
+    }
+    /**
+     * Dönüşüm oranını hesapla
+     */
+    private function calculateConversionRate($clicks)
+    {
+        if ($clicks->count() === 0) {
+            return 0;
+        }
+
+        $convertedClicks = $clicks->where('converted', true)->count();
+        return round(($convertedClicks / $clicks->count()) * 100, 2);
+    }
+
+    /**
+     * Komisyon kurallarını getir
+     */
+    private function getCommissionRules()
+    {
+        // CommissionRule modeli varsa
+        if (class_exists('\App\Models\CommissionRule')) {
+            return CommissionRule::orderBy('level')->get();
+        }
+
+        return collect([]); // Boş collection döndür
+    }
+
+    /**
+     * Aylık kazanç verilerini hazırla (Chart.js için)
+     */
+    private function getMonthlyEarnings($affiliate)
+    {
+        $monthsBack = 6; // Son 6 ay
+        $earnings = [];
+
+        for ($i = $monthsBack - 1; $i >= 0; $i--) {
+            $month = Carbon::now()->subMonths($i);
+            $monthStart = $month->copy()->startOfMonth();
+            $monthEnd = $month->copy()->endOfMonth();
+
+            $monthlyTotal = $affiliate->commissions()
+                ->whereBetween('created_at', [$monthStart, $monthEnd])
+                ->sum('amount');
+
+            $earnings[] = [
+                'month' => $month->format('M Y'),
+                'amount' => (float) $monthlyTotal
+            ];
+        }
+
+        return $earnings;
+    }
+
+    /**
+     * Referans linkini kopyalama için AJAX endpoint
+     */
+    public function copyReferralLink(Request $request, Affiliate $affiliate)
+    {
+
+
+        if (!$affiliate) {
+            return response()->json(['error' => 'Affiliate kaydınız bulunamadı.'], 404);
+        }
+
+        $referralLink = url('/ref/' . $affiliate->affiliate_code);
+
+        return response()->json([
+            'success' => true,
+            'link' => $referralLink,
+            'message' => 'Referans linki kopyalandı!'
+        ]);
+    }
+
+    public function getStats(Request $request, Affiliate $affiliate)
+    {
+
+
+        if (!$affiliate) {
+            return response()->json(['error' => 'Affiliate kaydınız bulunamadı.'], 404);
+        }
+
+        $period = $request->get('period', 'month'); // day, week, month, year
+
+        switch ($period) {
+            case 'day':
+                $startDate = Carbon::today();
+                break;
+            case 'week':
+                $startDate = Carbon::now()->startOfWeek();
+                break;
+            case 'month':
+                $startDate = Carbon::now()->startOfMonth();
+                break;
+            case 'year':
+                $startDate = Carbon::now()->startOfYear();
+                break;
+            default:
+                $startDate = Carbon::now()->startOfMonth();
+        }
+
+        // Bu dönemdeki veriler
+        $periodEarnings = $affiliate->commissions()
+            ->where('created_at', '>=', $startDate)
+            ->sum('amount');
+
+        $periodClicks = $affiliate->clicks()
+            ->where('created_at', '>=', $startDate)
+            ->count();
+
+        $periodConversions = $affiliate->clicks()
+            ->where('created_at', '>=', $startDate)
+            ->where('converted', true)
+            ->count();
+
+        $periodOrders = $affiliate->customer->orders()
+            ->where('created_at', '>=', $startDate)
+            ->whereNotIn('status', ['canceled', 'closed'])
+            ->sum('base_grand_total_invoiced');
+
+        return response()->json([
+            'period' => $period,
+            'earnings' => number_format($periodEarnings, 2),
+            'clicks' => $periodClicks,
+            'conversions' => $periodConversions,
+            'orders' => core()->formatPrice($periodOrders),
+            'conversion_rate' => $periodClicks > 0 ? round(($periodConversions / $periodClicks) * 100, 2) : 0
+        ]);
+    }
+
+    /**
+     * Komisyon geçmişini filtreli getir
+     */
+    public function getCommissionHistory(Request $request, Affiliate $affiliate)
+    {
+
+        if (!$affiliate) {
+            return response()->json(['error' => 'Affiliate kaydınız bulunamadı.'], 404);
+        }
+
+        $query = $affiliate->commissions()->with('fromAffiliate.customer');
+
+        // Tarih filtreleri
+        if ($request->has('start_date') && $request->start_date) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+
+        if ($request->has('end_date') && $request->end_date) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        // Seviye filtresi
+        if ($request->has('level') && $request->level) {
+            $query->where('level', $request->level);
+        }
+
+        // Minimum tutar filtresi
+        if ($request->has('min_amount') && $request->min_amount) {
+            $query->where('amount', '>=', $request->min_amount);
+        }
+
+        $commissions = $query->orderBy('created_at', 'desc')
+            ->paginate($request->get('per_page', 15));
+
+        return response()->json($commissions);
+    }
+
+    /**
+     * Alt temsilci detaylarını getir
+     */
+    public function getDownlineDetails(Request $request, Affiliate $affiliate)
+    {
+
+
+        if (!$affiliate) {
+            return response()->json(['error' => 'Affiliate kaydınız bulunamadı.'], 404);
+        }
+
+        // Bu alt temsilcinin gerçekten bu kullanıcının altında olup olmadığını kontrol et
+        $downlineAffiliate = $affiliate->children()
+            ->with([
+                'customer.orders',
+                'children.customer',
+                'commissions',
+                'generatedCommissions.affiliate.customer'
+            ])
+            ->find($affiliate->id);
+
+        if (!$downlineAffiliate) {
+            return response()->json(['error' => 'Alt temsilci bulunamadı.'], 404);
+        }
+
+        $details = [
+            'affiliate' => $downlineAffiliate,
+            'total_earnings' => $downlineAffiliate->commissions->sum('amount'),
+            'total_sales' => $downlineAffiliate->customer->orders()
+                ->whereNotIn('status', ['canceled', 'closed'])
+                ->sum('base_grand_total_invoiced'),
+            'generated_commissions' => $downlineAffiliate->generatedCommissions->sum('amount'),
+            'children_count' => $downlineAffiliate->children->count(),
+            'recent_commissions' => $downlineAffiliate->commissions()
+                ->with('fromAffiliate.customer')
+                ->latest()
+                ->take(10)
+                ->get()
+        ];
+
+        return response()->json($details);
+    }
+
+    /**
+     * Dashboard verilerini yenile (AJAX)
+     */
+    public function refreshDashboard(Request $request,Affiliate $affiliate)
+    {
+
+
+        $affiliate = Affiliate::with([
+            'commissions',
+            'clicks',
+            'children'
+        ])->first($affiliate);
+
+        if (!$affiliate) {
+            return response()->json(['error' => 'Affiliate kaydınız bulunamadı.'], 404);
+        }
+
+        // Güncel istatistikler
+        $stats = [
+            'total_earnings' => $affiliate->commissions->sum('amount'),
+            'total_clicks' => $affiliate->clicks->count(),
+            'total_conversions' => $affiliate->clicks->where('converted', true)->count(),
+            'total_downline' => $affiliate->children->count(),
+            'this_month_earnings' => $affiliate->commissions()
+                ->where('created_at', '>=', Carbon::now()->startOfMonth())
+                ->sum('amount'),
+            'this_month_clicks' => $affiliate->clicks()
+                ->where('created_at', '>=', Carbon::now()->startOfMonth())
+                ->count(),
+            'conversion_rate' => $this->calculateConversionRate($affiliate->clicks),
+            'last_commission_date' => $affiliate->commissions()->latest('created_at')->first()?->created_at?->format('d.m.Y H:i')
+        ];
+
+        return response()->json([
+            'success' => true,
+            'stats' => $stats,
+            'message' => 'Veriler güncellendi!'
+        ]);
+    }
+
+    /**
+     * Tıklama geçmişini getir
+     */
+    public function getClickHistory(Request $request, Affiliate $affiliate)
+    {
+
+
+
+        if (!$affiliate) {
+            return response()->json(['error' => 'Affiliate kaydınız bulunamadı.'], 404);
+        }
+
+        $query = $affiliate->clicks();
+
+        // Tarih filtresi
+        if ($request->has('date_filter')) {
+            switch ($request->date_filter) {
+                case 'today':
+                    $query->whereDate('created_at', Carbon::today());
+                    break;
+                case 'week':
+                    $query->where('created_at', '>=', Carbon::now()->startOfWeek());
+                    break;
+                case 'month':
+                    $query->where('created_at', '>=', Carbon::now()->startOfMonth());
+                    break;
+            }
+        }
+
+        // Dönüşüm filtresi
+        if ($request->has('converted') && $request->converted !== '') {
+            $query->where('converted', (bool) $request->converted);
+        }
+
+        // Cihaz filtresi
+        if ($request->has('device_type') && $request->device_type) {
+            $query->where('device_type', $request->device_type);
+        }
+
+        $clicks = $query->orderBy('created_at', 'desc')
+            ->paginate($request->get('per_page', 20));
+
+        return response()->json($clicks);
+    }
+
+
+
+    public function myaffiliates() {
+
+        $customer = auth()->guard('customer')->user();
+        $currentAffiliate = Affiliate::where('customer_id', $customer->id)->first();
+
+        if (!$currentAffiliate) {
+            return redirect()->back()->with('error', 'Temsilci kaydınız bulunamadı.');
+        }
+
+        // Alt temsilcileri getir
+        $query = $currentAffiliate->children()
+            ->with(['customer', 'commissions', 'clicks'])
+            ->orderBy('created_at', 'desc');
+
+        // Filtreleme işlemleri
+
+
+
+
+        // Sayfalama
+        $representatives = $query->paginate(15);
+
+        // İstatistikleri hesapla
+        $stats = $this->calculateStats($currentAffiliate);
+
+        // View'e gönderilecek verileri hazırla
+        $representativesData = $representatives->map(function($affiliate) {
+            return [
+                'id' => $affiliate->id,
+                'name' => $affiliate->customer ? $affiliate->customer->first_name . ' ' . $affiliate->customer->last_name : 'Bilinmiyor',
+                'email' => $affiliate->customer->email ?? 'Bilinmiyor',
+                'phone' => $affiliate->customer->phone ?? 'Bilinmiyor',
+                'code' => $affiliate->affiliate_code,
+                'avatar' => $affiliate->customer->avatar ?? null,
+                'region' => $this->getRegionFromCustomer($affiliate->customer),
+                'city' => $affiliate->customer->city ?? 'Bilinmiyor',
+                'district' => $affiliate->customer->district ?? 'Bilinmiyor',
+                'performance' => $affiliate->conversion_rate,
+                'sales' => $affiliate->total_commission_earned,
+                'created_at' => $affiliate->created_at->format('d.m.Y'),
+                'days_ago' => $affiliate->created_at->diffInDays(now()),
+                'status' => $affiliate->status,
+                'status_text' => $this->getStatusText($affiliate->status),
+                'total_clicks' => $affiliate->total_clicks,
+                'total_conversions' => $affiliate->total_conversions,
+                'this_month_earnings' => $affiliate->this_month_earnings,
+                'conversion_rate' => $affiliate->conversion_rate,
+                'revenue_per_click' => $affiliate->revenue_per_click,
+            ];
+        });
+
+        return view('affiliatemodule.shop.affiliate_downaffiliates', compact(
+            'representatives',
+            'representativesData',
+            'stats',
+            'currentAffiliate'
+        ));
+
+
+
+           }
+
+           private function calculateStats($affiliate)
+    {
+        $children = $affiliate->children;
+
+        return [
+            'totalRepresentatives' => $children->count(),
+            'activeRepresentatives' => $children->where('status', 'active')->count(),
+            'thisMonthRegistrations' => $children->where('created_at', '>=', now()->startOfMonth())->count(),
+            'averageSales' => $children->avg('total_commission_earned') ?? 0,
+            'totalCommissions' => $children->sum('total_commission_earned'),
+            'totalClicks' => $children->sum(function($child) {
+                return $child->total_clicks;
+            }),
+            'totalConversions' => $children->sum(function($child) {
+                return $child->total_conversions;
+            }),
+        ];
+    }
+
+    /**
+     * Müşteriden bölge bilgisini al
+     */
+    private function getRegionFromCustomer($customer)
+    {
+        if (!$customer) return 'Bilinmiyor';
+
+        // Müşteri modelinde city alanına göre bölge belirleme
+        $cityRegionMap = [
+            'İstanbul' => 'İstanbul Bölgesi',
+            'Ankara' => 'Ankara Bölgesi',
+            'İzmir' => 'İzmir Bölgesi',
+            'Bursa' => 'Bursa Bölgesi',
+            'Antalya' => 'Antalya Bölgesi',
+        ];
+
+        return $cityRegionMap[$customer->city] ?? $customer->city . ' Bölgesi';
+    }
+
+    /**
+     * Durum metnini al
+     */
+    private function getStatusText($status)
+    {
+        $statusMap = [
+            'active' => 'Aktif',
+            'inactive' => 'Pasif',
+            'suspended' => 'Askıya Alınmış',
+            'pending' => 'Beklemede'
+        ];
+
+        return $statusMap[$status] ?? 'Bilinmiyor';
+    }
+
+    /**
+     * Excel export
+     */
+    public function exportExcel(Request $request)
+    {
+        $currentAffiliate = Affiliate::where('customer_id', Auth::id())->first();
+
+        if (!$currentAffiliate) {
+            return redirect()->back()->with('error', 'Temsilci kaydınız bulunamadı.');
+        }
+
+        $representatives = $currentAffiliate->children()
+            ->with(['customer', 'commissions', 'clicks'])
+            ->get();
+
+        // Excel export logic burada olacak
+        // Örnek: return Excel::download(new SubAffiliatesExport($representatives), 'alt-temsilciler.xlsx');
+
+        return response()->json(['message' => 'Excel export işlemi yapılacak']);
+    }
+
+    /**
+     * Temsilci detaylarını göster
+     */
+    public function show($id)
+    {
+        $currentAffiliate = Affiliate::where('customer_id', Auth::id())->first();
+
+        $representative = $currentAffiliate->children()
+            ->with(['customer', 'commissions', 'clicks'])
+            ->findOrFail($id);
+
+        // Detaylı istatistikler
+        $stats = [
+            'total_earnings' => $representative->total_earnings,
+            'paid_earnings' => $representative->paid_earnings,
+            'pending_earnings' => $representative->pending_earnings,
+            'this_month_earnings' => $representative->this_month_earnings,
+            'total_clicks' => $representative->total_clicks,
+            'total_conversions' => $representative->total_conversions,
+            'conversion_rate' => $representative->conversion_rate,
+            'this_month_clicks' => $representative->this_month_clicks,
+            'this_month_conversions' => $representative->this_month_conversions,
+            'this_month_conversion_rate' => $representative->this_month_conversion_rate,
+            'today_clicks' => $representative->today_clicks,
+            'today_conversions' => $representative->today_conversions,
+            'revenue_per_click' => $representative->revenue_per_click,
+        ];
+
+        // Son 30 günün komisyon geçmişi
+        $recentCommissions = $representative->commissions()
+            ->with(['order'])
+            ->where('created_at', '>=', now()->subDays(30))
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        // Aylık performans grafiği için veri
+        $monthlyPerformance = $this->getMonthlyPerformance($representative);
+
+        return view('affiliate.representative-detail', compact(
+            'representative',
+            'stats',
+            'recentCommissions',
+            'monthlyPerformance'
+        ));
+    }
+
+    /**
+     * Aylık performans verilerini al
+     */
+    private function getMonthlyPerformance($affiliate)
+    {
+        $months = [];
+        for ($i = 11; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $months[] = [
+                'month' => $date->format('M Y'),
+                'earnings' => $affiliate->commissions()
+                    ->whereMonth('created_at', $date->month)
+                    ->whereYear('created_at', $date->year)
+                    ->sum('amount'),
+                'clicks' => $affiliate->clicks()
+                    ->whereMonth('created_at', $date->month)
+                    ->whereYear('created_at', $date->year)
+                    ->count(),
+                'conversions' => $affiliate->clicks()
+                    ->whereMonth('created_at', $date->month)
+                    ->whereYear('created_at', $date->year)
+                    ->converted()
+                    ->count(),
+            ];
+        }
+        return $months;
+    }
+}

@@ -1,0 +1,57 @@
+<?php if (! $__env->hasRenderedOnce('171a9e45-5b95-4f13-a0fb-0838f5737a02')): $__env->markAsRenderedOnce('171a9e45-5b95-4f13-a0fb-0838f5737a02');
+$__env->startPush('scripts'); ?>
+    <script
+        type="text/x-template"
+        id="v-tree-checkbox-template"
+    >
+        <label
+            :for="id"
+            class="group inline-flex w-max cursor-pointer select-none items-center gap-2.5 p-1.5"
+        >
+            <input
+                type="checkbox"
+                :name="[name + '[]']"
+                :value="value"
+                :id="id"
+                class="peer hidden"
+                :checked="isActive"
+                @change="inputChanged()"
+            />
+
+            <span class="icon-uncheckbox peer-checked:icon-checked cursor-pointer rounded-md text-2xl peer-checked:text-blue-600">
+            </span>
+
+            <div class="cursor-pointer text-sm text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white">
+                {{ label }}
+            </div>
+        </label>
+    </script>
+
+    <script type="module">
+        app.component('v-tree-checkbox', {
+            template: '#v-tree-checkbox-template',
+
+            name: 'v-tree-checkbox',
+
+            props: ['id', 'label', 'name', 'value'],
+
+            computed: {
+                isActive() {
+                    return this.$parent.has(this.value);
+                },
+            },
+
+            methods: {
+                inputChanged() {
+                    this.$emit('change-input', {
+                        id: this.id,
+                        label: this.label,
+                        name: this.name,
+                        value: this.value,
+                    });
+                },
+            },
+        });
+    </script>
+<?php $__env->stopPush(); endif; ?>
+<?php /**PATH /Users/alfanova/Documents/web projeleri/eticaret/naturalife-store/packages/Webkul/Admin/src/Resources/views/components/tree/checkbox.blade.php ENDPATH**/ ?>
