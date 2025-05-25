@@ -15,10 +15,10 @@ class AffiliatePaymentMethodController extends Controller
     public function store(Request $request, Affiliate $affiliate)
     {
 
-        dd("store fonksiyonuna geldi");
+
         try {
             // Affiliate'i bul
-            $affiliate = Affiliate::findOrFail($affiliate);
+            $affiliate = Affiliate::findOrFail($affiliate->id);
 
             // Validation kuralları
             $validator = Validator::make($request->all(), [
@@ -61,6 +61,8 @@ class AffiliatePaymentMethodController extends Controller
             ]);
 
             if ($validator->fails()) {
+
+                dd($validator->fails());
                 return back()
                     ->withErrors($validator)
                     ->withInput()
@@ -79,10 +81,7 @@ class AffiliatePaymentMethodController extends Controller
                 $paymentData = $validator->validated();
                 $paymentData['affiliate_id'] = $affiliate->id;
 
-                // Default değerler
-                if (!isset($paymentData['payment_delay_days'])) {
-                    $paymentData['payment_delay_days'] = 15;
-                }
+
                 if (!isset($paymentData['currency'])) {
                     $paymentData['currency'] = 'EUR';
                 }

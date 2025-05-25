@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Admin\AffiliatePaymentController;
 use App\Http\Controllers\Affiliate\AffiliateCommissionShopController;
 use App\Http\Controllers\Affiliate\AffiliateController;
 use App\Http\Controllers\Affiliate\AffiliateShopController;
@@ -31,7 +32,7 @@ Route::prefix('customer')->group(function () {
 
             Route::get('/commissions/{affiliate}', [AffiliateCommissionShopController::class, 'showcommissions'])->name('shop.customers.affiliatemodule.commissions');
             Route::post('/paymentmethod/{affiliate}', [AffiliatePaymentMethodController::class, 'store'])->name('shop.customers.affiliatemodule.paymentmethod');
-
+            Route::resource('affiliate-payments', AffiliatePaymentController::class);
 
 
 

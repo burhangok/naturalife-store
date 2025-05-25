@@ -130,17 +130,7 @@ class Affiliate extends Model
         return $this->commissions()->sum('amount');
     }
 
-    // Ödenen kazanç hesaplama
-    public function getPaidEarningsAttribute()
-    {
-        return $this->commissions()->paid()->sum('amount');
-    }
 
-    // Bekleyen kazanç hesaplama
-    public function getPendingEarningsAttribute()
-    {
-        return $this->commissions()->pending()->sum('amount');
-    }
 
     // Bu ayki kazanç
     public function getThisMonthEarningsAttribute()
@@ -229,4 +219,29 @@ class Affiliate extends Model
     {
         return $this->hasOne(AffiliatePaymentMethod::class);
     }
+
+    public function payments()
+    {
+        return $this->hasMany(AffiliatePayment::class);
+    }
+
+    public function getTotalPaidCommissionAttribute()
+    {
+        return $this->payments()->sum('amount');
+    }
+
+    // Cari hesap bakiyesi
+    public function getCurrentAccountBalanceAttribute()
+    {
+        $totalEarned = $this->getTotalEarningsAttribute(); // Bu fonksiyonu kendinize göre yazın
+        $totalPaid = $this->getTotalPaidCommissionAttribute();
+
+        return $totalEarned - $totalPaid;
+    }
+
+// Son ödeme
+public function getLastPayment()
+{
+    return $this->payments()->latest()->first();
+}
 }

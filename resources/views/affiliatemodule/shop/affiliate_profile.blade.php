@@ -2,7 +2,36 @@
 @section('title', $affiliate->affiliate_code . ' - ' . $affiliate->customer->getNameAttribute())
 @section('content')
     <div class="container py-4">
+
+        <!-- Bildirimler -->
+        @if (session('success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <div class="d-flex">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M5 12l5 5l10 -10"></path>
+                    </svg>
+                </div>
+                <div>{{ session('success') }}</div>
+            </div>
+            <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div class="d-flex">
+                <div>
+                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                </div>
+                <div>{{ session('error') }}</div>
+            </div>
+            <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+        </div>
+    @endif
         <div class="row">
+
             <!-- Sol Panel - Kullanıcı Bilgileri ve Özet -->
             <div class="col-md-3">
                 <!-- Kullanıcı Profil Kartı -->
@@ -676,35 +705,34 @@
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <label class="form-label required">Tercih Edilen Ödeme Yöntemi</label>
-                                            <select class="form-select" id="paymentMethod" required>
+                                            <select class="form-select" id="paymentMethod" name="payment_method" >
                                                 <option value="">Seçiniz...</option>
-                                                <option value="sepa" selected>SEPA Transfer (Avrupa)</option>
-                                                <option value="bank">Uluslararası Banka Transferi</option>
-                                                <option value="paypal">PayPal</option>
-                                                <option value="wise">Wise (eski TransferWise)</option>
-                                                <option value="revolut">Revolut Business</option>
-                                                <option value="stripe">Stripe Connect</option>
+                                                <option value="sepa" {{ ($affiliate->paymentMethod->payment_method ?? 'sepa') == 'sepa' ? 'selected' : '' }}>SEPA Transfer (Avrupa)</option>
+                                                <option value="bank" {{ ($affiliate->paymentMethod->payment_method ?? '') == 'bank' ? 'selected' : '' }}>Uluslararası Banka Transferi</option>
+                                                <option value="paypal" {{ ($affiliate->paymentMethod->payment_method ?? '') == 'paypal' ? 'selected' : '' }}>PayPal</option>
+                                                <option value="wise" {{ ($affiliate->paymentMethod->payment_method ?? '') == 'wise' ? 'selected' : '' }}>Wise (eski TransferWise)</option>
+                                                <option value="revolut" {{ ($affiliate->paymentMethod->payment_method ?? '') == 'revolut' ? 'selected' : '' }}>Revolut Business</option>
+                                                <option value="stripe" {{ ($affiliate->paymentMethod->payment_method ?? '') == 'stripe' ? 'selected' : '' }}>Stripe Connect</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Para Birimi</label>
-                                            <select class="form-select">
-                                                <option value="EUR" selected>Euro (EUR)</option>
-                                                <option value="USD">Amerikan Doları (USD)</option>
+                                            <select class="form-select" name="currency">
+                                                <option value="EUR" {{ ($affiliate->paymentMethod->currency ?? 'EUR') == 'EUR' ? 'selected' : '' }}>Euro (EUR)</option>
+                                                <option value="USD" {{ ($affiliate->paymentMethod->currency ?? '') == 'USD' ? 'selected' : '' }}>Amerikan Doları (USD)</option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <!-- Minimum Ödeme Tutarı -->
                                     <div class="row mb-4">
-
                                         <div class="col-md-6">
                                             <label class="form-label">Vergi Durumu</label>
-                                            <select class="form-select">
-                                                <option value="individual">Bireysel</option>
-                                                <option value="company">Şirket</option>
-                                                <option value="freelancer">Serbest Meslek</option>
-                                                <option value="vat_registered">KDV Kayıtlı</option>
+                                            <select class="form-select" name="tax_status">
+                                                <option value="individual" {{ ($affiliate->paymentMethod->tax_status ?? '') == 'individual' ? 'selected' : '' }}>Bireysel</option>
+                                                <option value="company" {{ ($affiliate->paymentMethod->tax_status ?? '') == 'company' ? 'selected' : '' }}>Şirket</option>
+                                                <option value="freelancer" {{ ($affiliate->paymentMethod->tax_status ?? '') == 'freelancer' ? 'selected' : '' }}>Serbest Meslek</option>
+                                                <option value="vat_registered" {{ ($affiliate->paymentMethod->tax_status ?? '') == 'vat_registered' ? 'selected' : '' }}>KDV Kayıtlı</option>
                                             </select>
                                         </div>
                                     </div>
@@ -718,24 +746,24 @@
                                             <div class="row g-3">
                                                 <div class="col-md-6">
                                                     <label class="form-label required">Hesap Sahibi Adı</label>
-                                                    <input type="text" class="form-control" placeholder="Hans Mueller" value="Hans Mueller" required>
+                                                    <input type="text" class="form-control" name="account_holder_name" placeholder="Hans Mueller" value="{{ $affiliate->paymentMethod->account_holder_name ?? '' }}" >
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label required">Banka Adı</label>
-                                                    <input type="text" class="form-control" placeholder="Deutsche Bank AG" value="Deutsche Bank AG" required>
+                                                    <input type="text" class="form-control" name="bank_name" placeholder="Deutsche Bank AG" value="{{ $affiliate->paymentMethod->bank_name ?? '' }}" >
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label required">IBAN</label>
-                                                    <input type="text" class="form-control" placeholder="DE89 3704 0044 0532 0130 00" value="DE89 3704 0044 0532 0130 00" required>
+                                                    <input type="text" class="form-control" name="iban" placeholder="DE89 3704 0044 0532 0130 00" value="{{ $affiliate->paymentMethod->iban ?? '' }}" >
                                                     <small class="form-hint">Almanya, Fransa, Hollanda IBAN formatı desteklenir</small>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label required">BIC/SWIFT Kodu</label>
-                                                    <input type="text" class="form-control" placeholder="DEUTDEDBXXX" value="DEUTDEDBXXX" required>
+                                                    <input type="text" class="form-control" name="bic_swift_code" placeholder="DEUTDEDBXXX" value="{{ $affiliate->paymentMethod->bic_swift_code ?? '' }}" >
                                                 </div>
                                                 <div class="col-md-12">
                                                     <label class="form-label">Banka Adresi</label>
-                                                    <textarea class="form-control" rows="2" placeholder="Taunusanlage 12, 60325 Frankfurt am Main, Deutschland">Taunusanlage 12, 60325 Frankfurt am Main, Deutschland</textarea>
+                                                    <textarea class="form-control" name="bank_address" rows="2" placeholder="Taunusanlage 12, 60325 Frankfurt am Main, Deutschland">{{ $affiliate->paymentMethod->bank_address ?? '' }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -750,11 +778,11 @@
                                             <div class="row g-3">
                                                 <div class="col-md-6">
                                                     <label class="form-label required">PayPal E-posta Adresi</label>
-                                                    <input type="email" class="form-control" placeholder="hans.mueller@example.com" value="hans.mueller@example.com">
+                                                    <input type="email" class="form-control" name="paypal_email" placeholder="hans.mueller@example.com" value="{{ $affiliate->paymentMethod->paypal_email ?? '' }}">
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label">PayPal İş Hesabı ID</label>
-                                                    <input type="text" class="form-control" placeholder="PayPal Merchant ID (opsiyonel)">
+                                                    <input type="text" class="form-control" name="paypal_merchant_id" placeholder="PayPal Merchant ID (opsiyonel)" value="{{ $affiliate->paymentMethod->paypal_merchant_id ?? '' }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -769,11 +797,11 @@
                                             <div class="row g-3">
                                                 <div class="col-md-6">
                                                     <label class="form-label required">E-posta Adresi</label>
-                                                    <input type="email" class="form-control" placeholder="hesap@example.com">
+                                                    <input type="email" class="form-control" name="digital_wallet_email" placeholder="hesap@example.com" value="{{ $affiliate->paymentMethod->digital_wallet_email ?? '' }}">
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label">Hesap ID/Numarası</label>
-                                                    <input type="text" class="form-control" placeholder="Wise/Revolut hesap numarası">
+                                                    <input type="text" class="form-control" name="digital_wallet_account_id" placeholder="Wise/Revolut hesap numarası" value="{{ $affiliate->paymentMethod->digital_wallet_account_id ?? '' }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -788,27 +816,27 @@
                                             <div class="row g-3">
                                                 <div class="col-md-4">
                                                     <label class="form-label">Vergi Numarası</label>
-                                                    <input type="text" class="form-control" placeholder="DE123456789" value="DE123456789">
+                                                    <input type="text" class="form-control" name="tax_number" placeholder="DE123456789" value="{{ $affiliate->paymentMethod->tax_number ?? '' }}">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="form-label">KDV Numarası</label>
-                                                    <input type="text" class="form-control" placeholder="DE987654321" value="DE987654321">
+                                                    <input type="text" class="form-control" name="vat_number" placeholder="DE987654321" value="{{ $affiliate->paymentMethod->vat_number ?? '' }}">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="form-label">Ülke</label>
-                                                    <select class="form-select">
-                                                        <option value="DE" selected>Almanya</option>
-                                                        <option value="FR">Fransa</option>
-                                                        <option value="NL">Hollanda</option>
+                                                    <select class="form-select" name="tax_country">
+                                                        <option value="DE" {{ ($affiliate->paymentMethod->tax_country ?? 'DE') == 'DE' ? 'selected' : '' }}>Almanya</option>
+                                                        <option value="FR" {{ ($affiliate->paymentMethod->tax_country ?? '') == 'FR' ? 'selected' : '' }}>Fransa</option>
+                                                        <option value="NL" {{ ($affiliate->paymentMethod->tax_country ?? '') == 'NL' ? 'selected' : '' }}>Hollanda</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label">Şirket Adı (varsa)</label>
-                                                    <input type="text" class="form-control" placeholder="Mueller Marketing GmbH">
+                                                    <input type="text" class="form-control" name="company_name" placeholder="Mueller Marketing GmbH" value="{{ $affiliate->paymentMethod->company_name ?? '' }}">
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label">Şirket Kayıt Numarası</label>
-                                                    <input type="text" class="form-control" placeholder="HRB 123456">
+                                                    <input type="text" class="form-control" name="company_registration_number" placeholder="HRB 123456" value="{{ $affiliate->paymentMethod->company_registration_number ?? '' }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -823,26 +851,26 @@
                                             <div class="row g-3">
                                                 <div class="col-md-6">
                                                     <label class="form-label required">Ad Soyad/Şirket</label>
-                                                    <input type="text" class="form-control" placeholder="Hans Mueller" value="Hans Mueller" required>
+                                                    <input type="text" class="form-control" name="billing_name" placeholder="Hans Mueller" value="{{ $affiliate->paymentMethod->billing_name ?? '' }}" >
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label required">Cadde/Sokak</label>
-                                                    <input type="text" class="form-control" placeholder="Muster Straße 123" value="Muster Straße 123" required>
+                                                    <input type="text" class="form-control" name="billing_street" placeholder="Muster Straße 123" value="{{ $affiliate->paymentMethod->billing_street ?? '' }}" >
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label class="form-label required">Posta Kodu</label>
-                                                    <input type="text" class="form-control" placeholder="10115" value="10115" required>
+                                                    <input type="text" class="form-control" name="billing_postal_code" placeholder="10115" value="{{ $affiliate->paymentMethod->billing_postal_code ?? '' }}" >
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label required">Şehir</label>
-                                                    <input type="text" class="form-control" placeholder="Berlin" value="Berlin" required>
+                                                    <input type="text" class="form-control" name="billing_city" placeholder="Berlin" value="{{ $affiliate->paymentMethod->billing_city ?? '' }}" >
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label class="form-label required">Ülke</label>
-                                                    <select class="form-select" required>
-                                                        <option value="DE" selected>Almanya</option>
-                                                        <option value="FR">Fransa</option>
-                                                        <option value="NL">Hollanda</option>
+                                                    <select class="form-select" name="billing_country" required>
+                                                        <option value="DE" {{ ($affiliate->paymentMethod->billing_country ?? 'DE') == 'DE' ? 'selected' : '' }}>Almanya</option>
+                                                        <option value="FR" {{ ($affiliate->paymentMethod->billing_country ?? '') == 'FR' ? 'selected' : '' }}>Fransa</option>
+                                                        <option value="NL" {{ ($affiliate->paymentMethod->billing_country ?? '') == 'NL' ? 'selected' : '' }}>Hollanda</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -852,28 +880,23 @@
                                     <!-- Ödeme Koşulları ve Notlar -->
                                     <div class="card mb-4">
                                         <div class="card-header">
-                                            <h4 class="card-title">Ödeme Birimi ve Notlar</h4>
+                                            <h4 class="card-title">Özel Notlar</h4>
                                         </div>
                                         <div class="card-body">
                                             <div class="row g-3">
-
-
                                                 <div class="col-md-12">
                                                     <label class="form-label">Özel Notlar</label>
-                                                    <textarea class="form-control" rows="3" placeholder="Ödeme ile ilgili özel notlar, koşullar veya talimatlar..."></textarea>
+                                                    <textarea class="form-control" name="special_notes" rows="3" placeholder="Ödeme ile ilgili özel notlar, koşullar veya talimatlar...">{{ $affiliate->paymentMethod->special_notes ?? '' }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-
                                     <!-- Kaydet Butonu -->
                                     <div class="text-end">
                                         <button type="button" class="btn btn-outline-secondary me-2">İptal</button>
                                         <button type="submit" class="btn btn-primary">
-                                            <svg class="icon me-2" width="24" height="24">
-                                                <use xlink:href="#tabler-device-floppy"></use>
-                                            </svg>
+                                            <i class="fas fa-save me-3"></i>
                                             Ödeme Bilgilerini Kaydet
                                         </button>
                                     </div>
@@ -882,7 +905,7 @@
 
                                 <div class="alert alert-info mt-3">
                                     <i class="fas fa-info-circle me-2"></i>
-                                    Profil bilgilerinizi güncellemek için lütfen müşteri hesabınızdan düzenleyiniz.
+                                   Bu bilgiler sizlere ödeme gönderilmek için kullanılacaktır.
                                 </div>
                             </div>
                         </div>
