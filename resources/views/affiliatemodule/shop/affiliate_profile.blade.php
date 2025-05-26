@@ -74,7 +74,7 @@
                             <li class="list-group-item d-flex justify-content-between px-0">
                                 <span class="text-muted">Son Komisyon:</span>
                                 <span
-                                    class="fw-bold">{{ $affiliate->last_commission_at?->format('d.m.Y') ?? 'Henüz yok' }}</span>
+                                    class="fw-bold">{{ $affiliate->getLastCommission()->created_at?->format('d.m.Y').' - '.core()->formatPrice($affiliate->getLastCommission()->amount) ?? 'Henüz yok' }}</span>
                             </li>
                         </ul>
                     </div>
@@ -501,7 +501,7 @@
                                     <div class="card-body">
                                         <h3 class="text-muted mb-1">Son Komisyon</h3>
                                         <h3 class="mb-0">
-                                            {{ $affiliate->last_commission_at?->format('d.m.Y') ?? 'Henüz yok' }}</h3>
+                                            {{ core()->formatPrice($affiliate->getLastCommission()->amount) }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -700,6 +700,13 @@
                                 <h3 class="mb-0"><i class="fas fa-user-cog me-2"></i>Ödeme Bilgileri</h3>
                             </div>
                             <div class="card-body">
+                                @php
+                                $customer = auth()->guard('customer')->user();
+                                $existingAffiliate = \App\Models\Affiliate::where('customer_id', $customer->id)->first();
+                            @endphp
+                                @if ($affiliate->id==$existingAffiliate->id)
+
+
                                 <form action="{{ route('shop.customers.affiliatemodule.paymentmethod',$affiliate->id)}}" method="POST">
                                     @csrf
                                     @method('POST')
@@ -903,12 +910,16 @@
                                         </button>
                                     </div>
                                 </form>
-
-
                                 <div class="alert alert-info mt-3">
                                     <i class="fas fa-info-circle me-2"></i>
                                    Bu bilgiler sizlere ödeme gönderilmek için kullanılacaktır.
                                 </div>
+                                @else
+                                <div class="alert alert-danger mt-3">
+                                    <i class="fas fa-warning me-2"></i>
+                                   Bu bilgileri sadece temsilci görüntüleyebilir ya da düzenleyebilir.
+                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>

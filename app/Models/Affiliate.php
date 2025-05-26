@@ -244,4 +244,9 @@ public function getLastPayment()
 {
     return $this->payments()->latest()->first();
 }
+
+    public function getLastCommission()
+    {
+        return $this->commissions()->latest()->first();
+    }
 }
