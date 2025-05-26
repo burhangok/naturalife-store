@@ -34,74 +34,77 @@
                         </div>
                     </form>
 
-                    <!-- Tablo -->
-                    <div class="table-responsive ">
-                        <table class="table table-striped dataListTable">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Temcilci</th>
-                                    <th>Tutar</th>
-                                    <th>Ödeme Yöntemi</th>
-                                    <th>Transactıon ID</th>
-                                    <th>Tarih</th>
-                                    <th>İşlemler</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($payments as $payment)
-                                    <tr>
-                                        <td>#{{ $payment->id }}</td>
-                                        <td>
-                                            <strong>{{ $payment->affiliate->customer->getNameAttribute() }}</strong><br>
-                                            <small class="text-muted">{{ $payment->affiliate->customer->phone_number }}</small>
-                                        </td>
-                                        <td>
-                                            <strong>{{ $payment->getFormattedAmount() }}</strong>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-info text-white">{{ $paymentMethods[$payment->payment_method] ?? $payment->payment_method }}</span>
-                                        </td>
-                                        <td>
-                                            @if($payment->transaction_id)
-                                                <code>{{ $payment->transaction_id }}</code>
-                                            @else
-                                                <span class="text-muted">-</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            {{ $payment->created_at->format('d.m.Y H:i') }}<br>
-                                            <small class="text-muted">{{ $payment->createdAdmin->name ?? 'Sistem' }}</small>
-                                        </td>
-                                        <td>
-                                            <div class="btn-group">
+                    @if ($payments->count()>0)
+ <!-- Tablo -->
+ <div class="table-responsive ">
+    <table class="table table-striped dataListTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Temcilci</th>
+                <th>Tutar</th>
+                <th>Ödeme Yöntemi</th>
+                <th>Transactıon ID</th>
+                <th>Tarih</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($payments as $payment)
+                <tr>
+                    <td>#{{ $payment->id }}</td>
+                    <td>
+                        <strong>{{ $payment->affiliate->customer->getNameAttribute() }}</strong><br>
+                        <small class="text-muted">{{ $payment->affiliate->customer->phone_number }}</small>
+                    </td>
+                    <td>
+                        <strong>{{ $payment->getFormattedAmount() }}</strong>
+                    </td>
+                    <td>
+                        <span class="badge bg-info text-white">{{ $paymentMethods[$payment->payment_method] ?? $payment->payment_method }}</span>
+                    </td>
+                    <td>
+                        @if($payment->transaction_id)
+                            <code>{{ $payment->transaction_id }}</code>
+                        @else
+                            <span class="text-muted">-</span>
+                        @endif
+                    </td>
+                    <td>
+                        {{ $payment->created_at->format('d.m.Y H:i') }}<br>
+                        <small class="text-muted">{{ $payment->createdAdmin->name ?? 'Sistem' }}</small>
+                    </td>
+                    <td>
+                        <div class="btn-group">
 
-                                                <a href="{{ route('admin.affiliatemodule.admin.affiliatepayments.edit', $payment) }}" class="btn btn-md btn-outline-warning me-3">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <form method="POST" action="{{ route('admin.affiliatemodule.admin.affiliatepayments.destroy', $payment) }}" class="d-inline" onsubmit="return confirm('Emin misiniz?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-md btn-outline-danger">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="7" class="text-center py-4">
-                                            <div class="text-muted">
-                                                <i class="fas fa-inbox fa-3x mb-3"></i>
-                                                <p>Henüz ödeme kaydı bulunmuyor.</p>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+                            <a href="{{ route('admin.affiliatemodule.admin.affiliatepayments.edit', $payment) }}" class="btn btn-md btn-outline-warning me-3">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form method="POST" action="{{ route('admin.affiliatemodule.admin.affiliatepayments.destroy', $payment) }}" class="d-inline" onsubmit="return confirm('Emin misiniz?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-md btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            @empty
+
+            @endforelse
+        </tbody>
+    </table>
+</div>
+
+@else
+<div  class="text-center py-4">
+    <div class="text-muted">
+        <i class="fas fa-inbox fa-3x mb-3"></i>
+        <p>Henüz ödeme kaydı bulunmuyor.</p>
+    </div>
+</div>
+                    @endif
 
 
                 </div>

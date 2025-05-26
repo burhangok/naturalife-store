@@ -51,11 +51,13 @@
                                 <span class="text-muted">Seviyesi</span>
                                 <span class="badge bg-primary text-white badge-lg">Seviye {{ $affiliate->level }}</span>
                             </li>
+                            @if ($affiliate->parent)
                             <li class="list-group-item d-flex justify-content-between px-0">
                                 <span class="text-muted">Üst Temsilcisi:</span>
                                 <span
                                     class="fw-bold">{{ $affiliate->parent->affiliate_code . ' - ' . $affiliate->parent->customer->getNameAttribute() }}</span>
                             </li>
+                            @endif
                             <li class="list-group-item d-flex justify-content-between px-0">
                                 <span class="text-muted">Alt Temsilci Sayısı:</span>
                                 <span class="fw-bold">{{ $affiliate->children->count() }}</span>

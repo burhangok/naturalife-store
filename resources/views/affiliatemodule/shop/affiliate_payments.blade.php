@@ -1,6 +1,6 @@
 @extends('layouts.shop-layout')
 
-@section('title', "Ödemeler")
+@section('title', "")
 
 @section('content')
 <style>
@@ -100,37 +100,6 @@
 
 
 
-
-    .table {
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-
-    .table th {
-        font-weight: 600;
-        font-size: 0.85rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        background: #f8f9fa;
-        border: none;
-        padding: 1rem;
-    }
-
-    .table td {
-        padding: 1rem;
-        border-top: 1px solid #dee2e6;
-        vertical-align: middle;
-    }
-
-    .table tbody tr:hover {
-        background-color: #f8f9fa;
-    }
-
-    .empty-state {
-        padding: 4rem 2rem;
-        text-align: center;
-        color: #6c757d;
-    }
 
     .empty-state i {
         font-size: 4rem;
@@ -300,10 +269,10 @@
     <div class="main-card">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">
+                <h3 class="mb-0">
                     <i class="fas fa-list me-2"></i>
                     Ödeme Geçmişi
-                </h5>
+                </h3>
                 <div class="d-flex align-items-center">
 
                 </div>
@@ -396,10 +365,10 @@
     @if($balance != 0)
     <div class="main-card mt-4">
         <div class="card-header">
-            <h5 class="mb-0">
+            <h3 class="mb-0">
                 <i class="fas fa-calculator me-2"></i>
                 Cari Hesap Detayları
-            </h5>
+            </h3>
         </div>
         <div class="card-body">
             <div class="row">
