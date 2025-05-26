@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Affiliate;
 
 use App\Http\Controllers\Controller;
 use App\Models\AffiliatePayment;
@@ -26,7 +26,7 @@ class AffiliatePaymentController extends Controller
         $affiliates = Affiliate::all();
         $paymentMethods = AffiliatePayment::getPaymentMethods();
 
-        return view('admin.affiliate-payments.index', compact('payments', 'affiliates', 'paymentMethods'));
+        return view('affiliatemodule.admin.affiliatepayments.index', compact('payments', 'affiliates', 'paymentMethods'));
     }
 
     // Yeni ödeme formu
@@ -36,7 +36,7 @@ class AffiliatePaymentController extends Controller
         $paymentMethods = AffiliatePayment::getPaymentMethods();
         $currencies = AffiliatePayment::getCurrencies();
 
-        return view('admin.affiliate-payments.create', compact('affiliates', 'paymentMethods', 'currencies'));
+        return view('affiliatemodule.admin.affiliatepayments.create', compact('affiliates', 'paymentMethods', 'currencies'));
     }
 
     // Ödeme kaydet
@@ -63,24 +63,24 @@ class AffiliatePaymentController extends Controller
 
         AffiliatePayment::create($data);
 
-        return redirect()->route('admin.affiliate-payments.index')->with('success', 'Ödeme kaydedildi');
+        return redirect()->route('admin.affiliatemodule.admin.affiliatepayments.index')->with('success', 'Ödeme kaydedildi');
     }
 
     // Ödeme detayı
     public function show(AffiliatePayment $affiliatePayment)
     {
         $affiliatePayment->load(['affiliate', 'createdAdmin']);
-        return view('admin.affiliate-payments.show', compact('affiliatePayment'));
+        return view('affiliatemodule.admin.affiliatepayments.show', compact('affiliatePayment'));
     }
 
     // Düzenleme formu
-    public function edit(AffiliatePayment $affiliatePayment)
+    public function edit(AffiliatePayment $payment)
     {
-        $affiliates = Affiliate::orderBy('name')->get(['id', 'name']);
+        $affiliates = Affiliate::all();
         $paymentMethods = AffiliatePayment::getPaymentMethods();
         $currencies = AffiliatePayment::getCurrencies();
 
-        return view('admin.affiliate-payments.edit', compact('affiliatePayment', 'affiliates', 'paymentMethods', 'currencies'));
+        return view('affiliatemodule.admin.affiliatepayments.edit', compact('payment', 'affiliates', 'paymentMethods', 'currencies'));
     }
 
     // Güncelle
@@ -112,20 +112,22 @@ class AffiliatePaymentController extends Controller
 
         $affiliatePayment->update($data);
 
-        return redirect()->route('admin.affiliate-payments.show', $affiliatePayment)->with('success', 'Ödeme güncellendi');
+        return redirect()->route('admin.affiliatemodule.admin.affiliatepayments.index')->with('success', 'Ödeme güncellendi');
     }
 
     // Sil
-    public function destroy(AffiliatePayment $affiliatePayment)
+    public function destroy(AffiliatePayment $payment)
     {
+
+
         // Dosyayı sil
-        if ($affiliatePayment->payment_file_path) {
-            Storage::disk('public')->delete($affiliatePayment->payment_file_path);
+        if ($payment->payment_file_path) {
+            Storage::disk('public')->delete($payment->payment_file_path);
         }
 
-        $affiliatePayment->delete();
+        $payment->delete();
 
-        return redirect()->route('admin.affiliate-payments.index')->with('success', 'Ödeme silindi');
+        return redirect()->route('admin.affiliatemodule.admin.affiliatepayments.index')->with('success', 'Ödeme silindi');
     }
 
 }

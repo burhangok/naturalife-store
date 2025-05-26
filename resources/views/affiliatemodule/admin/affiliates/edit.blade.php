@@ -29,7 +29,7 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
                             <button class="nav-link text-start py-3 px-4 border-bottom" id="earnings-tab" data-bs-toggle="pill" data-bs-target="#earnings" type="button">
                                 <i class="fas fa-money-bill-wave me-2"></i> Kazanç Geçmişi
                             </button>
-                            <button class="nav-link text-start py-3 px-4 border-bottom" id="earnings-tab" data-bs-toggle="pill" data-bs-target="#earnings" type="button">
+                            <button class="nav-link text-start py-3 px-4 border-bottom" id="payments-tab" data-bs-toggle="pill" data-bs-target="#payments" type="button">
                                 <i class="fas fa-money-bill-wave me-2"></i> Ödemeler & Cari
                             </button>
                             <button class="nav-link text-start py-3 px-4 border-bottom" id="orders-tab" data-bs-toggle="pill" data-bs-target="#orders" type="button">
@@ -596,6 +596,199 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
 
                     </div>
 
+                    <div class="tab-pane fade" id="payments" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h3 class="mb-0">Temsilci Ödemeleri</h3>
+                                <button type="button" class="btn btn-primary btn-md" data-bs-toggle="modal" data-bs-target="#addPaymentModal">
+                                    <i class="fas fa-plus"></i> Yeni Ödeme
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <!-- Özet Kartları -->
+                                <div class="row mb-4">
+                                    <div class="col-md-3">
+                                        <div class="card bg-info text-white">
+                                            <div class="card-body text-center">
+                                                <h4 class="card-title">{{ core()->formatPrice($affiliate->total_earnings) }}</h4>
+                                                <p class="card-text">Toplam Kazanç</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card bg-success text-white">
+                                            <div class="card-body text-center">
+                                                <h4 class="card-title">{{core()->formatPrice($affiliate->total_paid_commission) }}</h4>
+                                                <p class="card-text">Ödenen Tutar</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card bg-warning text-white">
+                                            <div class="card-body text-center">
+                                                <h4 class="card-title">{{ core()->formatPrice($affiliate->current_account_balance) }}</h4>
+                                                <p class="card-text">Kalan Bakiye</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card bg-primary text-white">
+                                            <div class="card-body text-center">
+                                                <h4 class="card-title">{{ $affiliate->payments->count() }}</h4>
+                                                <p class="card-text">Toplam Ödeme</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Ödeme Geçmişi Tablosu -->
+                                <div class="table-responsive">
+                                    <table class="table table-striped dataListTable">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Tutar</th>
+                                                <th>Ödeme Yöntemi</th>
+                                                <th>Transactıon ID</th>
+                                                <th>Tarih</th>
+                                                <th>İşlemler</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse($affiliate->payments()->latest()->get() as $payment)
+                                            <tr>
+                                                <td>#{{ $payment->id }}</td>
+                                                <td>
+                                                    <strong>{{ $payment->getFormattedAmount() }}</strong>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-info text-white">{{ $paymentMethods[$payment->payment_method] ?? $payment->payment_method }}</span>
+                                                </td>
+                                                <td>
+                                                    @if($payment->transaction_id)
+                                                        <code>{{ $payment->transaction_id }}</code>
+                                                    @else
+                                                        <span class="text-muted">-</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    {{ $payment->created_at->format('d.m.Y H:i') }}<br>
+                                                    <small class="text-muted">{{ $payment->createdAdmin->name ?? 'Sistem' }}</small>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a href="{{ route('admin.affiliatemodule.admin.affiliatepayments.edit', $payment) }}" class="btn btn-md btn-outline-warning me-3">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @empty
+                                            <tr>
+                                                <td colspan="6" class="text-center py-4">
+                                                    <div class="text-muted">
+                                                        <i class="fas fa-inbox fa-3x mb-3"></i>
+                                                        <p>Henüz ödeme kaydı bulunmuyor.</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Son Ödeme Bilgisi -->
+                                @if($affiliate->getLastPayment())
+                                <div class="mt-4">
+                                    <div class="alert alert-info">
+                                        <h6 class="alert-heading">Son Ödeme Bilgisi</h6>
+                                        <p class="mb-0">
+                                            <strong>Tutar:</strong> {{ $affiliate->getLastPayment()->getFormattedAmount() }} |
+                                            <strong>Tarih:</strong> {{ $affiliate->getLastPayment()->created_at->format('d.m.Y H:i') }} |
+                                            <strong>Ödeme Yöntemi:</strong>
+                                            <span class="badge bg-info text-white">
+                                                {{ $paymentMethods[$affiliate->getLastPayment()->payment_method] ?? $affiliate->getLastPayment()->payment_method }}
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <style>
+                    .avatar-sm {
+                        width: 32px;
+                        height: 32px;
+                    }
+
+                    .avatar-title {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 14px;
+                        font-weight: 600;
+                    }
+
+                    .table th {
+                        font-weight: 600;
+                        font-size: 13px;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    }
+
+                    .card {
+                        border: none;
+                        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+                    }
+
+                    .btn-group-sm > .btn, .btn-sm {
+                        padding: 0.25rem 0.5rem;
+                        font-size: 0.775rem;
+                    }
+                    </style>
+
+
+
+                    <style>
+                    .avatar-sm {
+                        width: 32px;
+                        height: 32px;
+                    }
+
+                    .avatar-title {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 14px;
+                        font-weight: 600;
+                    }
+
+                    .table th {
+                        font-weight: 600;
+                        font-size: 13px;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    }
+
+                    .card {
+                        border: none;
+                        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+                    }
+
+                    .btn-group-sm > .btn, .btn-sm {
+                        padding: 0.25rem 0.5rem;
+                        font-size: 0.775rem;
+                    }
+                    </style>
                     <!-- Kazanç Geçmişi -->
                     <div class="tab-pane fade" id="earnings" role="tabpanel">
 
@@ -955,7 +1148,82 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
         </div>
     </div>
 
+<!-- Ödeme Ekleme Modal -->
+<div class="modal fade" id="addPaymentModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form method="POST" action="{{ route('admin.affiliatemodule.admin.affiliatepayments.store') }}" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Yeni Ödeme Ekle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
 
+                                <input type="text" name="affiliate_id" id="affiliate_id" value="{{$affiliate->id}}" hidden>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Tutar <span class="text-danger">*</span></label>
+                                <input type="number" name="amount" class="form-control" step="0.01" min="0.01" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Para Birimi <span class="text-danger">*</span></label>
+                                <select name="currency" class="form-select" required>
+                                    <option value="EUR">EUR</option>
+                                    <option value="USD">USD</option>
+                                    <option value="TRY">TRY</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Ödeme Yöntemi <span class="text-danger">*</span></label>
+                                <select name="payment_method" class="form-select" required>
+                                    <option value="">Seçiniz...</option>
+                                    @foreach($paymentMethods as $key => $method)
+                                        <option value="{{ $key }}">{{ $method }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Transaction ID</label>
+                                <input type="text" name="transaction_id" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Açıklama</label>
+                        <textarea name="description" class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Dosya Ekle</label>
+                        <input type="file" name="payment_file" class="form-control" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                        <small class="text-muted">Maksimum 5MB - PDF, JPG, PNG, DOC, DOCX</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script>
     // Ödeme yöntemi değiştiğinde ilgili alanları göster/gizle

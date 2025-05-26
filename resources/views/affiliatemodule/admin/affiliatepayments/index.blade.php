@@ -3,7 +3,7 @@
 @section('title', 'Temcilci Ödemeleri')
 
 @section('content')
-<div class="container-fluid">
+<div class="container-xl">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -17,42 +17,33 @@
                 <div class="card-body">
                     <!-- Filtreler -->
                     <form method="GET" class="row g-3 mb-4">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <select name="affiliate_id" class="form-select">
                                 <option value="">Tüm Temcilciler</option>
                                 @foreach($affiliates as $affiliate)
                                     <option value="{{ $affiliate->id }}" {{ request('affiliate_id') == $affiliate->id ? 'selected' : '' }}>
-                                        {{ $affiliate->name }}
+                                        {{ $affiliate->affiliate_code.' - '.$affiliate->customer->getNameAttribute() }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3">
-                            <select name="payment_method" class="form-select">
-                                <option value="">Tüm Ödeme Yöntemleri</option>
-                                @foreach($paymentMethods as $key => $method)
-                                    <option value="{{ $key }}" {{ request('payment_method') == $key ? 'selected' : '' }}>
-                                        {{ $method }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-3">
+
+                        <div class="col-md-6">
                             <button type="submit" class="btn btn-secondary">Filtrele</button>
-                            <a href="{{ route('admin.affiliate-payments.index') }}" class="btn btn-outline-secondary">Temizle</a>
+                            <a href="{{ route('admin.affiliatemodule.admin.affiliatepayments.index') }}" class="btn btn-outline-secondary">Temizle</a>
                         </div>
                     </form>
 
                     <!-- Tablo -->
-                    <div class="table-responsive">
-                        <table class="table table-striped">
+                    <div class="table-responsive ">
+                        <table class="table table-striped dataListTable">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Temcilci</th>
                                     <th>Tutar</th>
                                     <th>Ödeme Yöntemi</th>
-                                    <th>Transaction ID</th>
+                                    <th>Transactıon ID</th>
                                     <th>Tarih</th>
                                     <th>İşlemler</th>
                                 </tr>
@@ -63,13 +54,13 @@
                                         <td>#{{ $payment->id }}</td>
                                         <td>
                                             <strong>{{ $payment->affiliate->customer->getNameAttribute() }}</strong><br>
-                                            <small class="text-muted">{{ $payment->affiliate->customer->email }}</small>
+                                            <small class="text-muted">{{ $payment->affiliate->customer->phone_number }}</small>
                                         </td>
                                         <td>
                                             <strong>{{ $payment->getFormattedAmount() }}</strong>
                                         </td>
                                         <td>
-                                            <span class="badge bg-info">{{ $paymentMethods[$payment->payment_method] ?? $payment->payment_method }}</span>
+                                            <span class="badge bg-info text-white">{{ $paymentMethods[$payment->payment_method] ?? $payment->payment_method }}</span>
                                         </td>
                                         <td>
                                             @if($payment->transaction_id)
@@ -84,16 +75,14 @@
                                         </td>
                                         <td>
                                             <div class="btn-group">
-                                                <a href="{{ route('admin.affiliate-payments.show', $payment) }}" class="btn btn-sm btn-outline-primary">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                                <a href="{{ route('admin.affiliate-payments.edit', $payment) }}" class="btn btn-sm btn-outline-warning">
+
+                                                <a href="{{ route('admin.affiliatemodule.admin.affiliatepayments.edit', $payment) }}" class="btn btn-md btn-outline-warning me-3">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form method="POST" action="{{ route('admin.affiliate-payments.destroy', $payment) }}" class="d-inline" onsubmit="return confirm('Emin misiniz?')">
+                                                <form method="POST" action="{{ route('admin.affiliatemodule.admin.affiliatepayments.destroy', $payment) }}" class="d-inline" onsubmit="return confirm('Emin misiniz?')">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <button type="submit" class="btn btn-md btn-outline-danger">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>
@@ -114,8 +103,7 @@
                         </table>
                     </div>
 
-                    <!-- Pagination -->
-                    {{ $payments->links() }}
+
                 </div>
             </div>
         </div>
@@ -126,7 +114,7 @@
 <div class="modal fade" id="addPaymentModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form method="POST" action="{{ route('admin.affiliate-payments.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('admin.affiliatemodule.admin.affiliatepayments.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title">Yeni Ödeme Ekle</h5>
@@ -140,7 +128,7 @@
                                 <select name="affiliate_id" class="form-select" required>
                                     <option value="">Seçiniz...</option>
                                     @foreach($affiliates as $affiliate)
-                                        <option value="{{ $affiliate->id }}">{{ $affiliate->name }}</option>
+                                        <option value="{{ $affiliate->id }}">{{ $affiliate->affiliate_code.' - '.$affiliate->customer->getNameAttribute() }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -203,21 +191,5 @@
     </div>
 </div>
 
-@if(session('success'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            alert('{{ session('success') }}');
-        });
-    </script>
-@endif
-
-@if($errors->any())
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var modal = new bootstrap.Modal(document.getElementById('addPaymentModal'));
-            modal.show();
-        });
-    </script>
-@endif
 
 @endsection

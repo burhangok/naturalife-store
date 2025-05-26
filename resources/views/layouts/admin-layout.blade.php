@@ -29,6 +29,38 @@
     <!-- Custom Styles -->
     @stack('styles')
 </head>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check for success message
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'İşlem Başarılı!',
+                text: "{{ session('success') }}",
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Kapat'
+            });
+        @endif
+
+        // Check for errors
+        @if ($errors->any())
+            Swal.fire({
+                icon: 'error',
+                title: 'Hata!',
+                html: `
+                    <ul style="text-align: left; list-style-type: none; padding-left: 0;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                `,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Kapat'
+            });
+        @endif
+    });
+</script>
+
 <body>
     @php
     $admin = auth()->guard('admin')->user();
@@ -110,11 +142,11 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link  {{ request()->is('admin/affiliatemodule/admin/affiliatepayments*') ? 'active' : '' }}" href="{{ route('admin.affiliatemodule.admin.affiliatepayments.index') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <i class="ti ti-file-invoice"></i>
                                     </span>
-                                    <span class="nav-link-title">Hakedişler</span>
+                                    <span class="nav-link-title">Ödemeler</span>
                                 </a>
                             </li>
 

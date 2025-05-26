@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Webkul\User\Models\Admin;
 
 class AffiliatePayment extends Model
 {

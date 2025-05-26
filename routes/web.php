@@ -1,7 +1,7 @@
 <?php
 
 
-use App\Http\Controllers\Admin\AffiliatePaymentController;
+use App\Http\Controllers\Affiliate\AffiliatePaymentController;
 use App\Http\Controllers\Affiliate\AffiliateCommissionShopController;
 use App\Http\Controllers\Affiliate\AffiliateController;
 use App\Http\Controllers\Affiliate\AffiliateShopController;
@@ -96,7 +96,17 @@ Route::group(['middleware' => ['web', 'admin'], 'prefix' => config('app.admin_ur
                 Route::put('/{commission}', [AffiliateCommissionController::class, 'update'])->name('admin.affiliatemodule.admin.commissions.update');
             });
 
-        });
+             // affiliatepayments management
+             Route::group(['prefix' => 'affiliatepayments'], function () {
+                Route::get('/', [AffiliatePaymentController::class, 'index'])->name('admin.affiliatemodule.admin.affiliatepayments.index');
+                Route::post('/', [AffiliatePaymentController::class, 'store'])->name('admin.affiliatemodule.admin.affiliatepayments.store');
+                Route::get('/{payment}', [AffiliatePaymentController::class, 'edit'])->name('admin.affiliatemodule.admin.affiliatepayments.edit');
+                Route::put('/{payment}', [AffiliatePaymentController::class, 'update'])->name('admin.affiliatemodule.admin.affiliatepayments.update');
+                Route::delete('/{payment}', [AffiliatePaymentController::class, 'destroy'])->name('admin.affiliatemodule.admin.affiliatepayments.destroy');
+            });
+                   });
+
+
 
 
 

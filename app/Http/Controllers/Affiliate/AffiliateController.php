@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Affiliate;
 
 use App\Models\Affiliate;
 use App\Models\AffiliateClick;
+use App\Models\AffiliatePayment;
 use App\Models\CommissionRule;
 use App\Models\User;
 use App\Services\AffiliateTrackingService;
@@ -121,6 +122,7 @@ class AffiliateController extends Controller
             // Detaylı hata ayıklama için log
             Log::info("Affiliate edit method called with ID: " . $id);
 
+            $paymentMethods = AffiliatePayment::getPaymentMethods();
             // Affiliate'i ve ilişkili verileri getir
             $affiliate = Affiliate::with([
                 'customer',
@@ -180,6 +182,7 @@ class AffiliateController extends Controller
                     'affiliate',
                     'downlineAffiliates',
                     'rules',
+                    'paymentMethods',
                     'clicks',
                     'conversionRate',
                     'total',
