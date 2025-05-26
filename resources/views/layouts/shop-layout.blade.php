@@ -113,7 +113,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link  {{ request()->is('admin/affiliatemodule/admin/payments*') ? 'active' : '' }}" href="{{ route('shop.customers.affiliatemodule.payments') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <i class="ti ti-file-invoice"></i>
                                     </span>

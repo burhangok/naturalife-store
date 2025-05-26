@@ -84,7 +84,7 @@ class Affiliate extends Model
      */
     public function getFormattedCommissionAttribute()
     {
-        return number_format($this->total_commission_earned, 2, ',', '.');
+        return core()->formatPrice($this->total_commission_earned);
     }
 
     /**

@@ -29,7 +29,7 @@ class AffiliatePaymentMethodController extends Controller
                 'account_holder_name' => 'nullable|string|max:255',
                 'bank_name' => 'nullable|string|max:255',
                 'iban' => 'nullable|string|max:34',
-                'bic_swift_code' => 'nullable|string|max:11',
+                'bic_swift_code' => 'nullable|string',
                 'bank_address' => 'nullable|string',
 
                 // PayPal bilgileri
@@ -41,18 +41,18 @@ class AffiliatePaymentMethodController extends Controller
                 'digital_wallet_account_id' => 'nullable|string|max:255',
 
                 // Vergi bilgileri
-                'tax_number' => 'nullable|string|max:50',
-                'vat_number' => 'nullable|string|max:50',
-                'tax_country' => 'nullable|string|size:2',
+                'tax_number' => 'nullable|string|max:100',
+                'vat_number' => 'nullable|string|max:100',
+                'tax_country' => 'nullable|string',
                 'company_name' => 'nullable|string|max:255',
                 'company_registration_number' => 'nullable|string|max:100',
 
                 // Fatura adresi
                 'billing_name' => 'nullable|string|max:255',
                 'billing_street' => 'nullable|string|max:255',
-                'billing_postal_code' => 'nullable|string|max:20',
+                'billing_postal_code' => 'nullable|string|max:100',
                 'billing_city' => 'nullable|string|max:100',
-                'billing_country' => 'nullable|string|size:2',
+                'billing_country' => 'nullable|string',
 
                 // Ödeme koşulları
                 'payment_delay_days' => 'nullable|integer|in:0,7,15,30',
@@ -62,7 +62,7 @@ class AffiliatePaymentMethodController extends Controller
 
             if ($validator->fails()) {
 
-                dd($validator->fails());
+
                 return back()
                     ->withErrors($validator)
                     ->withInput()

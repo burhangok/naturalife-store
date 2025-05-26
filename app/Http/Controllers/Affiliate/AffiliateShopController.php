@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Affiliate;
 
 use App\Models\Affiliate;
 use App\Models\AffiliateClick;
+use App\Models\AffiliatePayment;
 use App\Models\CommissionRule;
 use App\Models\User;
 use App\Services\AffiliateTrackingService;
@@ -354,23 +355,7 @@ class AffiliateShopController extends Controller
     /**
      * Excel export
      */
-    public function exportExcel(Request $request)
-    {
-        $currentAffiliate = Affiliate::where('customer_id', Auth::id())->first();
 
-        if (!$currentAffiliate) {
-            return redirect()->back()->with('error', 'Temsilci kaydınız bulunamadı.');
-        }
-
-        $representatives = $currentAffiliate->children()
-            ->with(['customer', 'commissions', 'clicks'])
-            ->get();
-
-        // Excel export logic burada olacak
-        // Örnek: return Excel::download(new SubAffiliatesExport($representatives), 'alt-temsilciler.xlsx');
-
-        return response()->json(['message' => 'Excel export işlemi yapılacak']);
-    }
 
     /**
      * Temsilci detaylarını göster
@@ -445,5 +430,135 @@ class AffiliateShopController extends Controller
             ];
         }
         return $months;
+    }
+
+
+    public function payments()
+    {
+        $customer = auth()->guard('customer')->user();
+        $affiliate = Affiliate::where('customer_id', $customer->id)->first();
+
+        // Eğer affiliate kaydı yoksa 404
+        if (!$affiliate) {
+            abort(404, 'Affiliate kaydı bulunamadı.');
+        }
+
+        $paymentMethods = AffiliatePayment::getPaymentMethods();
+        // Filtreleme için query builder
+        $paymentsQuery = $affiliate->payments()->latest();
+
+        // Tarih filtreleme
+        if (request('start_date')) {
+            $paymentsQuery->whereDate('created_at', '>=', request('start_date'));
+        }
+
+        if (request('end_date')) {
+            $paymentsQuery->whereDate('created_at', '<=', request('end_date'));
+        }
+
+        // Ödeme yöntemi filtreleme
+        if (request('payment_method')) {
+            $paymentsQuery->where('payment_method', request('payment_method'));
+        }
+
+        // Sayfalama ile ödemeleri al
+        $payments = $paymentsQuery->with(['createdAdmin'])->paginate(15);
+
+        // Bu ay ve bu yıl için istatistikler
+        $thisMonthPayments = $affiliate->payments()
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->sum('amount');
+
+        $thisYearPayments = $affiliate->payments()
+            ->whereYear('created_at', now()->year)
+            ->sum('amount');
+
+        // Son ödeme
+        $lastPayment = $affiliate->getLastPayment();
+
+        // Cari hesap bakiyesi hesaplama
+        $currentBalance = $affiliate->current_account_balance;
+
+        // Son 12 ay için aylık ödeme verisi (grafik için)
+        $monthlyPayments = collect();
+        for ($i = 11; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $amount = $affiliate->payments()
+                ->whereMonth('created_at', $date->month)
+                ->whereYear('created_at', $date->year)
+                ->sum('amount');
+
+            $monthlyPayments->push([
+                'month' => $date->format('M Y'),
+                'amount' => $amount
+            ]);
+        }
+
+        return view('affiliatemodule.shop.affiliate_payments',compact(
+            'affiliate',
+            'payments',
+            'paymentMethods',
+            'thisMonthPayments',
+            'thisYearPayments',
+            'lastPayment',
+            'currentBalance',
+            'monthlyPayments'
+        ));
+    }
+
+
+    // Ödeme detayı modalı için
+    public function paymentDetail($paymentId)
+    {
+        $customer = auth()->guard('customer')->user();
+        $affiliate = Affiliate::where('customer_id', $customer->id)->first();
+
+        if (!$affiliate) {
+            abort(404, 'Affiliate kaydı bulunamadı.');
+        }
+
+        $payment = $affiliate->payments()
+            ->with(['createdAdmin'])
+            ->findOrFail($paymentId);
+
+        $paymentMethods = [
+            'bank_transfer' => 'Banka Havalesi',
+            'eft' => 'EFT',
+            'papara' => 'Papara',
+            'ininal' => 'İninal',
+            'crypto' => 'Kripto Para',
+            'other' => 'Diğer'
+        ];
+
+        return response()->json([
+            'payment' => $payment,
+            'payment_method_text' => $paymentMethods[$payment->payment_method] ?? $payment->payment_method
+        ]);
+    }
+
+    // Dashboard için özet veriler
+    public function paymentsSummary()
+    {
+        $customer = auth()->guard('customer')->user();
+        $affiliate = Affiliate::where('customer_id', $customer->id)->first();
+
+        if (!$affiliate) {
+            return response()->json(['error' => 'Affiliate kaydı bulunamadı.'], 404);
+        }
+
+        $summary = [
+            'total_earnings' => $affiliate->total_earnings,
+            'total_paid' => $affiliate->total_paid_commission,
+            'current_balance' => $affiliate->current_account_balance,
+            'payment_count' => $affiliate->payments->count(),
+            'last_payment' => $affiliate->getLastPayment(),
+            'this_month_payments' => $affiliate->payments()
+                ->whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
+                ->sum('amount')
+        ];
+
+        return response()->json($summary);
     }
 }
