@@ -23,7 +23,7 @@ Route::prefix('customer')->group(function () {
         Route::prefix('affiliatemodule')->group(function () {
 
             Route::controller(AffiliateShopController::class)->group(function () {
-                Route::post('', 'store')->name('shop.customers.affiliate.store');
+                Route::post('', 'store')->name('shop.customers.affiliatemodule.store');
 
                       Route::get('/profile/{affiliate}', 'profile')->name('shop.customers.affiliatemodule.profile');
                 Route::get('/payments', 'payments')->name('shop.customers.affiliatemodule.payments');

@@ -49,7 +49,7 @@
             </a>
 
             <!-- Shop Modal-->
-<!-- Müşteri hesabı profil sayfasına ekleyin -->
+<!-- burhangok Müşteri hesabı profil sayfasına ekleyin -->
 <x-shop::modal ref="affiliateModal">
     <x-slot:header>
         Temsilcilik Başvurusu
@@ -58,7 +58,7 @@
     <x-slot:content>
         <form
             method="POST"
-            action="{{ route('shop.customers.affiliate.store') }}"
+            action="{{ route('shop.customers.affiliatemodule.store') }}"
             id="affiliate-form"
         >
             @csrf

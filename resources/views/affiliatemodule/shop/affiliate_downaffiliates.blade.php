@@ -17,18 +17,13 @@
                             <div class="d-flex align-items-center">
                                 <div class="subheader">Toplam Temsilci</div>
                                 <div class="ms-auto lh-1">
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Son 7 gün</a>
 
-                                    </div>
                                 </div>
                             </div>
                             <div class="d-flex align-items-baseline">
-                                <div class="h1 mb-0 me-2">{{ $isAffiliate ?? '24' }}</div>
+                                <div class="h1 mb-0 me-2">{{ $downlineAffiliates->count() ?? '' }}</div>
                                 <div class="me-auto">
-                                    <span class="text-green d-inline-flex align-items-center lh-1">
-                                        8% <i class="fas fa-trending-up ms-1"></i>
-                                    </span>
+
                                 </div>
                             </div>
                         </div>
@@ -39,10 +34,10 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <div class="subheader">Aktif Temsilci</div>
+                                <div class="subheader">Kazanılan Komisyon</div>
                             </div>
                             <div class="d-flex align-items-baseline">
-                                <div class="h1 mb-3 me-2">{{ $activeRepresentatives ?? '18' }}</div>
+                                <div class="h1 mb-3 me-2">{{ $totalCommissions ?? '' }}</div>
                                 <div class="me-auto">
                                     <span class="text-green d-inline-flex align-items-center lh-1">
                                         12% <i class="fas fa-trending-up ms-1"></i>
@@ -108,16 +103,7 @@
                             <h3 class="card-title">Alt Temsilcilerim</h3>
                             <div class="card-actions">
                                 <div class="dropdown">
-                                    <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-cog"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a href="#" class="dropdown-item">
-                                            <i class="fas fa-download me-2"></i>
-                                            Excel'e Aktar
-                                        </a>
 
-                                    </div>
                                 </div>
                             </div>
                         </div>

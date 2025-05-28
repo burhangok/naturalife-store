@@ -230,6 +230,8 @@
         </div>
     </div>
 
+    @if($payments->count() > 0)
+
     <!-- Filtre Bölümü -->
     <div class="filter-section">
         <form method="GET" action="">
@@ -264,7 +266,7 @@
             </div>
         </form>
     </div>
-
+@endif
     <!-- Ödeme Geçmişi -->
     <div class="main-card">
         <div class="card-header">
@@ -346,9 +348,9 @@
                 </table>
             </div>
             @else
-            <div class="empty-state">
+            <div class="card-body   text-center">
                 <i class="fas fa-receipt"></i>
-                <h5>Henüz ödeme alınmamış</h5>
+                <h3>Henüz ödeme alınmamış</h3>
                 <p>İlk ödemeleriniz burada görüntülenecektir.</p>
             </div>
             @endif

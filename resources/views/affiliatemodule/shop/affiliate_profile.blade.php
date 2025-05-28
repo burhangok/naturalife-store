@@ -71,11 +71,14 @@
                                 <span class="text-muted">Üyelik Tarihi:</span>
                                 <span class="fw-bold">{{ $affiliate->joined_at?->format('d.m.Y') }}</span>
                             </li>
+                            @if ($affiliate->getLastCommission())
                             <li class="list-group-item d-flex justify-content-between px-0">
                                 <span class="text-muted">Son Komisyon:</span>
                                 <span
                                     class="fw-bold">{{ $affiliate->getLastCommission()->created_at?->format('d.m.Y').' - '.core()->formatPrice($affiliate->getLastCommission()->amount) ?? 'Henüz yok' }}</span>
                             </li>
+                            @endif
+
                         </ul>
                     </div>
                 </div>
@@ -496,6 +499,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            @if ($affiliate->getLastCommission())
                             <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-body">
@@ -505,6 +510,8 @@
                                     </div>
                                 </div>
                             </div>
+                            @endif
+
                         </div>
 
                         <!-- Komisyon Geçmişi -->

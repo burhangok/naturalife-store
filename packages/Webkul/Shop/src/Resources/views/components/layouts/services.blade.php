@@ -14,7 +14,7 @@
         'status'     => 1,
         'theme_code' => $channel->theme,
         'channel_id' => $channel->id,
-    ]); 
+    ]);
 @endphp
 
 <!-- Features -->
