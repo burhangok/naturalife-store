@@ -481,45 +481,50 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
 
 
                                 <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
                                             <tr>
-                                                  <th> Id</th>
-                                                  <th>Temsilci Kodu</th>
                                                 <th>Temsilci</th>
                                                 <th>Seviye</th>
                                                 <th>Kayıt Tarihi</th>
-                                                <th>Alt Üye Sayısı</th>
-                                                <th>Kazanılan Komisyon</th>
-                                                <th>İşlemler</th>
+                                                <th>Alt Üye</th>
+                                                <th>Toplam Siparişi</th>
+                                                <th>Bayilerinin Satış Tutarı</th>
+                                                <th>Kazancı</th>
+                                                <th>Ağının Kazandırdığı Komisyon</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($downlineAffiliates as $downlineAffiliate )
-
-                                            <tr>
-                                                         <td>{{$downlineAffiliate->id}}</td>
-                  <td>{{$downlineAffiliate->affiliate_code}}</td>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-
+                                            @foreach ($downlineAffiliates as $downlineAffiliate)
+                                                <tr>
+                                                    <td>
                                                         <div>
-                                                           {{$downlineAffiliate->customer->first_name.' '. $downlineAffiliate->customer->last_name}}<br>
-                                                            <small class="text-muted">{{$downlineAffiliate->customer->email}}</small>
+                                                            <div class="fw-bold">
+                                                                {{ $downlineAffiliate->customer->first_name . ' ' . $downlineAffiliate->customer->last_name }}
+                                                            </div>
+                                                            <small
+                                                                class="text-muted">{{ $downlineAffiliate->affiliate_code }}</small>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td><span class="badge bg-success text-white">{{$downlineAffiliate->level}}</span></td>
-                                                <td>{{ $downlineAffiliate->joined_at?->format('d.m.Y H:i') }}</td>
-                                                <td>{{$downlineAffiliate->children->count()}}</td>
-                                                <td> € {{number_format($downlineAffiliate->generatedCommissions()->sum('amount'),2.2)}}</td>
-                                                <td>
-                                                    <a href="{{ route('admin.affiliatemodule.admin.affiliates.edit', $downlineAffiliate->id) }}" class="btn btn-icon btn-outline-primary me-1">
-                                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                    <td><span
+                                                            class="badge bg-primary  text-white">{{ $downlineAffiliate->level }}</span>
+                                                    </td>
+                                                    <td>{{ $downlineAffiliate->joined_at?->format('d.m.Y') }}</td>
+                                                    <td>{{ $downlineAffiliate->children->count() }}</td>
+                                                    <td> {{$downlineAffiliate->customer->orders->count()}} Adet, {{ core()->formatPrice($downlineAffiliate->customer->orders->whereNotIn('status', ['canceled', 'closed'])->sum('base_grand_total_invoiced')) }}
+                                                    </td>
+                                                    <td>
+                                                       €{{ number_format(array_sum($downlineAffiliate->getDescendantOrderTotalsPerLevel()), 2) }}
+                                                    </td>
 
+<td>  €{{ number_format($downlineAffiliate->getTotalEarningsAttribute(), 2)  }}
+</td>
+
+                                                    <td class="text-success fw-bold">
+                                                        €{{ number_format($affiliate->getCommissionEarnedFrom($downlineAffiliate), 2) }}
+                                                    </td>
+
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -548,7 +553,7 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
 
                                                     <th>Alt Üye Sayısı</th>
                                                     <th>Toplam Sipariş</th>
-                                                    <th>Toplam Kazanç</th>
+                                                    <th>Toplam Kazancı</th>
                                                     <th>Kazanılan Komisyon</th>
 
                                                     <th>İşlemler</th>
@@ -803,12 +808,7 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
                                             <div class="card bg-light">
                                                 <div class="card-body">
                                                     <h6 class="text-muted mb-1">Toplam Kazanç</h6>
-                                                    <h3 class="mb-0">€{{ number_format($total, 2, ',', '.') }}</h3>
-
-                                                        <small class="text-success">
-                                                            <i class="fas fa-arrow-up me-1"></i>
-                                                           10% geçen aya göre
-                                                        </small>
+                                                    <h3 class="mb-0">€{{ number_format($affiliate->commissions->sum('amount'), 2) }}</h3>
 
 
 
@@ -819,12 +819,9 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
                                             <div class="card bg-light">
                                                 <div class="card-body">
                                                     <h6 class="text-muted mb-1">Bu Ayki Kazanç</h6>
-                                                    <h3 class="mb-0">€{{ number_format($total, 2, ',', '.') }}</h3>
+                                                    <h3 class="mb-0">  €{{ number_format($affiliate->getThisMonthEarningsAttribute(), 2) }}</h3>
 
-                                                        <small class="text-success">
-                                                            <i class="fas fa-arrow-up me-1"></i>
-                                                           32% geçen haftaya göre
-                                                        </small>
+
 
                                                 </div>
                                             </div>
@@ -832,12 +829,10 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
                                         <div class="col-md-4">
                                             <div class="card bg-light">
                                                 <div class="card-body">
-                                                    <h6 class="text-muted mb-1">Toplam Çekilen</h6>
-                                                    <h3 class="mb-0">€20000</h3>
+                                                    <h6 class="text-muted mb-1">Toplam Alınan Ödeme</h6>
+                                                    <h3 class="mb-0">  €{{ number_format($affiliate->getTotalPaidCommissionAttribute(), 2) }}</h3>
 
-                                                        <small class="text-muted">
-                                                            Son alınan hakediş: {{ $affiliate->last_commission_at === null ? '' : $affiliate->last_commission_at->format('d.m.Y') }}
-                                                        </small>
+
 
                                                 </div>
                                             </div>
@@ -866,7 +861,9 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
                                                             @if($commission->from_affiliate_id)
                                                                 {{ $commission->fromAffiliate->affiliate_code.' - '. $commission->fromAffiliate->customer->first_name.' ' .$commission->fromAffiliate->customer->last_name ?? 'Bilinmiyor' }}
                                                                 @if($commission->level > 1)
-                                                                    (Alt bayi)
+                                                                    (Alt Bayi Siparişi)
+                                                                  @else
+                                                                  (Kendi Siparişi)
                                                                 @endif
                                                             @else
                                                                 Direkt Satış

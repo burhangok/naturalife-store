@@ -39,6 +39,9 @@ class AffiliateShopController extends Controller
 
         // Komisyon kurallarını getir
         $rules = $this->getCommissionRules();
+        // Maksimum seviyeyi belirle
+        $maxLevel = $rules->max('level');
+
 
         // Aylık kazanç verilerini hazırla
         $monthlyEarnings = $this->getMonthlyEarnings($affiliate);
@@ -52,6 +55,7 @@ class AffiliateShopController extends Controller
             'downlineAffiliates',
             'conversionRate',
             'rules',
+            'maxLevel',
             'monthlyEarnings',
             'totalEarnings'
         ));

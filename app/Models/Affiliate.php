@@ -84,7 +84,7 @@ class Affiliate extends Model
      */
     public function getFormattedCommissionAttribute()
     {
-        return core()->formatPrice($this->total_commission_earned);
+        return core()->formatPrice($this->commissions()->sum('amount'));
     }
 
     /**
@@ -109,6 +109,11 @@ class Affiliate extends Model
     public function commissions()
     {
         return $this->hasMany(AffiliateCommission::class, 'affiliate_id');
+    }
+
+    public static function getCommissionsByAffiliateId($affiliateId)
+    {
+        return AffiliateCommission::where('from_affiliate_id', $affiliateId)->get();
     }
 
     /**
@@ -245,8 +250,68 @@ public function getLastPayment()
     return $this->payments()->latest()->first();
 }
 
+public function getCommissionEarnedFrom(Affiliate $fromAffiliate): float
+    {
+        return AffiliateCommission::where('affiliate_id', $this->id)
+            ->where('from_affiliate_id', $fromAffiliate->id)
+            ->sum('amount');
+    }
+
     public function getLastCommission()
     {
         return $this->commissions()->latest()->first();
     }
+
+
+    public function getDescendantOrderTotalsPerLevel()
+    {
+        $result = [];
+        $maxLevel = \DB::table('commission_rules')->max('level');
+
+        $queue = [
+            [
+                'affiliate' => $this,
+                'level' => 0
+            ]
+        ];
+
+        while (!empty($queue)) {
+            $current = array_shift($queue);
+            $currentAffiliate = $current['affiliate'];
+            $currentLevel = $current['level'];
+
+            if ($currentLevel >= $maxLevel) {
+                continue;
+            }
+
+            foreach ($currentAffiliate->children as $child) {
+                $nextLevel = $currentLevel + 1;
+
+                $orderTotal = optional($child->customer)->orders()
+                    ->whereNotIn('status', ['canceled', 'closed'])
+                    ->sum('base_grand_total_invoiced');
+
+                if (!isset($result[$nextLevel])) {
+                    $result[$nextLevel] = 0;
+                }
+
+                $result[$nextLevel] += $orderTotal;
+
+                $queue[] = [
+                    'affiliate' => $child,
+                    'level' => $nextLevel
+                ];
+            }
+        }
+
+        return $result; // [1 => 1200, 2 => 3400, ...]
+    }
+
+    public function getTotalCommissionFromNetwork(): float
+    {
+        return AffiliateCommission::where('affiliate_id', $this->id)->sum('amount');
+    }
+
+
+
 }

@@ -64,7 +64,7 @@
                             </li>
                             <li class="list-group-item d-flex justify-content-between px-0">
                                 <span class="text-muted">Toplam Kazanç:</span>
-                                <span class="fw-bold text-success">€{{ $affiliate->formatted_commission }}</span>
+                                <span class="fw-bold text-success">{{ $affiliate->formatted_commission }}</span>
                             </li>
 
                             <li class="list-group-item d-flex justify-content-between px-0">
@@ -125,7 +125,7 @@
                 <div class="tab-content" id="v-pills-tabContent">
 
                     <!-- Dashboard Tab -->
-                    <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
+                    <div class="tab-pane fade " id="dashboard" role="tabpanel">
                         <!-- İstatistik Kartları -->
                         <div class="row mb-4">
                             <div class="col-md-4">
@@ -351,7 +351,7 @@
                     </div>
 
                     <!-- Alt Temsilciler Tab -->
-                    <div class="tab-pane fade" id="network" role="tabpanel">
+                    <div class="tab-pane fade show active" id="network" role="tabpanel">
                         <!-- Alt Temsilci İstatistikleri -->
                         <div class="row mb-4">
                             <div class="col-md-6">
@@ -383,7 +383,7 @@
                                                 <i class="fas fa-user-circle fa-3x text-gray-400"></i>
                                             </div>
                                             <strong>{{ $affiliate->customer->getNameAttribute() }}</strong><br>
-                                            <span class="badge bg-primary text-white">{{ $affiliate->level }}</span>
+                                            <span class="badge bg-info text-white">{{ $affiliate->children->count() }} Alt Üye</span>
                                         </div>
                                     </div>
 
@@ -392,6 +392,7 @@
                                     </div>
 
                                     <div class="d-flex justify-content-around">
+
                                         @foreach ($downlineAffiliates as $downlineAffiliate)
                                             <div class="text-center">
                                                 <div class="border-top" style="width: 100%; height: 20px;"></div>
@@ -403,8 +404,17 @@
                                                     </div>
                                                     <strong>{{ $downlineAffiliate->customer->first_name . ' ' . $downlineAffiliate->customer->last_name }}</strong><br>
                                                     <span
-                                                        class="badge bg-success level-badge text-white">{{ $downlineAffiliate->level }}</span>
-                                                </div>
+                                                        class="badge bg-primary level-badge text-white">Seviye {{ $downlineAffiliate->level }}</span>
+
+                                                             @if ($downlineAffiliate->children()->count()>0)
+                                                   <span
+                                                   class="badge bg-info level-badge text-white"> {{ $downlineAffiliate->children()->count()}} Alt Üye</span>
+
+
+                                                   @endif
+
+
+                                                    </div>
                                             </div>
                                         @endforeach
                                     </div>
@@ -419,59 +429,63 @@
                             </div>
 
                             <div class="card-body p-0">
-
                                 @if ($downlineAffiliates->isEmpty())
-                                    <div class="p-4 text-center text-muted">
-                                        Henüz alt temsilciniz bulunmuyor.
-                                    </div>
-                                @else
-                                    <div class="table-responsive">
-                                        <table class="table table-hover mb-0">
-                                            <thead class="table-light">
+                                <div class="p-4 text-center text-muted">
+                                    Henüz alt temsilciniz bulunmuyor.
+                                </div>
+                            @else
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Temsilci</th>
+                                                <th>Seviye</th>
+                                                <th>Kayıt Tarihi</th>
+                                                <th>Alt Üye</th>
+                                                <th>Toplam Siparişi</th>
+                                                <th>Bayilerinin Satış Tutarı</th>
+                                                <th>Kazancı</th>
+                                                <th>Ağının Kazandırdığı Komisyon</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($downlineAffiliates as $downlineAffiliate)
                                                 <tr>
-                                                    <th>Temsilci</th>
-                                                    <th>Seviye</th>
-                                                    <th>Kayıt Tarihi</th>
-                                                    <th>Alt Üye</th>
-                                                    <th>Toplam Satış</th>
-                                                    <th>Kazandırdığı</th>
-                                                    <th>Detay</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($downlineAffiliates as $downlineAffiliate)
-                                                    <tr>
-                                                        <td>
-                                                            <div>
-                                                                <div class="fw-bold">
-                                                                    {{ $downlineAffiliate->customer->first_name . ' ' . $downlineAffiliate->customer->last_name }}
-                                                                </div>
-                                                                <small
-                                                                    class="text-muted">{{ $downlineAffiliate->affiliate_code }}</small>
+                                                    <td>
+                                                        <div>
+                                                            <div class="fw-bold">
+                                                                {{ $downlineAffiliate->customer->first_name . ' ' . $downlineAffiliate->customer->last_name }}
                                                             </div>
-                                                        </td>
-                                                        <td><span
-                                                                class="badge bg-primary  text-white">{{ $downlineAffiliate->level }}</span>
-                                                        </td>
-                                                        <td>{{ $downlineAffiliate->joined_at?->format('d.m.Y') }}</td>
-                                                        <td>{{ $downlineAffiliate->children->count() }}</td>
-                                                        <td>{{ core()->formatPrice($downlineAffiliate->customer->orders->whereNotIn('status', ['canceled', 'closed'])->sum('base_grand_total_invoiced')) }}
-                                                        </td>
-                                                        <td class="text-success fw-bold">
-                                                            €{{ number_format($downlineAffiliate->generatedCommissions()->sum('amount'), 2) }}
-                                                        </td>
-                                                        <td>
-                                                            <a href="{{ route('shop.customers.affiliatemodule.profile', $downlineAffiliate->id) }}"
-                                                                class="btn btn-icon btn-outline-primary me-1">
-                                                                <i class="fas fa-search"></i>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                @endif
+                                                            <small
+                                                                class="text-muted">{{ $downlineAffiliate->affiliate_code }}</small>
+                                                        </div>
+                                                    </td>
+                                                    <td><span
+                                                            class="badge bg-primary  text-white">{{ $downlineAffiliate->level }}</span>
+                                                    </td>
+                                                    <td>{{ $downlineAffiliate->joined_at?->format('d.m.Y') }}</td>
+                                                    <td>{{ $downlineAffiliate->children->count() }}</td>
+                                                    <td> {{$downlineAffiliate->customer->orders->count()}} Adet, {{ core()->formatPrice($downlineAffiliate->customer->orders->whereNotIn('status', ['canceled', 'closed'])->sum('base_grand_total_invoiced')) }}
+                                                    </td>
+                                                    <td>
+                                                       €{{ number_format(array_sum($downlineAffiliate->getDescendantOrderTotalsPerLevel()), 2) }}
+                                                    </td>
+
+
+                                                    <td class="text-success fw-bold">
+                                                        €{{ number_format($downlineAffiliate->getTotalCommissionFromNetwork(), 2) }}
+                                                    </td>
+
+
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @endif
+
+
+
                             </div>
                         </div>
                     </div>
@@ -494,11 +508,12 @@
                                     <div class="card-body">
                                         <h3 class="text-muted mb-1">Bu Ayki Kazanç</h3>
                                         <h3 class="mb-0">
-                                            €{{ number_format($affiliate->commissions->where('created_at', '>=', now()->startOfMonth())->sum('amount'), 2) }}
+                                            €{{ number_format($affiliate->getThisMonthEarningsAttribute(), 2) }}
                                         </h3>
                                     </div>
                                 </div>
                             </div>
+
 
                             @if ($affiliate->getLastCommission())
                             <div class="col-md-4">
@@ -542,12 +557,12 @@
                                                         <td>{{ $commission->created_at->format('d.m.Y H:i') }}</td>
                                                         <td>
                                                             @if ($commission->from_affiliate_id)
-                                                                {{ $commission->fromAffiliate->customer->first_name ?? 'Bilinmiyor' }}
+                                                                {{ $commission->fromAffiliate->customer->getNameAttribute() ?? '-' }}
                                                                 @if ($commission->level > 1)
                                                                     <small class="text-muted">(Alt bayi)</small>
                                                                 @endif
                                                             @else
-                                                                <span class="text-primary">Direkt Satış</span>
+                                                                <span class="text-primary text-white">Direkt Satış</span>
                                                             @endif
                                                         </td>
                                                         <td><span
