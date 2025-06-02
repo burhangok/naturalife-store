@@ -29,7 +29,7 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
                                     <i class="ti ti-hierarchy me-2"></i> Temsilcilik Sistemi
                                 </button>
                                 <button class="nav-link text-start py-3 px-4 border-bottom" id="earnings-tab" data-bs-toggle="pill" data-bs-target="#earnings" type="button">
-                                    <i class="ti ti-currency-dollar me-2"></i> Kazanç Geçmişi
+                                    <i class="ti ti-currency-euro me-2"></i> Kazanç Geçmişi
                                 </button>
                                 <button class="nav-link text-start py-3 px-4 border-bottom" id="payments-tab" data-bs-toggle="pill" data-bs-target="#payments" type="button">
                                     <i class="ti ti-credit-card me-2"></i> Ödemeler & Cari
@@ -409,9 +409,10 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
                                                             @endif
                                                         </div>
                                                         <div class="col-6">
-                                                            <div class="text-muted small">Kullanım</div>
+                                                            <div class="text-muted small">Toplam Sipariş Adeti</div>
                                                             <div class="fw-bold">
-                                                                {{ $coupon->usage_per_customer ?? 0 }}/{{ $coupon->uses_per_coupon ?? '∞' }}
+                                                                {{$coupon->orders->count()}}
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -419,17 +420,17 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
                                                     <div class="mb-3">
                                                         <div class="row">
                                                             <div class="col-6">
-                                                                <small class="text-muted">Başlangıç:</small>
-                                                                <div class="small">
-                                                                    <i class="fas fa-calendar-plus text-success me-1"></i>
-                                                                    {{ $coupon->starts_from ? \Carbon\Carbon::parse($coupon->starts_from)->format('d.m.Y') : '-' }}
+                                                                <small class="text-muted">Komisyon Oranı:</small>
+                                                                <div class="medium">
+                                                                    <i class="ti ti-percentage text-primary me-1"></i>
+                                                                    {{ $coupon->commission_percentage ? $coupon->commission_percentage : '-' }}
                                                                 </div>
                                                             </div>
                                                             <div class="col-6">
-                                                                <small class="text-muted">Bitiş:</small>
+                                                                <small class="text-muted">Toplam Sipariş:</small>
                                                                 <div class="small">
-                                                                    <i class="fas fa-calendar-times text-danger me-1"></i>
-                                                                    {{ $coupon->ends_till ? \Carbon\Carbon::parse($coupon->ends_till)->format('d.m.Y') : '-' }}
+                                                                    <i class="fas fa-check text-success me-1"></i>
+                                                                    {{ core()->formatPrice($coupon->orders->sum('grand_total')) }}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -445,7 +446,7 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
                                                                 <div class="col-6">
                                                                     <small class="text-muted">Toplam Tutar</small>
                                                                     <div class="fw-bold text-success">
-                                                                        ₺{{ number_format($coupon->orders->sum('grand_total'), 2) }}
+                                                                        {{ core()->formatPrice($coupon->orders->sum('grand_total')) }}
                                                                     </div>
                                                                 </div>
                                                             </div>
