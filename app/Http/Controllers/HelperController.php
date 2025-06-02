@@ -36,21 +36,4 @@ class HelperController extends Controller
         return back();
     }
 
-    public
-        function getCountry(
-    ) {
-        $json = file_get_contents('https://api.hotelistan.com/getCountry/');
-
-        $data = json_decode($json, true);
-
-        $output = [];
-        foreach ($data as $row) {
-            foreach ($row as $key => $val) {
-                $output[$key] = $val;
-            }
-        }
-
-
-        return json_encode($output);
-    }
 }

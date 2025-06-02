@@ -67,7 +67,12 @@ class CartController extends APIController
             }
 
             $cart = Cart::addProduct($product, request()->all());
+// Eğer session'da kupon varsa otomatik uygula burhangok 02.06.2025
+if (session()->has('auto_apply_coupon')) {
+    $couponCode = session('auto_apply_coupon');
+    Cart::setCouponCode($couponCode);
 
+}
             return new JsonResource(array_merge([
                 'data'    => new CartResource($cart),
                 'message' => trans('shop::app.checkout.cart.item-add-to-cart'),

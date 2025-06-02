@@ -83,4 +83,15 @@ class HomeController extends Controller
 
         return back();
     }
+
+
+    //burhangok 02.06.2025
+    public function applyCoupon($code)
+    {
+        // Kupon kodunu session'a kaydet
+        session(['auto_apply_coupon' => $code]);
+
+        // Ana sayfaya veya ürün sayfasına yönlendir
+        return redirect('/')->with('success', 'Kupon kodu uygulandı: ' . $code);
+    }
 }

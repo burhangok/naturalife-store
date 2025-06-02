@@ -125,7 +125,7 @@
                 <div class="tab-content" id="v-pills-tabContent">
 
                     <!-- Dashboard Tab -->
-                    <div class="tab-pane fade " id="dashboard" role="tabpanel">
+                    <div class="tab-pane fade active show" id="dashboard" role="tabpanel">
                         <!-- İstatistik Kartları -->
                         <div class="row mb-4">
                             <div class="col-md-4">
@@ -351,7 +351,7 @@
                     </div>
 
                     <!-- Alt Temsilciler Tab -->
-                    <div class="tab-pane fade show active" id="network" role="tabpanel">
+                    <div class="tab-pane fade" id="network" role="tabpanel">
                         <!-- Alt Temsilci İstatistikleri -->
                         <div class="row mb-4">
                             <div class="col-md-6">

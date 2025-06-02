@@ -10,12 +10,15 @@ use App\Http\Controllers\Affiliate\AffiliateCommissionController;
 use App\Http\Controllers\AffiliatePaymentMethodController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HelperController;
+use Webkul\Shop\Http\Controllers\HomeController;
 
 // Link tracking
 Route::get('/ref/{code}', [AffiliateController::class, 'redirect']);
 Route::post('/affiliate/conversion/{conversionId?}', [AffiliateController::class, 'markConversion']);
 
-
+// routes/web.php
+Route::get('/promo/{code}', [HomeController::class, 'applyCoupon']);
+Route::get('/coupon/{code}', [HomeController::class, 'applyCoupon']);
 
 //musteri panel rotalari -- customer panel routes
 Route::prefix('customer')->group(function () {

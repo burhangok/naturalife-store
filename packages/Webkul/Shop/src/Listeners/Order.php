@@ -22,6 +22,11 @@ class Order extends Base
             }
 
             $this->prepareMail($order, new CreatedNotification($order));
+
+            //burhangok 02.06.2025
+
+
+            session()->forget('auto_apply_coupon');
         } catch (\Exception $e) {
             report($e);
         }
