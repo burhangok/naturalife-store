@@ -235,6 +235,10 @@ class Affiliate extends Model
         return $this->payments()->sum('amount');
     }
 
+    public function getFullName() {
+
+        return $this->customer->getNameAttribute();
+    }
     // Cari hesap bakiyesi
     public function getCurrentAccountBalanceAttribute()
     {

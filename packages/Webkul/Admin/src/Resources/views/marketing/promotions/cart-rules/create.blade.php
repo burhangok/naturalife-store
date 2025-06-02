@@ -102,7 +102,35 @@
 
                             <x-admin::form.control-group.error control-name="description" />
                         </x-admin::form.control-group>
+  <!-- burhangok -->
+<x-admin::form.control-group>
+    <x-admin::form.control-group.label>
+       İlişkili Temsilci
+    </x-admin::form.control-group.label>
 
+    <x-admin::form.control-group.control
+        type="select"
+        name="affiliate_id"
+        id="affiliate_id"
+        :label="trans('admin::app.marketing.promotions.cart-rules.create.affiliate')"
+        :placeholder="trans('admin::app.marketing.promotions.cart-rules.create.select-affiliate')"
+        :value="old('affiliate_id', $cartRule->affiliate_id ?? '')"
+    >
+        <option value="">
+            Temsilci Seçiniz
+        </option>
+
+        @if(isset($affiliates))
+            @foreach($affiliates as $affiliate)
+                <option value="{{ $affiliate->id }}">
+                    {{ $affiliate->getFullName() }} ({{ $affiliate->affiliate_code }})
+                </option>
+            @endforeach
+        @endif
+    </x-admin::form.control-group.control>
+
+    <x-admin::form.control-group.error control-name="affiliate_id" />
+</x-admin::form.control-group>
                         <x-admin::form.control-group>
                             <x-admin::form.control-group.label class="required">
                                 @lang('admin::app.marketing.promotions.cart-rules.create.coupon-type')

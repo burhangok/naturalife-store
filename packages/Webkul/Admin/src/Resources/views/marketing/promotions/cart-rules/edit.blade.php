@@ -109,6 +109,33 @@
                             <x-admin::form.control-group.error control-name="description" />
                         </x-admin::form.control-group>
 
+<!-- burhangok -->
+<x-admin::form.control-group>
+    <x-admin::form.control-group.label>
+        İlişkili Temsilci
+    </x-admin::form.control-group.label>
+
+    <x-admin::form.control-group.control
+        type="select"
+        name="affiliate_id"
+        id="affiliate_id"
+        :value="old('affiliate_id', $cartRule->affiliate_id ?? '')"
+    >
+        <option value="">
+            Temsilci Seçiniz
+        </option>
+
+        @if(isset($affiliates))
+            @foreach($affiliates as $affiliate)
+                <option value="{{ $affiliate->id }}"
+                    {{ old('affiliate_id', $cartRule->affiliate_id ?? '') == $affiliate->id ? 'selected' : '' }}>
+                    {{ $affiliate->getFullName() }} ({{ $affiliate->affiliate_code }})
+                </option>
+            @endforeach
+        @endif
+    </x-admin::form.control-group.control>
+</x-admin::form.control-group>
+
                         <!-- Coupon Type -->
                         <x-admin::form.control-group>
                             <x-admin::form.control-group.label class="required">
@@ -1148,7 +1175,7 @@
                             this.condition.operator = '{}';
 
                             if (
-                                ! this.condition.value 
+                                ! this.condition.value
                                 || ! Array.isArray(this.condition.value)
                             ) {
                                 this.condition.value = [];

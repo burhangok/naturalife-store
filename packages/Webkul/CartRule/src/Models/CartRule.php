@@ -2,6 +2,7 @@
 
 namespace Webkul\CartRule\Models;
 
+use App\Models\Affiliate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -42,6 +43,7 @@ class CartRule extends Model implements CartRuleContract
         'apply_to_shipping',
         'free_shipping',
         'sort_order',
+        'affiliate_id', // 02.06.2025 burhangok
     ];
 
     /**
@@ -53,6 +55,11 @@ class CartRule extends Model implements CartRuleContract
         'conditions' => 'array',
     ];
 
+     // Affiliate ilişkisi (eğer affiliate modeli varsa)
+     public function affiliate()
+     {
+         return $this->belongsTo(Affiliate::class);
+     }
     /**
      * Get the channels that owns the cart rule.
      */

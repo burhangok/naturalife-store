@@ -2,6 +2,7 @@
 
 namespace Webkul\Admin\Http\Controllers\Marketing\Promotions;
 
+use App\Models\Affiliate;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Event;
@@ -41,7 +42,9 @@ class CartRuleController extends Controller
      */
     public function create()
     {
-        return view('admin::marketing.promotions.cart-rules.create');
+        //burhangok 02.06.2025
+        $affiliates = Affiliate::where('status', 'active')->get();
+        return view('admin::marketing.promotions.cart-rules.create', compact('affiliates'));
     }
 
     /**
@@ -107,9 +110,11 @@ class CartRuleController extends Controller
      */
     public function edit(int $id)
     {
+        //burhangok 02.06.2025
         $cartRule = $this->cartRuleRepository->findOrFail($id);
+        $affiliates = Affiliate::where('status', 'active')->get();
 
-        return view('admin::marketing.promotions.cart-rules.edit', compact('cartRule'));
+        return view('admin::marketing.promotions.cart-rules.edit', compact('cartRule','affiliates'));
     }
 
     /**
