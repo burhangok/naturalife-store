@@ -130,6 +130,20 @@
     </x-admin::form.control-group.control>
 
     <x-admin::form.control-group.error control-name="affiliate_id" />
+
+
+</x-admin::form.control-group>
+<x-admin::form.control-group>
+    <x-admin::form.control-group.label>
+ Komisyon Oranı %
+     </x-admin::form.control-group.label>
+    <x-admin::form.control-group.control
+        type="number"
+        name="commission_percentage"
+        id="commission_percentage"
+        value="{{ old('commission_percentage') }}"
+        step="0.01"
+    />
 </x-admin::form.control-group>
                         <x-admin::form.control-group>
                             <x-admin::form.control-group.label class="required">

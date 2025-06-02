@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('cart_rules', function (Blueprint $table) {
             $table->unsignedBigInteger('affiliate_id')->nullable()->after('id');
+            $table->decimal('commission_percentage', 5, 2)->nullable()->comment('Komisyon oranı (%)');
             $table->index('affiliate_id');
         });
     }

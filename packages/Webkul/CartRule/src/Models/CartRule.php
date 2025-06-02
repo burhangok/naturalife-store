@@ -10,6 +10,7 @@ use Webkul\CartRule\Contracts\CartRule as CartRuleContract;
 use Webkul\Core\Database\Factories\CartRuleFactory;
 use Webkul\Core\Models\ChannelProxy;
 use Webkul\Customer\Models\CustomerGroupProxy;
+use Webkul\Sales\Models\Order;
 
 class CartRule extends Model implements CartRuleContract
 {
@@ -44,6 +45,7 @@ class CartRule extends Model implements CartRuleContract
         'free_shipping',
         'sort_order',
         'affiliate_id', // 02.06.2025 burhangok
+        'commission_percentage',// 02.06.2025 burhangok
     ];
 
     /**
@@ -138,5 +140,10 @@ class CartRule extends Model implements CartRuleContract
     protected static function newFactory(): Factory
     {
         return CartRuleFactory::new();
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'coupon_code', 'coupon_code');
     }
 }

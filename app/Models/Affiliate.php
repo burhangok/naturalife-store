@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\AffiliatePaymentMethod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Webkul\CartRule\Models\CartRule;
 use Webkul\Customer\Models\Customer;
 use Webkul\User\Models\Admin;
 
@@ -229,7 +230,10 @@ class Affiliate extends Model
     {
         return $this->hasMany(AffiliatePayment::class);
     }
-
+    public function cartrules()
+    {
+        return $this->hasMany(CartRule::class);
+    }
     public function getTotalPaidCommissionAttribute()
     {
         return $this->payments()->sum('amount');

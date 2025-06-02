@@ -12,34 +12,41 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
         <div class="row g-4">
             <div class="col-md-3">
                 <div class="card mb-3">
-                    <div class="card-header">
-                        <h3 class="mb-0"><b>Temsilci:</b> {{$affiliate->affiliate_code .'-'.$fullName}} </h3>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
-                            <button class="nav-link active text-start py-3 px-4 border-bottom" id="general-tab" data-bs-toggle="pill" data-bs-target="#general" type="button">
-                                <i class="fas fa-user me-2"></i> Genel Bilgiler
-                            </button>
-                            <button class="nav-link text-start py-3 px-4 border-bottom" id="commission-tab" data-bs-toggle="pill" data-bs-target="#commission" type="button">
-                                <i class="fas fa-percentage me-2"></i> Komisyon Ayarları
-                            </button>
-                            <button class="nav-link text-start py-3 px-4 border-bottom" id="network-tab" data-bs-toggle="pill" data-bs-target="#network" type="button">
-                                <i class="fas fa-sitemap me-2"></i> Temsilcilik Sistemi
-                            </button>
-                            <button class="nav-link text-start py-3 px-4 border-bottom" id="earnings-tab" data-bs-toggle="pill" data-bs-target="#earnings" type="button">
-                                <i class="fas fa-money-bill-wave me-2"></i> Kazanç Geçmişi
-                            </button>
-                            <button class="nav-link text-start py-3 px-4 border-bottom" id="payments-tab" data-bs-toggle="pill" data-bs-target="#payments" type="button">
-                                <i class="fas fa-money-bill-wave me-2"></i> Ödemeler & Cari
-                            </button>
-                            <button class="nav-link text-start py-3 px-4 border-bottom" id="orders-tab" data-bs-toggle="pill" data-bs-target="#orders" type="button">
-                                <i class="fas fa-money-bill-wave me-2"></i> Siparişler
-                            </button>
-                            <button class="nav-link text-start py-3 px-4" id="settings-tab" data-bs-toggle="pill" data-bs-target="#settings" type="button">
-                                <i class="fas fa-cog me-2"></i> Ödeme Tercihleri
-                            </button>
+
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h3 class="mb-0"><b>Temsilci:</b> {{$affiliate->affiliate_code .'-'.$fullName}} </h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+                                <button class="nav-link active text-start py-3 px-4 border-bottom" id="general-tab" data-bs-toggle="pill" data-bs-target="#general" type="button">
+                                    <i class="ti ti-user me-2"></i> Genel Bilgiler
+                                </button>
+                                <button class="nav-link text-start py-3 px-4 border-bottom" id="commission-tab" data-bs-toggle="pill" data-bs-target="#commission" type="button">
+                                    <i class="ti ti-percentage me-2"></i> Komisyon Ayarları
+                                </button>
+                                <button class="nav-link text-start py-3 px-4 border-bottom" id="network-tab" data-bs-toggle="pill" data-bs-target="#network" type="button">
+                                    <i class="ti ti-hierarchy me-2"></i> Temsilcilik Sistemi
+                                </button>
+                                <button class="nav-link text-start py-3 px-4 border-bottom" id="earnings-tab" data-bs-toggle="pill" data-bs-target="#earnings" type="button">
+                                    <i class="ti ti-currency-dollar me-2"></i> Kazanç Geçmişi
+                                </button>
+                                <button class="nav-link text-start py-3 px-4 border-bottom" id="payments-tab" data-bs-toggle="pill" data-bs-target="#payments" type="button">
+                                    <i class="ti ti-credit-card me-2"></i> Ödemeler & Cari
+                                </button>
+                                <button class="nav-link text-start py-3 px-4 border-bottom" id="coupons-tab" data-bs-toggle="pill" data-bs-target="#coupons" type="button">
+                                    <i class="ti ti-ticket me-2"></i> Kuponlar
+                                </button>
+                                <button class="nav-link text-start py-3 px-4 border-bottom" id="orders-tab" data-bs-toggle="pill" data-bs-target="#orders" type="button">
+                                    <i class="ti ti-shopping-cart me-2"></i> Siparişleri
+                                </button>
+                                <button class="nav-link text-start py-3 px-4" id="settings-tab" data-bs-toggle="pill" data-bs-target="#settings" type="button">
+                                    <i class="ti ti-settings me-2"></i> Ödeme Tercihleri
+                                </button>
+                            </div>
                         </div>
                     </div>
+
                 </div>
 <div class="card shadow-sm mb-4">
   <div class="card-header d-flex align-items-center">
@@ -310,19 +317,13 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
                     <div class="tab-pane fade" id="commission" role="tabpanel">
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="mb-0">Komisyon Yapılandırması</h5>
+                                <h5 class="mb-0">Komisyon Oranları</h5>
                             </div>
                             <div class="card-body">
                                 <div class="alert alert-info">
-                                    <i class="fas fa-info-circle me-2"></i> Burada temsilci için özel komisyon oranları ayarlayabilirsiniz. Değişiklik yapılmadığında sistem genelindeki oranlar geçerli olacaktır.
-                                </div>
+                                    <i class="fas fa-info-circle me-2"></i>        </div>
 
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="useCustom">
-                                    <label class="form-check-label" for="useCustom">
-                                        Özel komisyon oranlarını kullan
-                                    </label>
-                                </div>
+
 
                                 <div class="row">
 
@@ -367,7 +368,229 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
                         </div>
                     </div>
 
-                        <!-- Komisyon Ayarları -->
+                    <div class="tab-pane fade" id="coupons" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Kupon Kodları</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Burada temsilci ile ilişkilendirdiğiniz kupon kodlarını görebilirsiniz.
+                                </div>
+
+                                <div class="row">
+                                    @forelse($affiliate->cartRules ?? [] as $coupon)
+                                        <div class="col-md-6 col-lg-4 mb-4">
+                                            <div class="card border-start border-4 {{ $coupon->status ? 'border-success' : 'border-danger' }} h-100">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                                        <div>
+                                                            <h6 class="card-title mb-1 fw-bold text-primary">
+                                                                {{ $coupon->name }}
+                                                            </h6>
+                                                            <small class="text-muted">
+                                                                <i class="fas fa-tag me-1"></i>
+                                                                {{ $coupon->coupon_code ?? 'Kod Yok' }}
+                                                            </small>
+                                                        </div>
+                                                        <span class="badge {{ $coupon->status ? 'bg-success' : 'bg-danger' }} text-white">
+                                                            {{ $coupon->status ? 'Aktif' : 'Pasif' }}
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="row text-center mb-3">
+                                                        <div class="col-6">
+                                                            <div class="text-muted small">İndirim</div>
+                                                            @if($coupon->action_type == 'by_percent')
+                                                                <div class="fw-bold text-success">%{{ $coupon->discount_amount }}</div>
+                                                            @else
+                                                                <div class="fw-bold text-success">₺{{ number_format($coupon->discount_amount, 2) }}</div>
+                                                            @endif
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <div class="text-muted small">Kullanım</div>
+                                                            <div class="fw-bold">
+                                                                {{ $coupon->usage_per_customer ?? 0 }}/{{ $coupon->uses_per_coupon ?? '∞' }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <small class="text-muted">Başlangıç:</small>
+                                                                <div class="small">
+                                                                    <i class="fas fa-calendar-plus text-success me-1"></i>
+                                                                    {{ $coupon->starts_from ? \Carbon\Carbon::parse($coupon->starts_from)->format('d.m.Y') : '-' }}
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <small class="text-muted">Bitiş:</small>
+                                                                <div class="small">
+                                                                    <i class="fas fa-calendar-times text-danger me-1"></i>
+                                                                    {{ $coupon->ends_till ? \Carbon\Carbon::parse($coupon->ends_till)->format('d.m.Y') : '-' }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    @if($coupon->orders && $coupon->orders->count() > 0)
+                                                        <div class="bg-light rounded p-2 mb-3">
+                                                            <div class="row text-center">
+                                                                <div class="col-6">
+                                                                    <small class="text-muted">Toplam Sipariş</small>
+                                                                    <div class="fw-bold text-primary">{{ $coupon->orders->count() }}</div>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <small class="text-muted">Toplam Tutar</small>
+                                                                    <div class="fw-bold text-success">
+                                                                        ₺{{ number_format($coupon->orders->sum('grand_total'), 2) }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+
+                                                    @if($coupon->conditions)
+                                                        <div class="mb-3">
+                                                            <small class="text-muted">Koşullar:</small>
+                                                            <div class="small text-info">
+                                                                @php
+                                                                    $conditions = json_decode($coupon->conditions, true);
+                                                                @endphp
+                                                                @if(isset($conditions['cart']['total_quantity']))
+                                                                    <i class="fas fa-shopping-cart me-1"></i>
+                                                                    Min. {{ $conditions['cart']['total_quantity'] }} ürün
+                                                                @endif
+                                                                @if(isset($conditions['cart']['base_total']))
+                                                                    <br><i class="fas fa-money-bill me-1"></i>
+                                                                    Min. ₺{{ number_format($conditions['cart']['base_total'], 2) }}
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                </div>
+
+                                                <div class="card-footer bg-transparent border-top-0 pt-0">
+                                                    <div class="btn-group w-100" role="group">
+                                                        <button type="button"
+                                                                class="btn btn-outline-primary btn-sm"
+                                                                onclick="showCouponDetails({{ $coupon->id }})"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#couponDetailModal">
+                                                            <i class="fas fa-eye me-1"></i>
+                                                            Detaylar
+                                                        </button>
+                                                        @if($coupon->orders && $coupon->orders->count() > 0)
+                                                            <button type="button"
+                                                                    class="btn btn-outline-success btn-sm"
+                                                                    onclick="showCouponOrders({{ $coupon->id }})"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#couponOrdersModal">
+                                                                <i class="fas fa-list-alt me-1"></i>
+                                                                Siparişler ({{ $coupon->orders->count() }})
+                                                            </button>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="col-12">
+                                            <div class="card bg-light">
+                                                <div class="card-body text-center py-5">
+                                                    <i class="fas fa-ticket-alt fa-3x text-muted mb-3"></i>
+                                                    <h5 class="text-muted">Henüz Kupon Bulunamadı</h5>
+                                                    <p class="text-muted mb-4">Bu temsilci ile ilişkilendirilmiş herhangi bir kupon kodu bulunmuyor.</p>
+                                                    <a href="{{ route('admin.marketing.promotions.cart_rules.create') }}" class="btn btn-primary">
+                                                        <i class="fas fa-plus me-2"></i>
+                                                        Yeni Kupon Oluştur
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforelse
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kupon Detay Modal -->
+                    <div class="modal fade" id="couponDetailModal" tabindex="-1" aria-labelledby="couponDetailModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="couponDetailModalLabel">
+                                        <i class="fas fa-ticket-alt me-2"></i>
+                                        Kupon Detayları
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body" id="couponDetailContent">
+                                    <!-- Ajax ile yüklenecek -->
+                                    <div class="text-center py-4">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Yükleniyor...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kupon Siparişleri Modal -->
+                    <div class="modal fade" id="couponOrdersModal" tabindex="-1" aria-labelledby="couponOrdersModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="couponOrdersModalLabel">
+                                        <i class="fas fa-list-alt me-2"></i>
+                                        Kupon Siparişleri
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body" id="couponOrdersContent">
+                                    <!-- Ajax ile yüklenecek -->
+                                    <div class="text-center py-4">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Yükleniyor...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                    function showCouponDetails(couponId) {
+                        // Ajax ile kupon detaylarını yükle
+                        fetch(`/admin/affiliatemodule/admin/affiliates/coupon-details/${couponId}`)
+                            .then(response => response.text())
+                            .then(html => {
+                                document.getElementById('couponDetailContent').innerHTML = html;
+                            })
+                            .catch(error => {
+                                document.getElementById('couponDetailContent').innerHTML =
+                                    '<div class="alert alert-danger">Detaylar yüklenirken hata oluştu.</div>';
+                            });
+                    }
+
+                    function showCouponOrders(couponId) {
+                        // Ajax ile kupon siparişlerini yükle
+                        fetch(`/admin/affiliatemodule/admin/affiliates/coupon-orders/${couponId}`)
+                            .then(response => response.text())
+                            .then(html => {
+                                document.getElementById('couponOrdersContent').innerHTML = html;
+                            })
+                            .catch(error => {
+                                document.getElementById('couponOrdersContent').innerHTML =
+                                    '<div class="alert alert-danger">Siparişler yüklenirken hata oluştu.</div>';
+                            });
+                    }
+                    </script>
+
+                        <!-- Siperişer Ayarları -->
                         <div class="tab-pane fade" id="orders" role="tabpanel">
                             <div class="card">
                                 <div class="card-header">

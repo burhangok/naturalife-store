@@ -74,7 +74,10 @@ Route::group(['middleware' => ['web', 'admin'], 'prefix' => config('app.admin_ur
                 'view' => 'affiliatemodule::admin.affiliates.edit',
             ])->name('admin.affiliatemodule.admin.affiliates.edit');
 
-            Route::put('/{id}', [AffiliateController::class, 'update'])->defaults('_config', [
+                // routes/admin.php
+                Route::get('/coupon-details/{id}', [AffiliateController::class, 'getCouponDetails']);
+                   Route::get('/coupon-orders/{id}', [AffiliateController::class, 'getCouponOrders']);
+                               Route::put('/{id}', [AffiliateController::class, 'update'])->defaults('_config', [
                 'redirect' => 'admin.affiliatemodule.affiliates.index',
             ])->name('admin.affiliatemodule.admin.affiliates.update');
 
