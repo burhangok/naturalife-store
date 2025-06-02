@@ -41,9 +41,18 @@
   <!-- Tablo Kartı -->
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Temsilci Listesi</h3>
-    </div>
-
+        <div class="row align-items-center">
+          <div class="col">
+            <h3 class="card-title">Temsilci Listesi</h3>
+          </div>
+          <div class="col-auto">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAffiliateModal">
+              <i class="fas fa-plus"></i>
+              Yeni Temsilci Ekle
+            </button>
+          </div>
+        </div>
+      </div>
     <div class="table-responsive">
       <table class="table table-vcenter card-table table-striped dataListTable">
         <thead>
@@ -118,7 +127,10 @@
                     Yeni bir temsilci ekleyerek başlayabilirsiniz.
                   </p>
                   <div class="empty-action">
-
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAffiliateModal">
+                      <i class="fas fa-plus"></i>
+                      İlk Temsilciyi Ekle
+                    </button>
                   </div>
                 </div>
               </td>
@@ -130,7 +142,146 @@
 
   </div>
 </div>
+<!-- Yeni Affiliate Ekleme Modal -->
+<div class="modal modal-blur fade" id="addAffiliateModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-user-plus me-2"></i>
+                    Yeni Temsilci Tanımla
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
+            <form action="{{ route('admin.affiliatemodule.admin.affiliates.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Müşteri Seçimi -->
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label required">
+                                    <i class="fas fa-user me-1"></i>
+                                    Müşteri
+                                </label>
+                                <select class="form-select" name="customer_id" required>
+                                    <option value="">Müşteri Seçiniz</option>
+                                    @foreach($customers as $customer)
+                                        <option value="{{ $customer->id }}">
+                                            {{ $customer->first_name }} {{ $customer->last_name }}
+                                            ({{ $customer->email }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <small class="form-hint">Temsilci olacak müşteriyi seçiniz</small>
+                            </div>
+                        </div>
+
+                        <!-- Üst Affiliate Seçimi -->
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-sitemap me-1"></i>
+                                    Üst Temsilci
+                                </label>
+                                <select class="form-select" name="parent_id">
+                                    <option value="">Üst Temsilci Yok (Ana Seviye)</option>
+                                    @foreach($affiliates as $affiliate)
+                                        <option value="{{ $affiliate->id }}">
+                                            {{ $affiliate->customer->first_name }} {{ $affiliate->customer->last_name }}
+                                            ({{ $affiliate->affiliate_code }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <small class="form-hint">Opsiyonel: Bu temsilcinin bağlı olacağı üst/sponsor temsilci</small>
+                            </div>
+                        </div>
+
+                        <!-- Affiliate Kodu -->
+                        <div class="col-lg-12">
+                            <div class="mb-3">
+                                <label class="form-label ">
+                                    <i class="fas fa-code me-1"></i>
+                                    Temsilci Kodu
+                                </label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="affiliate_code"
+                                           placeholder="Örn: AFF123456" maxlength="16" >
+                                    <button class="btn btn-outline-secondary" type="button" onclick="generateAffiliateCode()">
+                                        <i class="fas fa-dice me-1"></i>
+                                        Oluştur
+                                    </button>
+                                </div>
+                                <small class="form-hint">Benzersiz temsilci kodu</small>
+                            </div>
+                        </div>
+
+
+
+
+
+
+                        <!-- Açıklama -->
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-comment-alt me-1"></i>
+                                    Açıklama
+                                </label>
+                                <textarea class="form-control" name="description" rows="3"
+                                          placeholder="Bu affiliate hakkında notlar..."></textarea>
+                                <small class="form-hint">Opsiyonel: Affiliate hakkında ek bilgiler</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bilgi Kutusu -->
+                    <div class="alert alert-info">
+                        <div class="d-flex">
+                            <div>
+                                <i class="fas fa-info-circle me-2"></i>
+                            </div>
+                            <div>
+                                <h4>Bilgi</h4>
+                                <div class="text-muted">
+                                    • Temsilci kodu benzersiz olmalıdır<br>
+                                    • Üst temsilci seçilirse, seviye otomatik olarak hesaplanır<br>
+                                    • Katılma tarihi otomatik olarak şu anki tarih olarak kaydedilir
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>
+                        İptal
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i>
+                       Oluştur
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Affiliate kodu otomatik oluşturma fonksiyonu
+function generateAffiliateCode() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = 'AFF';
+    for (let i = 0; i < 4; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    document.querySelector('input[name="affiliate_code"]').value = result;
+}
+
+
+</script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));

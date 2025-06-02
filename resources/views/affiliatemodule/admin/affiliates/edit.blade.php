@@ -646,6 +646,9 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
                                     </div>
                                 </div>
 
+                                @if ($affiliate->payments()->exists())
+
+
                                 <!-- Ödeme Geçmişi Tablosu -->
                                 <div class="table-responsive">
                                     <table class="table table-striped dataListTable">
@@ -702,7 +705,7 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
                                         </tbody>
                                     </table>
                                 </div>
-
+                                @endif
                                 <!-- Son Ödeme Bilgisi -->
                                 @if($affiliate->getLastPayment())
                                 <div class="mt-4">

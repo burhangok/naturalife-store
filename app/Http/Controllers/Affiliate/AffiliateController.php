@@ -26,13 +26,17 @@ class AffiliateController extends Controller
      */
     public function index()
     {
+        $existingAffiliateCustomerIds = Affiliate::pluck('customer_id')->toArray();
+        $customers = Customer::whereNotIn('id', $existingAffiliateCustomerIds)
+            ->orderBy('first_name')
+            ->get();
         $affiliates = Affiliate::with('customer', 'children')
 
             ->orderBy('id', 'desc')->get();
 
 
 
-        return view('affiliatemodule.admin.affiliates.index', compact('affiliates'));
+        return view('affiliatemodule.admin.affiliates.index', compact('affiliates', 'customers'));
     }
 
     /**
@@ -47,60 +51,55 @@ class AffiliateController extends Controller
     }
 
 
-  public function store(Request $request)
-{
-    try {
-        $customerId = auth()->guard('customer')->user()->id;
-
-        // Generate unique affiliate code
-        $affiliateCode = $this->generateUniqueAffiliateCode($customerId);
-
-        // Calculate level based on parent
-        $level = 0;
-        $parentId = null;
-
-        // Affiliate kodu kontrolü
-        if ($request->affiliate_code != 'AFFLN_O01') {
-            $parentAffiliate = Affiliate::where('affiliate_code', $request->affiliate_code)->first();
-
-            if (!$parentAffiliate) {
-                return back()->with('error', 'Geçersiz temsilci kodu. Lütfen tekrar deneyin.');
+    public function store(Request $request)
+    {
+        try {
+            // Kullanıcının zaten temsilci olup olmadığını kontrol et
+            $existingAffiliate = Affiliate::where('affiliate_code', $request->affiliate_code)->first();
+            if ($existingAffiliate) {
+                return back()->with('error', 'Bu temsilci kodu kullanılmaktadır. Başka bir kod deneyiniz!');
             }
 
-            $parentId = $parentAffiliate->id;
-            $level = $parentAffiliate->level + 1;
+
+            if (!$request->affiliate_code)
+                $request->affiliate_code = $this->generateUniqueAffiliateCode($request->customer_id);
+
+            $level = 0;
+
+            if ($request->parent_id) {
+                $parentAffiliate = Affiliate::find($request->parent_id);
+                if ($parentAffiliate) {
+                    $level = $parentAffiliate->level + 1;
+                } else {
+                    return back()->with('error', 'Seçilen üst temsilci bulunamadı.');
+                }
+            }
+
+
+            $affiliate = new Affiliate();
+            $affiliate->parent_id = $request->parent_id ?: null;
+            $affiliate->customer_id = $request->customer_id;
+            $affiliate->affiliate_code = $request->affiliate_code;
+            $affiliate->level = $level;
+            $affiliate->status = "active";
+            $affiliate->joined_at = Carbon::now('Europe/Berlin');
+            $affiliate->save();
+
+            $customer = Customer::find($request->customer_id);
+            if (!$customer) {
+                return back()->with('error', 'Müşteri bilgisi bulunamadı.');
+            }
+
+            $customer->customer_group_id = 4;
+            $customer->save();
+
+            return back()->with('success', 'Temsilcilik sistemine kaydınız başarıyla tamamlanmıştır.');
+
+        } catch (\Exception $e) {
+            Log::error('Temsilci kayıt hatası: ' . $e->getMessage());
+            return back()->with('error', 'Kayıt işlemi sırasında bir hata oluştu. Lütfen daha sonra tekrar deneyin. ' . $e->getMessage());
         }
-
-        // Kullanıcının zaten temsilci olup olmadığını kontrol et
-        $existingAffiliate = Affiliate::where('customer_id', $customerId)->first();
-        if ($existingAffiliate) {
-            return back()->with('error', 'Zaten temsilcilik sistemine kayıtlısınız.');
-        }
-
-        $affiliate = new Affiliate();
-        $affiliate->parent_id = $parentId;
-        $affiliate->customer_id = $customerId;
-        $affiliate->affiliate_code = $affiliateCode;
-        $affiliate->level = $level;
-        $affiliate->status = "active";
-        $affiliate->joined_at = Carbon::now('Europe/Berlin');
-        $affiliate->save();
-
-        $customer = Customer::find($customerId);
-        if (!$customer) {
-            return back()->with('error', 'Müşteri bilgisi bulunamadı.');
-        }
-
-        $customer->customer_group_id = 4;
-        $customer->save();
-
-        return back()->with('success', 'Temsilcilik sistemine kaydınız başarıyla tamamlanmıştır.');
-
-    } catch (\Exception $e) {
-        Log::error('Temsilci kayıt hatası: ' . $e->getMessage());
-        return back()->with('error', 'Kayıt işlemi sırasında bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
     }
-}
 
     /**
      * Display the specified affiliate.
@@ -256,7 +255,7 @@ class AffiliateController extends Controller
                         return $query->whereBetween('created_at', [$startDate, $endDate]);
                     })
                     ->orderBy('created_at', 'desc')
-                  ->get();
+                    ->get();
 
                 // Toplam kazançları hesapla
                 $totalEarnings = $affiliate->commissions()
