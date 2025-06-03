@@ -600,7 +600,9 @@
                                         <dd class="col-sm-8">{{ $commission->affiliate_id }}/{{ $commission->affiliate->affiliate_code  }}</dd>
 
                                         <dt class="col-sm-4">Komisyon Seviyesi:</dt>
-                                        <dd class="col-sm-8">{{ $commission->level }}. Seviye</dd>
+                                        <dd class="col-sm-8">@if ($order->coupon_code)
+Kupon Satış Komisyonu
+                                        @else {{ $commission->level }}. Seviye @endif</dd>
 
 
                                     </dl>
