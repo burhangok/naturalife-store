@@ -577,7 +577,7 @@
                     <div class="card mb-3">
                         <div class="card-header bg-light d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">
-                                {{ $commission->level }}. Seviye Komisyon: {{ number_format($commission->amount, 2) }} Euro -
+                                @if ($order->coupon_code) Kupon Satış Komisyonu @else     {{ $commission->level }}. Seviye @endif Komisyon: {{ number_format($commission->amount, 2) }} Euro -
                                 @if($commission->affiliate)
                                 #{{ $commission->affiliate_id }} - {{ $commission->affiliate->affiliate_code }}
                                 {{ $commission->affiliate->customer->getNameAttribute()  ?? $commission->affiliate->email }}
@@ -632,7 +632,7 @@
                             <div class="mt-3">
                                 <h6 class="font-weight-bold">Komisyon Açıklaması:</h6>
                                 <div class="p-3 bg-light rounded">
-                                    Sipariş #{{ $commission->order_id }} için {{ $commission->level }}. seviye komisyon (Sepet Tutarı: {{ number_format(($commission->amount / ($commission->percentage/100)), 2) }} Euro)
+                        {{$commission->description}}
                                 </div>
                             </div>
                             @else
@@ -647,7 +647,11 @@
                             <div class="mt-3">
                                 <h6 class="font-weight-bold">Detaylı Açıklama:</h6>
                                 <div class="p-3 bg-light rounded">
-                                    @if($commission->level == 1)
+                                 @if ($order->coupon_code)
+Kupon ile yapılan alışverişten kazanılan komisyon.
+                                @else
+
+                        @if($commission->level == 1)
                                         Bu komisyon, {{ $commission->affiliate->name ?? ''}} adlı temsilcinin doğrudan satışından elde edilmiştir.
                                         Sipariş #{{ $commission->order_id }} için %{{ number_format($commission->percentage, 2) }} oranında
                                         toplam {{ number_format($commission->amount, 2) }} Euro komisyon ödenecektir.
@@ -659,6 +663,8 @@
                                         #{{ $commission->affiliate_id }} - {{ $commission->affiliate->name ?? $commission->affiliate->email }} adlı temsilciye
                                         %{{ number_format($commission->percentage, 2) }} oranında toplam {{ number_format($commission->amount, 2) }} Euro
                                         komisyon ödenecektir.
+
+                                    @endif
 
                                     @endif
                                 </div>

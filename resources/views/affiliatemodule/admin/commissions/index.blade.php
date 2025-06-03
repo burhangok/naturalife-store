@@ -82,14 +82,17 @@
                                         <span class="mx-2">|</span>
                                         <i class="fas fa-hand-holding-usd me-1"></i> Dağıtılan Komisyon:
                                         <strong class="text-success">{{ core()->formatBasePrice($totalCommission) }} €</strong>
-                                        + Temsilci İndirimi: <strong class="text-danger">{{ core()->formatBasePrice($order->base_discount_amount) }}</strong>
+                                        +  @if ($order->coupon_code)
+Kupondan
+                                        @endif Yapılan İndirim: <strong class="text-danger">{{ core()->formatBasePrice($order->base_discount_amount) }}</strong>
                                         = <strong class="text-primary">{{ core()->formatBasePrice($order->base_discount_amount + $totalCommission) }} </strong>
                                         <span class="mx-2">|</span>
                                         <i class="fas fa-user me-1"></i> Siparişi Veren:
-                                        <strong>{{ $order->customer->first_name .' '.$order->customer->last_name }}</strong>
+                                        <strong>{{ $order->customer ? ($order->customer->first_name . ' ' . $order->customer->last_name) : '' }}</strong>
+
                                         <span class="mx-2">|</span>
                                         <i class="fas fa-shopping-cart me-1"></i> Sepet Tutarı:
-                                        <strong class="text-dark">{{ core()->formatBasePrice($order->grand_total) }} €</strong>
+                                        <strong class="text-dark">{{ core()->formatBasePrice($order->grand_total) }} </strong>
                                     </div>
                                 @else
                                     <div class="small text-danger">
@@ -152,7 +155,7 @@
                                                 <span class="text-muted">-</span>
                                             @endif
                                         </td>
-                                        <td><span class="badge bg-blue-lt">Seviye {{ $commission->level }}</span></td>
+                                        <td>@if ($order->coupon_code) <span class="badge bg-danger-lt">Kupon Satış Komisyonu</span>@else<span class="badge bg-blue-lt">Seviye {{ $commission->level }}</span>@endif</td>
                                         <td><span class="text-green fw-bold">%{{ $commission->percentage }}</span></td>
                                         <td><span class="fw-bold">{{ number_format($commission->amount, 2) }} €</span></td>
                                         <td><span class="text-muted">{{ $commission->created_at->format('d.m.Y H:i') }}</span></td>
@@ -172,7 +175,10 @@
                                             <div class="card border shadow-sm">
                                                 <div class="card-body">
                                                     <div class="d-flex justify-content-between align-items-center mb-3">
-                                                        <h4 class="card-title mb-0"><i class="fas fa-info-circle me-2 text-primary"></i><strong class="text-muted">Komisyon ID:</strong> {{ $commission->id }}   <span class="badge bg-blue-lt">Seviye {{ $commission->level }}</span>
+                                                        <h4 class="card-title mb-0"><i class="fas fa-info-circle me-2 text-primary"></i><strong class="text-muted">Komisyon ID:</strong> {{ $commission->id }}
+
+                                                            @if ($order->coupon_code) <span class="badge bg-danger-lt">Kupon Satış Komisyonu</span>@else<span class="badge bg-blue-lt">Seviye {{ $commission->level }}</span>@endif
+
                                                         </h4>
 
                                                     </div>

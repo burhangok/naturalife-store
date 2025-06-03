@@ -3,10 +3,12 @@
 namespace Webkul\Sales\Repositories;
 
 use App\Http\Controllers\Affiliate\AffiliateCommissionController;
+use App\Models\AffiliateCommission;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
+use Webkul\CartRule\Models\CartRule;
 use Webkul\Core\Eloquent\Repository;
 use Webkul\Product\Repositories\ProductCustomizableOptionRepository;
 use Webkul\Sales\Contracts\Order as OrderContract;
@@ -307,13 +309,13 @@ class OrderRepository extends Repository
 
             if ($this->isInCompletedState($order)) {
                 $status = Order::STATUS_COMPLETED;
-
                 //burhangok - 10.05.2025
+                if($order->customer)
                 AffiliateCommissionController::createCommissions($order);
                 //burhangok - 10.05.2025
 
-                //burhangok - 24.05.2025
-
+                //burhangok - 02.06.2025
+                $this->calculateCouponCommission($order);
 
 
             }
@@ -331,7 +333,54 @@ class OrderRepository extends Repository
 
         Event::dispatch('sales.order.update-status.after', $order);
     }
+    private function calculateCouponCommission($order)
+    {
+        try {
+            // Kupon kodu kontrolü
+            if (!$order->coupon_code) {
+                return;
+            }
 
+            // Kupon kodunu cart_rule_coupons tablosundan bul
+            $cartRuleCoupon = \Webkul\CartRule\Models\CartRuleCoupon::where('code', $order->coupon_code)->first();
+
+            if (!$cartRuleCoupon) {
+                return;
+            }
+
+            // İlişkili cart rule'u al
+            $cartRule = $cartRuleCoupon->cart_rule;
+
+            if (!$cartRule || !$cartRule->affiliate_id || !$cartRule->commission_percentage) {
+                return;
+            }
+
+            // Komisyon tutarını hesapla
+            $commissionAmount = ($order->grand_total * $cartRule->commission_percentage) / 100;
+
+
+            AffiliateCommission::create([
+                'affiliate_id' => $cartRule->affiliate_id,
+                'order_id' => $order->increment_id,
+                'from_affiliate_id' => $cartRule->affiliate_id,
+                'level' => 1,
+                'amount' => $commissionAmount,
+                'percentage' => $cartRule->commission_percentage,
+                'description' => "Sipariş #{$order->increment_id} için kupon kodu ({$order->coupon_code}) komisyonu (Sepet Tutarı: " . number_format($order->grand_total, 2) . " €)"
+            ]);
+
+
+        } catch (\Exception $e) {
+            \Log::error('Coupon Commission Error: ' . $e->getMessage(), [
+                'order_id' => $order->id ?? null,
+                'coupon_code' => $order->coupon_code ?? null,
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            dd($e->getMessage());
+            return;
+        }
+    }
     /**
      * Collect totals.
      *

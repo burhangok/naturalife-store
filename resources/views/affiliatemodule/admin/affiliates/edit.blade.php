@@ -1083,8 +1083,13 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
                                                 @forelse($affiliate->commissions as $commission)
                                                     <tr>
                                                         <td>{{ $commission->created_at->format('d.m.Y') }}</td>
-                                                        <td>{{ $commission->order_id ?? '-' }}</td>
+                                                        <td> <a href="{{ route('admin.sales.orders.view', $orderId ?? '') }}" class="text-decoration-none" title="Siparişi Görüntüle">
+                                                            <i class="fas fa-external-link-alt text-primary fs-5"></i>  {{ $commission->order_id ?? '-' }}</a></td>
                                                         <td>
+                                                            @if ($commission->order->coupon_code)
+
+                                                            ( {{$commission->order->coupon_code}} Kupon Satış Komisyonu)
+                                                            @else
                                                             @if($commission->from_affiliate_id)
                                                                 {{ $commission->fromAffiliate->affiliate_code.' - '. $commission->fromAffiliate->customer->first_name.' ' .$commission->fromAffiliate->customer->last_name ?? 'Bilinmiyor' }}
                                                                 @if($commission->level > 1)
@@ -1095,8 +1100,10 @@ $fullName=$affiliate->customer->first_name.' '.$affiliate->customer->last_name;
                                                             @else
                                                                 Direkt Satış
                                                             @endif
+                                                            @endif
                                                         </td>
-                                                        <td>Seviye {{ $commission->level }}</td>
+                                                        <td>@if ($commission->order->coupon_code) <span class="badge bg-danger-lt">Kupon Satış Komisyonu</span>@else<span class="badge bg-blue-lt">Seviye {{ $commission->level }}</span>@endif</td>
+
                                                         <td>€{{ number_format($commission->amount, 2, ',', '.') }}</td>
                                                         <td>{{ $commission->description ?? '-' }}</td>
 
