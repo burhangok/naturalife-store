@@ -158,6 +158,15 @@
                                     <span class="nav-link-title">Komisyonlar</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link  {{ request()->is('admin/affiliatemodule/admin/couponreports*') ? 'active' : '' }}" href="{{ route('admin.affiliatemodule.admin.couponreports.index') }}">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="ti ti-cash"></i>
+                                    </span>
+                                    <span class="nav-link-title">Kupon Raporları</span>
+                                </a>
+                            </li>
+
 
                             <li class="nav-item">
                                 <a class="nav-link  {{ request()->is('admin/affiliatemodule/admin/commissionrules*') ? 'active' : '' }}" href="{{ route('admin.affiliatemodule.admin.commissionrules.index') }}">

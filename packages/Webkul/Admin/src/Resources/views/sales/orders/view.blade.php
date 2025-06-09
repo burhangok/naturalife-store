@@ -563,7 +563,7 @@
                     <div class="alert alert-info row">
                         <div class="col-md-6">
                         <i class="fas fa-bill"></i>
-                        <strong>Toplam Komisyon Tutarı:</strong> {{ core()->formatBasePrice($totalCommission) }}  + {{core()->formatBasePrice($item->base_discount_amount)}} : <b>{{core()->formatBasePrice($item->base_discount_amount + $totalCommission)}}</b>
+                        <strong>Toplam Komisyon Tutarı:</strong> {{ core()->formatBasePrice($totalCommission) }}  + Yapılan İndirim:  {{core()->formatBasePrice($item->base_discount_amount)}} : <b>{{core()->formatBasePrice($item->base_discount_amount + $totalCommission)}}</b>
                         </div>    <div class="col-md-6"><i class="fas fa-info-circle"></i>
                        @php
                        $orderTotal= $order->base_sub_total-$order->base_discount_amount;
@@ -577,19 +577,18 @@
                     <div class="card mb-3">
                         <div class="card-header bg-light d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">
-                                @if ($order->coupon_code) Kupon Satış Komisyonu @else     {{ $commission->level }}. Seviye @endif Komisyon: {{ number_format($commission->amount, 2) }} Euro -
+                                @if ($order->coupon_code) <span class="badge bg-danger me-1">Kupon Satış Komisyonu</span>   @else     <span class="badge bg-warning me-1">{{ $commission->level }}. Seviye </span> @endif  <span class="badge bg-success me-1">Kazanılan Komisyon: {{ core()->formatPrice($commission->amount) }} </span>
                                 @if($commission->affiliate)
-                                #{{ $commission->affiliate_id }} - {{ $commission->affiliate->affiliate_code }}
-                                {{ $commission->affiliate->customer->getNameAttribute()  ?? $commission->affiliate->email }}
+                                <a href="{{ route('admin.affiliatemodule.admin.affiliates.edit', $commission->affiliate_id) }}" class="badge bg-primary me-1">
+                                    {{ $commission->affiliate_id }} - {{ $commission->affiliate->affiliate_code }}
+                                {{ $commission->affiliate->customer->getNameAttribute()  ?? $commission->affiliate->email }}</a>
                                 @else
                                 Silinmiş Temsilci
                                 @endif
                             </h5>
                             <div>
-                                <span class="badge primary">
-                                    {{ ucfirst($commission->status) }}
-                                </span>
-                                <span class="text-muted ml-2">(%{{ number_format($commission->percentage, 2) }})</span>
+
+                                <span class="badge bg-info me-1">(%{{ number_format($commission->percentage, 2) }})</span>
                             </div>
                         </div>
                         <div class="card-body">

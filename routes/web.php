@@ -7,6 +7,7 @@ use App\Http\Controllers\Affiliate\AffiliateController;
 use App\Http\Controllers\Affiliate\AffiliateShopController;
 use App\Http\Controllers\Affiliate\CommissionRuleController;
 use App\Http\Controllers\Affiliate\AffiliateCommissionController;
+use App\Http\Controllers\Affiliate\CouponReportController;
 use App\Http\Controllers\AffiliatePaymentMethodController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HelperController;
@@ -102,6 +103,12 @@ Route::group(['middleware' => ['web', 'admin'], 'prefix' => config('app.admin_ur
                 Route::get('/{commission}', [AffiliateCommissionController::class, 'edit'])->name('admin.affiliatemodule.admin.commissions.edit');
                 Route::put('/{commission}', [AffiliateCommissionController::class, 'update'])->name('admin.affiliatemodule.admin.commissions.update');
             });
+
+            // couponreports management
+            Route::group(['prefix' => 'couponreports'], function () {
+                Route::get('/', [CouponReportController::class, 'index'])->name('admin.affiliatemodule.admin.couponreports.index');
+                Route::get('/{couponreport}', [CouponReportController::class, 'edit'])->name('admin.affiliatemodule.admin.couponreports.edit');
+                     });
 
              // affiliatepayments management
              Route::group(['prefix' => 'affiliatepayments'], function () {
