@@ -2,7 +2,7 @@
     <a href="https://spatie.be/open-source?utm_source=github&utm_medium=banner&utm_campaign=laravel-responsecache">
       <picture>
         <source media="(prefers-color-scheme: dark)" srcset="https://spatie.be/packages/header/laravel-responsecache/html/dark.webp">
-        <img alt="Logo for laravel-responsecache" src=" https://spatie.be/packages/header/laravel-responsecache/html/light.webp" height="190">
+        <img alt="Logo for laravel-responsecache" src="https://spatie.be/packages/header/laravel-responsecache/html/light.webp" height="190">
       </picture>
     </a>
 
@@ -455,11 +455,10 @@ This event is fired when a request passes through the `ResponseCache` middleware
 
 This event is fired when a request passes through the `ResponseCache` middleware but no cached response was found or returned.
 
-#### ClearingResponseCache and ClearedResponseCache
+#### ClearingResponseCache, ClearedResponseCache and ClearingResponseCacheFailed
 
-`Spatie\ResponseCache\Events\ClearingResponseCache`
-
-`Spatie\ResponseCache\Events\ClearedResponseCache`
+1. `Spatie\ResponseCache\Events\ClearingResponseCache`
+2. `Spatie\ResponseCache\Events\ClearedResponseCache` or `Spatie\ResponseCache\Events\ClearingResponseCacheFailed`
 
 These events are fired respectively when the `responsecache:clear` is started and finished.
 
