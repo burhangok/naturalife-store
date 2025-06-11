@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -54,7 +53,7 @@ return new class extends Migration
 
             // Müşteri bilgileri (eğer biliniyorsa)
             $table->integer('customer_id')->unsigned()->nullable();
-            $table->foreignId('order_id')->nullable()->constrained('orders')->onDelete('set null');
+            $table->integer('order_id')->unsigned()->nullable();
 
             $table->timestamps();
 
@@ -63,8 +62,10 @@ return new class extends Migration
                 ->references('id')->on('affiliates')
                 ->onDelete('cascade');
 
-            $table->foreign('customer_id')
-                ->references('id')->on('customers')
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+
+            $table->foreign('order_id')
+                ->references('id')->on('orders')
                 ->onDelete('set null');
         });
     }
