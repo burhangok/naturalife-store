@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
+use URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -41,7 +42,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-        $this->app['request']->server->set('HTTPS', true);
+// Production'da HTTPS zorla
+if (config('app.env') === 'production') {
+    URL::forceScheme('https');
+}
+
+// Mixed content için
+if (request()->isSecure()) {
+    URL::forceScheme('https');
+}
 
         ParallelTesting::setUpTestDatabase(function (string $database, int $token) {
             Artisan::call('db:seed');
