@@ -37,7 +37,7 @@
 
 @if($isAffiliate)
   <h2 class="text-2xl font-medium max-md:text-xl max-sm:text-base ltr:ml-2.5 md:ltr:ml-0 rtl:mr-2.5 md:rtl:mr-0">
-                    Temsilci Kodu: {{$isAffiliate->affiliate_code}}
+    Ihr Repräsentantencode: {{$isAffiliate->affiliate_code}}
                 </h2>
 @endif
             <a
@@ -52,7 +52,7 @@
 <!-- burhangok Müşteri hesabı profil sayfasına ekleyin -->
 <x-shop::modal ref="affiliateModal">
     <x-slot:header>
-        Temsilcilik Başvurusu
+        Repräsentationsstiftung
     </x-slot>
 
     <x-slot:content>
@@ -65,14 +65,14 @@
 
             <div class="mb-4">
                 <label for="sponsor_code" class="block mb-1">
-                    {{ __('Sponsor Kodu') }}
+                    {{ __('Sponsor-Repräsentantencode') }}
                 </label>
                 <input
                     type="text"
                     id="affiliate_code"
                     name="affiliate_code"
                     class="w-full p-2 border border-gray-300 rounded"
-                    placeholder="{{ __('Üst temsilci kodunu girin') }}"
+                    placeholder="{{ __('Geben Sie den Code des Upline-Vertreters ein') }}"
                     required
                 />
             </div>
@@ -83,11 +83,11 @@
                     class="bg-gray-200 px-4 py-2 rounded"
                     @click="$refs.affiliateModal.close()"
                 >
-                    {{ __('İptal') }}
+                    {{ __('Stornieren') }}
                 </button>
 
                <button type="submit" class="primary-button flex rounded-2xl px-11 py-3 max-md:rounded-lg max-md:px-6 max-md:text-sm">
-    Gönder
+                Schicken
 </button>
             </div>
         </form>

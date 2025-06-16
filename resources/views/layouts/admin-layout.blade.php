@@ -74,9 +74,9 @@
                 </button>
                 <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
                     <a href="{{ route('admin.affiliatemodule.admin.dashboard') }}">
-                        @if ($logo = core()->getConfigData('general.design.admin_logo.logo_image'))
-                        <img src="{{ Storage::url($logo) }}" width="110" height="32" alt="Tabler" class="navbar-brand-image">
-                        @endif
+
+                        <img src="https://lifenatura.eu/themes/shop/default/build/assets/Logo-1-Life-Natura.png" width="110" height="32" alt="LifeNatura" class="navbar-brand-image">
+
                     </a>
                 </h1>
 

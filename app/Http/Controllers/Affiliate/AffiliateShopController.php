@@ -548,7 +548,7 @@ class AffiliateShopController extends Controller
         $affiliate = Affiliate::where('customer_id', $customer->id)->first();
 
         if (!$affiliate) {
-            return response()->json(['error' => 'Affiliate kaydı bulunamadı.'], 404);
+            return response()->json(['error' => 'Keine Partnerdatensätze gefunden.'], 404);
         }
 
         $summary = [
@@ -584,7 +584,7 @@ public function store(Request $request)
             $parentAffiliate = Affiliate::where('affiliate_code', $request->affiliate_code)->first();
 
             if (!$parentAffiliate) {
-                return back()->with('error', 'Geçersiz temsilci kodu. Lütfen tekrar deneyin.');
+                return back()->with('error', 'Ungültiger Delegiertencode. Bitte versuchen Sie es erneut.');
             }
 
             $parentId = $parentAffiliate->id;
@@ -594,7 +594,7 @@ public function store(Request $request)
         // Kullanıcının zaten temsilci olup olmadığını kontrol et
         $existingAffiliate = Affiliate::where('customer_id', $customerId)->first();
         if ($existingAffiliate) {
-            return back()->with('error', 'Zaten temsilcilik sistemine kayıtlısınız.');
+            return back()->with('error', 'Sie sind bereits im Vertretersystem registriert.');
         }
 
         $affiliate = new Affiliate();
@@ -608,18 +608,18 @@ public function store(Request $request)
 
         $customer = Customer::find($customerId);
         if (!$customer) {
-            return back()->with('error', 'Müşteri bilgisi bulunamadı.');
+            return back()->with('error', 'Keine Kundeninformationen gefunden.');
         }
 
         $customer->customer_group_id = 4;
         $customer->save();
 
-        return back()->with('success', 'Temsilcilik sistemine kaydınız başarıyla tamamlanmıştır.');
+        return back()->with('success', 'Ihre Registrierung im Vertretersystem wurde erfolgreich abgeschlossen.');
 
     } catch (\Exception $e) {
         Log::error('Temsilci kayıt hatası: ' . $e->getMessage());
 
-        return back()->with('error', 'Kayıt işlemi sırasında bir hata oluştu. Lütfen sponsor kodunu tekrar deneyiniz.');
+        return back()->with('error', 'Bei der Registrierung ist ein Fehler aufgetreten. Bitte versuchen Sie den Sponsorcode erneut.');
     }
 }
 
