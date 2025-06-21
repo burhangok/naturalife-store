@@ -81,7 +81,7 @@
                                         <i class="fas fa-calendar-alt me-1"></i> {{ $order->created_at->format('d.m.Y H:i') }}
                                         <span class="mx-2">|</span>
                                         <i class="fas fa-hand-holding-usd me-1"></i> Dağıtılan Komisyon:
-                                        <strong class="text-success">{{ core()->formatBasePrice($totalCommission) }} €</strong>
+                                        <strong class="text-success">{{ core()->formatBasePrice($totalCommission) }} </strong>
                                         +  @if ($order->coupon_code)
 Kupondan
                                         @endif Yapılan İndirim: <strong class="text-danger">{{ core()->formatBasePrice($order->base_discount_amount) }}</strong>

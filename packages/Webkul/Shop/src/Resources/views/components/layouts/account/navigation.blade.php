@@ -59,7 +59,7 @@
                             <p class="flex items-center gap-x-4 text-lg font-medium max-sm:text-base">
                                 <span class="icon-users text-2xl"></span>
 
-                             Temsilcilik Modülü
+                                Repräsentationsmodul
                             </p>
 
                             <span class="icon-arrow-right rtl:icon-arrow-left text-2xl"></span>

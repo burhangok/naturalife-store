@@ -134,7 +134,7 @@
                                         = <strong class="text-primary">{{ core()->formatBasePrice($order->base_discount_amount + $totalCommission) }} </strong>
                                         <span class="mx-2">|</span>
                                         <i class="fas fa-user me-1"></i> Siparişi Veren:
-                                        <strong>{{ $order->customer->first_name .' '.$order->customer->last_name }}</strong>
+                                        <strong>{{ optional($order->customer)->first_name .' '.optional($order->customer)->last_name }}</strong>
                                         <span class="mx-2">|</span>
                                         <i class="fas fa-shopping-cart me-1"></i> Sepet Tutarı:
                                         <strong class="text-dark">{{ core()->formatBasePrice($order->grand_total) }} €</strong>
