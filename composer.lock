@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44e505f3ed89f54abdb8fb8646948670",
+    "content-hash": "f97693dd3d2b6ae8c0b46fbc1965ef0b",
     "packages": [
         {
             "name": "astrotomic/laravel-translatable",
@@ -398,6 +398,71 @@
                 }
             ],
             "time": "2024-02-09T16:56:22+00:00"
+        },
+        {
+            "name": "codenteq/stripe-payment-gateway",
+            "version": "v1.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codenteq/stripe-payment-gateway.git",
+                "reference": "52ce2f24ca227c34058c4b18e21d44e1f7d33c61"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codenteq/stripe-payment-gateway/zipball/52ce2f24ca227c34058c4b18e21d44e1f7d33c61",
+                "reference": "52ce2f24ca227c34058c4b18e21d44e1f7d33c61",
+                "shasum": ""
+            },
+            "require": {
+                "stripe/stripe-php": "^16.6"
+            },
+            "type": "package",
+            "extra": {
+                "laravel": {
+                    "aliases": [],
+                    "providers": [
+                        "Webkul\\Stripe\\Providers\\StripeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Webkul\\Stripe\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ahmet Sefa Arşiv",
+                    "email": "ahmetarsivpm@gmail.com",
+                    "homepage": "https://github.com/ahmetarsiv",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The Laravel eCommerce Stripe Payment Gateway",
+            "homepage": "https://codenteq.com",
+            "keywords": [
+                "bagisto",
+                "ecommerce",
+                "opensource",
+                "payment",
+                "stripe"
+            ],
+            "support": {
+                "email": "info@codenteq.com",
+                "issues": "https://github.com/codenteq/stripe-payment-gateway/issues",
+                "source": "https://github.com/codenteq/stripe-payment-gateway"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/codenteq",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-03-28T07:40:37+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -8158,6 +8223,65 @@
                 }
             ],
             "time": "2025-01-13T13:04:43+00:00"
+        },
+        {
+            "name": "stripe/stripe-php",
+            "version": "v16.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stripe/stripe-php.git",
+                "reference": "d6de0a536f00b5c5c74f36b8f4d0d93b035499ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/d6de0a536f00b5c5c74f36b8f4d0d93b035499ff",
+                "reference": "d6de0a536f00b5c5c74f36b8f4d0d93b035499ff",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "3.5.0",
+                "phpstan/phpstan": "^1.2",
+                "phpunit/phpunit": "^5.7 || ^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Stripe\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stripe and contributors",
+                    "homepage": "https://github.com/stripe/stripe-php/contributors"
+                }
+            ],
+            "description": "Stripe PHP Library",
+            "homepage": "https://stripe.com/",
+            "keywords": [
+                "api",
+                "payment processing",
+                "stripe"
+            ],
+            "support": {
+                "issues": "https://github.com/stripe/stripe-php/issues",
+                "source": "https://github.com/stripe/stripe-php/tree/v16.6.0"
+            },
+            "time": "2025-02-24T22:35:29+00:00"
         },
         {
             "name": "symfony/console",
