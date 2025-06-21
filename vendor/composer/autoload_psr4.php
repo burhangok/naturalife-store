@@ -54,6 +54,7 @@ return array(
     'Webkul\\Affiliate\\' => array($baseDir . '/packages/Webkul/Affiliate/src'),
     'Webkul\\Admin\\Tests\\' => array($baseDir . '/packages/Webkul/Admin/tests'),
     'Webkul\\Admin\\' => array($baseDir . '/packages/Webkul/Admin/src'),
+    'Webbycrown\\BlogBagisto\\' => array($vendorDir . '/webbycrown/blog-for-bagisto/src'),
     'UAParser\\' => array($vendorDir . '/ua-parser/uap-php/src'),
     'Tree\\' => array($vendorDir . '/nicmart/tree/src'),
     'TijsVerkoyen\\CssToInlineStyles\\' => array($vendorDir . '/tijsverkoyen/css-to-inline-styles/src'),

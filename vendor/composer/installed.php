@@ -3,7 +3,7 @@
         'name' => 'bagisto/bagisto',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'c54122a66f2c869dd8ca5a5d8ebe4d57f7ba6fcb',
+        'reference' => 'fa3f30e5290dbd20c4d47212d416bb7e81ff02b4',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'bagisto/bagisto' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'c54122a66f2c869dd8ca5a5d8ebe4d57f7ba6fcb',
+            'reference' => 'fa3f30e5290dbd20c4d47212d416bb7e81ff02b4',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -2134,6 +2134,17 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../voku/portable-ascii',
             'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'webbycrown/blog-for-bagisto' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '221d9c485488b671183daa7018afbdc36ec92dfc',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../webbycrown/blog-for-bagisto',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
             'dev_requirement' => false,
         ),
         'webmozart/assert' => array(

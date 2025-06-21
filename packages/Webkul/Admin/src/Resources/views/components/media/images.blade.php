@@ -41,7 +41,7 @@
 
                             <p class="grid text-center text-sm font-semibold text-blue-600">
                                 @lang('admin::app.components.media.images.ai-add-image-btn')
-                                
+
                                 <span class="text-xs">
                                     @lang('admin::app.components.media.images.ai-btn-info')
                                 </span>
@@ -61,7 +61,7 @@
 
                             <p class="grid text-center text-sm font-semibold text-gray-600 dark:text-gray-300">
                                 @lang('admin::app.components.media.images.add-image-btn')
-                                
+
                                 <span class="text-xs">
                                     @lang('admin::app.components.media.images.allowed-types')
                                 </span>
@@ -300,7 +300,7 @@
 
                                                 <template v-else>
                                                     <span class="icon-magic text-blue-600"></span>
-                                                    
+
                                                     @lang('admin::app.components.media.images.ai-generation.generate')
                                                 </template>
                                             </button>
@@ -320,7 +320,7 @@
 
                                                 <template v-else>
                                                     <span class="icon-magic text-2xl text-blue-600"></span>
-                                                    
+
                                                     @lang('admin::app.components.media.images.ai-generation.regenerate')
                                                 </template>
                                             </button>
@@ -340,7 +340,7 @@
                     </x-admin::form>
                 </Teleport>
             </div>
-        </div>  
+        </div>
     </script>
 
     <script type="text/x-template" id="v-media-image-item-template">
@@ -393,7 +393,7 @@
 
             props: {
                 name: {
-                    type: String, 
+                    type: String,
                     default: 'images',
                 },
 
@@ -555,8 +555,8 @@
                 getBase64ToFile(base64, filename) {
                     var arr = base64.split(','),
                         mime = arr[0].match(/:(.*?);/)[1],
-                        bstr = atob(arr[arr.length - 1]), 
-                        n = bstr.length, 
+                        bstr = atob(arr[arr.length - 1]),
+                        n = bstr.length,
                         u8arr = new Uint8Array(n);
 
                     while (n--) {
