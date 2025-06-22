@@ -73,12 +73,9 @@
 
                         <p class="mb-4 text-base font-semibold text-gray-800 dark:text-white">
                             {{ config('app.url').'/promo/'.$cartRule->coupon_code }}
-                            <button onclick="copyToClipboard('{{ config('app.url').'/promo/'.$cartRule->coupon_code }}')"
+                            <button type="button" onclick="copyToClipboard('{{ config('app.url').'/promo/'.$cartRule->coupon_code }}')"
                                 class="p-1 hover:bg-gray-100 rounded">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
-                                <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
-                            </svg>
+                            <i class="icon-copy"></i>
                         </button>
                         </p>
 
@@ -1415,9 +1412,17 @@
         <script>
             function copyToClipboard(text) {
                 navigator.clipboard.writeText(text).then(() => {
-                    alert('Kopyalandı!');
+                    alert(
+  'Link başarıyla kopyalandı!'
+);
+
+                }).catch(err => {
+                    alert(
+  'Link kopyalanamadı!'
+);
                 });
             }
-            </script>
+        </script>
+
     @endPushOnce
 </x-admin::layouts>

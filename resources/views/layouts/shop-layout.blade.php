@@ -151,6 +151,14 @@
                                     <span class="nav-link-title">Komisyonlarım</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link  {{ request()->is('scustomers/affiliatemodule/coupons*') ? 'active' : '' }}" href="{{ route('shop.customers.affiliatemodule.coupons',$existingAffiliate) }}">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="ti ti-cash"></i>
+                                    </span>
+                                    <span class="nav-link-title">Kuponlarım</span>
+                                </a>
+                            </li>
 
 
                             <li class="nav-item">

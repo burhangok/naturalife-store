@@ -1,4 +1,4 @@
-@extends('layouts.admin-layout')
+@extends('layouts.shop-layout')
 
 @section('title', 'Kupon Kodları Listesi')
 
@@ -9,18 +9,11 @@
     <div class="row align-items-center">
       <div class="col">
         <h2 class="page-title">
-         Kupon Kodları
+         Kuponlarım
         </h2>
         <div class="text-muted mt-1">Toplam {{ $cart_rules->count() }} kupon listeleniyor</div>
       </div>
-      <div class="col-auto ms-auto d-print-none">
-        <div class="btn-list">
-          <a href="{{ route('admin.marketing.promotions.cart_rules.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus me-2"></i>
-            Yeni Kupon Oluştur
-          </a>
-        </div>
-      </div>
+
     </div>
   </div>
 
@@ -161,10 +154,7 @@
           <i class="fas fa-ticket-alt fa-3x text-muted mb-3"></i>
           <h5 class="text-muted">Henüz Kupon Bulunamadı</h5>
           <p class="text-muted mb-4">Bu temsilci ile ilişkilendirilmiş herhangi bir kupon kodu bulunmuyor.</p>
-          <a href="{{ route('admin.marketing.promotions.cart_rules.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus me-2"></i>
-            Yeni Kupon Oluştur
-          </a>
+
         </div>
       </div>
     </div>

@@ -31,6 +31,15 @@ class CouponReportController extends Controller
         return view('affiliatemodule.admin.couponreports.index', compact('cart_rules'));
     }
 
+    public function couponsByAffiliate($affiliate)
+   {
+
+       $cart_rules = CartRule::where('affiliate_id', $affiliate)
+           ->get();
+
+       return view('affiliatemodule.shop.affiliate_coupons', compact('cart_rules', 'affiliate'));
+   }
+
 }
 
 

@@ -92,6 +92,6 @@ class HomeController extends Controller
         session(['auto_apply_coupon' => $code]);
 
         // Ana sayfaya veya ürün sayfasına yönlendir
-        return redirect('/')->with('success', trans('admin::app.sales.orders.create.coupon-applied') .' '. $code);
+        return redirect('/')->with('success', 'Gutscheincode erfolgreich angewendet. ' . $code);
     }
 }
