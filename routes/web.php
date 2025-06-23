@@ -33,6 +33,10 @@ Route::prefix('customer')->group(function () {
                 Route::get('/payments', 'payments')->name('shop.customers.affiliatemodule.payments');
                 Route::get('/myaffiliates', 'myaffiliates')->name('shop.customers.affiliatemodule.myaffiliates');
 
+
+                Route::get('/coupon-details/{id}', [CouponReportController::class, 'getCouponDetails']);
+                Route::get('/coupon-orders/{id}', [CouponReportController::class, 'getCouponOrders']);
+
             });
 
             Route::get('/commissions/{affiliate}', [AffiliateCommissionShopController::class, 'showcommissions'])->name('shop.customers.affiliatemodule.commissions');
@@ -80,9 +84,9 @@ Route::group(['middleware' => ['web', 'admin'], 'prefix' => config('app.admin_ur
                 'view' => 'affiliatemodule::admin.affiliates.edit',
             ])->name('admin.affiliatemodule.admin.affiliates.edit');
 
-                // routes/admin.php
-                Route::get('/coupon-details/{id}', [AffiliateController::class, 'getCouponDetails']);
-                   Route::get('/coupon-orders/{id}', [AffiliateController::class, 'getCouponOrders']);
+
+                Route::get('/coupon-details/{id}', [CouponReportController::class, 'getCouponDetails']);
+                   Route::get('/coupon-orders/{id}', [CouponReportController::class, 'getCouponOrders']);
                                Route::put('/{id}', [AffiliateController::class, 'update'])->defaults('_config', [
                 'redirect' => 'admin.affiliatemodule.affiliates.index',
             ])->name('admin.affiliatemodule.admin.affiliates.update');

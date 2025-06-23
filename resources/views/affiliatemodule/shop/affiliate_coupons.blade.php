@@ -87,17 +87,23 @@
 
           <div class="mb-3">
             <div class="row">
-              <div class="col-6">
+              <div class="col-4">
                 <small class="text-muted">Komisyon:</small>
                 <div class="fw-bold">
                   <i class="ti ti-percentage text-primary me-1"></i>
                   {{ $cart_rule->commission_percentage ? $cart_rule->commission_percentage.'%' : '-' }}
                 </div>
               </div>
-              <div class="col-6">
-                <small class="text-muted">Toplam Tutar:</small>
+              <div class="col-4">
+                <small class="text-muted">Toplam Sipariş:</small>
                 <div class="fw-bold text-success">
                   {{ core()->formatPrice($cart_rule->orders->sum('grand_total')) }}
+                </div>
+              </div>
+              <div class="col-4">
+                <small class="text-muted">Toplam Gelir:</small>
+                <div class="fw-bold text-success">
+                  {{ core()->formatPrice(4  ) }}
                 </div>
               </div>
             </div>
@@ -126,7 +132,7 @@
         <div class="card-footer bg-transparent border-top-0 pt-0">
           <div class="btn-group w-100" role="group">
             <button type="button"
-                    class="btn btn-outline-primary btn-sm"
+                    class="btn btn-outline-primary btn-md"
                     onclick="showCouponDetails({{ $cart_rule->id }})"
                     data-bs-toggle="modal"
                     data-bs-target="#couponDetailModal">
@@ -135,7 +141,7 @@
             </button>
             @if($cart_rule->orders && $cart_rule->orders->count() > 0)
             <button type="button"
-                    class="btn btn-outline-success btn-sm"
+                    class="btn btn-outline-success btn-md"
                     onclick="showCouponOrders({{ $cart_rule->id }})"
                     data-bs-toggle="modal"
                     data-bs-target="#couponOrdersModal">
@@ -208,7 +214,7 @@
 
 <script>
 function showCouponDetails(couponId) {
-  fetch(`/admin/affiliatemodule/admin/affiliates/coupon-details/${couponId}`)
+  fetch(`/customer/affiliatemodule/coupon-details/${couponId}`)
     .then(response => response.text())
     .then(html => {
       document.getElementById('couponDetailContent').innerHTML = html;
@@ -220,7 +226,7 @@ function showCouponDetails(couponId) {
 }
 
 function showCouponOrders(couponId) {
-  fetch(`/admin/affiliatemodule/admin/affiliates/coupon-orders/${couponId}`)
+  fetch(`/customer/affiliatemodule/coupon-orders/${couponId}`)
     .then(response => response.text())
     .then(html => {
       document.getElementById('couponOrdersContent').innerHTML = html;

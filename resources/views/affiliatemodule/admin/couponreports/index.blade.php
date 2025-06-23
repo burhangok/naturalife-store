@@ -102,7 +102,7 @@
                 </div>
               </div>
               <div class="col-6">
-                <small class="text-muted">Toplam Tutar:</small>
+                <small class="text-muted">Toplam Sipariş:</small>
                 <div class="fw-bold text-success">
                   {{ core()->formatPrice($cart_rule->orders->sum('grand_total')) }}
                 </div>
@@ -133,7 +133,7 @@
         <div class="card-footer bg-transparent border-top-0 pt-0">
           <div class="btn-group w-100" role="group">
             <button type="button"
-                    class="btn btn-outline-primary btn-sm"
+                    class="btn btn-outline-primary btn-md"
                     onclick="showCouponDetails({{ $cart_rule->id }})"
                     data-bs-toggle="modal"
                     data-bs-target="#couponDetailModal">
@@ -142,7 +142,7 @@
             </button>
             @if($cart_rule->orders && $cart_rule->orders->count() > 0)
             <button type="button"
-                    class="btn btn-outline-success btn-sm"
+                    class="btn btn-outline-success btn-md"
                     onclick="showCouponOrders({{ $cart_rule->id }})"
                     data-bs-toggle="modal"
                     data-bs-target="#couponOrdersModal">

@@ -32,7 +32,7 @@
             <div class="card-body text-center">
                 <i class="fas fa-coins fa-2x mb-2"></i>
                 <h4 class="mb-0">{{ $coupon->commission_percentage }}</h4>
-                <small>Temsilci Komisyonu (%)</small>
+                <small>Komisyon Oranı(%)</small>
             </div>
         </div>
     </div>
@@ -43,10 +43,10 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-header">
-                <h6 class="mb-0">
+                <h4 class="mb-0">
                     <i class="fas fa-users me-2"></i>
                     En Çok Satın Alan Müşteriler
-                </h6>
+                </h4>
             </div>
             <div class="card-body">
                 @if($topCustomers->count() > 0)
@@ -89,10 +89,10 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-header">
-                <h6 class="mb-0">
+                <h4 class="mb-0">
                     <i class="fas fa-chart-pie me-2"></i>
                     Müşteri Özeti
-                </h6>
+                </h4>
             </div>
             <div class="card-body">
                 <div class="d-flex justify-content-between mb-3">
@@ -117,15 +117,12 @@
 <!-- Siparişler Listesi -->
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h6 class="mb-0">
+        <h4 class="mb-0">
             <i class="fas fa-list-alt me-2"></i>
             Sipariş Detayları ({{ $coupon->coupon_code }})
-        </h6>
+        </h4>
         <div>
-            <button class="btn btn-primary btn-sm" onclick="shareCouponLink({{ $coupon->coupon_code }})">
-                <i class="fas fa-share me-1"></i>
-                Kupon Linkini Paylaş
-            </button>
+
         </div>
     </div>
     <div class="card-body p-0">
@@ -223,12 +220,7 @@
                 <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
                 <h5 class="text-muted">Henüz sipariş bulunmuyor</h5>
                 <p class="text-muted">Bu kupon kodu ile henüz sipariş verilmemiş.</p>
-                <div class="mt-3">
-                    <button class="btn btn-primary btn-sm" onclick="shareCouponLink({{ $coupon->id }})">
-                        <i class="fas fa-share me-1"></i>
-                        Kupon Linkini Paylaş
-                    </button>
-                </div>
+
             </div>
         @endif
     </div>
@@ -244,8 +236,9 @@ function exportCouponOrders(couponId) {
 }
 
 function shareCouponLink(couponId) {
+    alert("shareCouponLink");
     // Kupon linkini kopyala veya paylaş
-    const link = '{{ url(path: "/coupon") }}/' + couponId;
+    const link = '{{ url(path: "/promo") }}/' + couponId;
     navigator.clipboard.writeText(link).then(function() {
         alert('Kupon linki kopyalandı: ' + link);
     });

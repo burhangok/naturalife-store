@@ -134,7 +134,7 @@
                     <div class="col-6">
                         <div class="text-center p-3 bg-light rounded">
                             <div class="text-muted small">Toplam Gelir</div>
-                            <div class="h3 mb-0 text-success">₺{{ number_format($totalRevenue, 2) }}</div>
+                            <div class="h3 mb-0 text-success">€{{ number_format($totalRevenue, 2) }}</div>
                         </div>
                     </div>
                 </div>
@@ -143,13 +143,13 @@
                     <div class="col-6">
                         <div class="text-center p-3 bg-light rounded">
                             <div class="text-muted small">Toplam İndirim</div>
-                            <div class="h3 mb-0 text-warning">₺{{ number_format($totalDiscount, 2) }}</div>
+                            <div class="h3 mb-0 text-warning">€{{ number_format($totalDiscount, 2) }}</div>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="text-center p-3 bg-light rounded">
                             <div class="text-muted small">Ort. Sipariş</div>
-                            <div class="h3 mb-0 text-info">₺{{ number_format($avgOrderValue, 2) }}</div>
+                            <div class="h3 mb-0 text-info">€{{ number_format($avgOrderValue, 2) }}</div>
                         </div>
                     </div>
                 </div>
@@ -187,7 +187,7 @@
                             </div>
                             <div class="text-end">
                                 <div class="small text-muted">{{ $stat->count }} sipariş</div>
-                                <div class="text-success">₺{{ number_format($stat->total, 2) }}</div>
+                                <div class="text-success">€{{ number_format($stat->total, 2) }}</div>
                             </div>
                         </div>
                         @if(!$loop->last)
@@ -222,7 +222,7 @@
                             <li>Minimum {{ $conditions['cart']['total_quantity'] }} ürün olmalı</li>
                         @endif
                         @if(isset($conditions['cart']['base_total']))
-                            <li>Minimum sepet tutarı ₺{{ number_format($conditions['cart']['base_total'], 2) }} olmalı</li>
+                            <li>Minimum sepet tutarı €{{ number_format($conditions['cart']['base_total'], 2) }} olmalı</li>
                         @endif
                     </ul>
                 </div>

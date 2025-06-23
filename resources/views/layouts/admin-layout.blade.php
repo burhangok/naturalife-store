@@ -105,6 +105,7 @@
                             <div class="dropdown-divider"></div>
                             <form method="POST" action="{{ route('admin.session.destroy') }}">
                                 @csrf
+                                @method('DELETE')
                                 <button type="submit" class="dropdown-item">Çıkış Yap</button>
                             </form>
                         </div>
