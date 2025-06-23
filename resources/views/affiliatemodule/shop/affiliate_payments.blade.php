@@ -3,6 +3,10 @@
 @section('title', "")
 
 @section('content')
+@php
+    if(request('lang')) session(['lang' => request('lang')]);
+    $lang = session('lang', 'de');
+@endphp
 <style>
     .stats-card {
         transition: transform 0.2s ease;
@@ -182,9 +186,9 @@
 
         <h1 class="mb-0">
             <i class="fas fa-money-check-alt me-2"></i>
-            Ödemelerim
+            {{ $lang == 'tr' ? 'Ödemelerim' : 'Meine Zahlungen' }}
         </h1>
-        <p class="mb-3 mt-2" style="opacity: 0.9;">Aldığınız ödemeleri ve cari hesap durumunuzu görüntüleyin</p>
+        <p class="mb-3 mt-2" style="opacity: 0.9;">{{ $lang == 'tr' ? 'Aldığınız ödemeleri ve cari hesap durumunuzu görüntüleyin' : 'Zeigen Sie Ihre erhaltenen Zahlungen und Ihren Kontostatus an' }}</p>
     </div>
     <!-- İstatistik Kartları -->
     <div class="row mb-4">
@@ -194,7 +198,7 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <div class="stats-value">{{ core()->formatPrice($affiliate->getTotalEarningsAttribute()) }}</div>
-                <div class="stats-label">Toplam Kazanç</div>
+                <div class="stats-label">{{ $lang == 'tr' ? 'Toplam Kazanç' : 'Gesamteinnahmen' }}</div>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 mb-3">
@@ -203,7 +207,7 @@
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <div class="stats-value">{{ core()->formatPrice($payments->sum('amount')) }}</div>
-                <div class="stats-label">Ödenen Tutar</div>
+                <div class="stats-label">{{ $lang == 'tr' ? 'Ödenen Tutar' : 'Bezahlter Betrag' }}</div>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 mb-3">
@@ -216,7 +220,7 @@
                     $balanceClass = $balance > 0 ? 'text-success' : ($balance < 0 ? 'text-danger' : 'text-primary');
                 @endphp
                 <div class="stats-value {{ $balanceClass }}">{{ core()->formatPrice($balance) }}</div>
-                <div class="stats-label">Cari Bakiye</div>
+                <div class="stats-label">{{ $lang == 'tr' ? 'Cari Bakiye' : 'Aktueller Saldo' }}</div>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 mb-3">
@@ -225,7 +229,7 @@
                     <i class="fas fa-receipt"></i>
                 </div>
                 <div class="stats-value">{{$payments->total()}}</div>
-                <div class="stats-label">Toplam Ödeme Kaydı</div>
+                <div class="stats-label">{{ $lang == 'tr' ? 'Toplam Ödeme Kaydı' : 'Gesamte Zahlungsaufzeichnungen' }}</div>
             </div>
         </div>
     </div>
@@ -237,17 +241,17 @@
         <form method="GET" action="">
             <div class="row align-items-end">
                 <div class="col-md-3">
-                    <label for="start_date" class="form-label">Başlangıç Tarihi</label>
+                    <label for="start_date" class="form-label">{{ $lang == 'tr' ? 'Başlangıç Tarihi' : 'Startdatum' }}</label>
                     <input type="date" class="form-control" id="start_date" name="start_date" value="{{ request('start_date') }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="end_date" class="form-label">Bitiş Tarihi</label>
+                    <label for="end_date" class="form-label">{{ $lang == 'tr' ? 'Bitiş Tarihi' : 'Enddatum' }}</label>
                     <input type="date" class="form-control" id="end_date" name="end_date" value="{{ request('end_date') }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="payment_method" class="form-label">Ödeme Yöntemi</label>
+                    <label for="payment_method" class="form-label">{{ $lang == 'tr' ? 'Ödeme Yöntemi' : 'Zahlungsmethode' }}</label>
                     <select class="form-select" id="payment_method" name="payment_method">
-                        <option value="">Tümü</option>
+                        <option value="">{{ $lang == 'tr' ? 'Tümü' : 'Alle' }}</option>
                         @foreach($paymentMethods as $key => $value)
                             <option value="{{ $key }}" {{ request('payment_method') == $key ? 'selected' : '' }}>
                                 {{ $value }}
@@ -257,10 +261,10 @@
                 </div>
                 <div class="col-md-3">
                     <button type="submit" class="btn btn-primary me-2">
-                        <i class="fas fa-search"></i> Filtrele
+                        <i class="fas fa-search"></i> {{ $lang == 'tr' ? 'Filtrele' : 'Filtern' }}
                     </button>
                     <a href="{{ request()->url() }}" class="btn btn-outline-secondary">
-                        <i class="fas fa-times"></i> Temizle
+                        <i class="fas fa-times"></i> {{ $lang == 'tr' ? 'Temizle' : 'Löschen' }}
                     </a>
                 </div>
             </div>
@@ -273,7 +277,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h3 class="mb-0">
                     <i class="fas fa-list me-2"></i>
-                    Ödeme Geçmişi
+                    {{ $lang == 'tr' ? 'Ödeme Geçmişi' : 'Zahlungsverlauf' }}
                 </h3>
                 <div class="d-flex align-items-center">
 
@@ -287,11 +291,11 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Tutar</th>
-                            <th>Ödeme Yöntemi</th>
+                            <th>{{ $lang == 'tr' ? 'Tutar' : 'Betrag' }}</th>
+                            <th>{{ $lang == 'tr' ? 'Ödeme Yöntemi' : 'Zahlungsmethode' }}</th>
                             <th>Transaction ID</th>
-                            <th>Tarih</th>
-                            <th>İşlem Yapan</th>
+                            <th>{{ $lang == 'tr' ? 'Tarih' : 'Datum' }}</th>
+                            <th>{{ $lang == 'tr' ? 'İşlem Yapan' : 'Bearbeitet von' }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -338,7 +342,7 @@
                                 @else
                                     <span class="text-muted">
                                         <i class="fas fa-robot me-1"></i>
-                                        Sistem
+                                        {{ $lang == 'tr' ? 'Sistem' : 'System' }}
                                     </span>
                                 @endif
                             </td>
@@ -350,8 +354,8 @@
             @else
             <div class="card-body   text-center">
                 <i class="fas fa-receipt"></i>
-                <h3>Henüz ödeme alınmamış</h3>
-                <p>İlk ödemeleriniz burada görüntülenecektir.</p>
+                <h3>{{ $lang == 'tr' ? 'Henüz ödeme alınmamış' : 'Noch keine Zahlungen erhalten' }}</h3>
+                <p>{{ $lang == 'tr' ? 'İlk ödemeleriniz burada görüntülenecektir.' : 'Ihre ersten Zahlungen werden hier angezeigt.' }}</p>
             </div>
             @endif
         </div>
@@ -369,22 +373,22 @@
         <div class="card-header">
             <h3 class="mb-0">
                 <i class="fas fa-calculator me-2"></i>
-                Cari Hesap Detayları
+                {{ $lang == 'tr' ? 'Cari Hesap Detayları' : 'Laufende Kontodetails' }}
             </h3>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
                     <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-                        <span class="fw-medium">Toplam Kazanç:</span>
+                        <span class="fw-medium">{{ $lang == 'tr' ? 'Toplam Kazanç:' : 'Gesamteinnahmen:' }}</span>
                         <span class="text-primary fw-bold">{{  core()->formatPrice($affiliate->getTotalEarningsAttribute()) }}</span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-                        <span class="fw-medium">Toplam Ödenen:</span>
+                        <span class="fw-medium">{{ $lang == 'tr' ? 'Toplam Ödenen:' : 'Insgesamt bezahlt:' }}</span>
                         <span class="text-success fw-bold">{{ core()->formatPrice($affiliate->total_paid_commission) }}</span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center py-3">
-                        <span class="fw-bold fs-5">Kalan Bakiye:</span>
+                        <span class="fw-bold fs-5">{{ $lang == 'tr' ? 'Kalan Bakiye:' : 'Verbleibendes Guthaben:' }}</span>
                         <span class="fw-bold fs-5 {{ $balanceClass }}">{{ core()->formatPrice($balance) }}</span>
                     </div>
                 </div>
@@ -392,15 +396,15 @@
                     <div class="alert alert-info">
                         <h6 class="alert-heading">
                             <i class="fas fa-info-circle me-1"></i>
-                            Bilgilendirme
+                            {{ $lang == 'tr' ? 'Bilgilendirme' : 'Information' }}
                         </h6>
                         <p class="mb-0 small">
                             @if($balance > 0)
-                                Mevcut bakiyeniz {{ core()->formatPrice($balance) }} Bu tutar bir sonraki ödeme döneminde hesabınıza aktarılacaktır.
+                                {{ $lang == 'tr' ? 'Mevcut bakiyeniz ' . core()->formatPrice($balance) . ' Bu tutar bir sonraki ödeme döneminde hesabınıza aktarılacaktır.' : 'Ihr aktuelles Guthaben beträgt ' . core()->formatPrice($balance) . ' Dieser Betrag wird in der nächsten Zahlungsperiode auf Ihr Konto überwiesen.' }}
                             @elseif($balance < 0)
-                                Hesabınızda {{ core()->formatPrice(abs($balance)) }}  borç bulunmaktadır. Bu tutar gelecek kazançlarınızdan düşülecektir.
+                                {{ $lang == 'tr' ? 'Hesabınızda ' . core()->formatPrice(abs($balance)) . ' borç bulunmaktadır. Bu tutar gelecek kazançlarınızdan düşülecektir.' : 'Ihr Konto weist eine Schuld von ' . core()->formatPrice(abs($balance)) . ' auf. Dieser Betrag wird von Ihren zukünftigen Einnahmen abgezogen.' }}
                             @else
-                                Cari hesap bakiyeniz sıfırdır.
+                                {{ $lang == 'tr' ? 'Cari hesap bakiyeniz sıfırdır.' : 'Ihr Laufkonto-Saldo ist null.' }}
                             @endif
                         </p>
                     </div>

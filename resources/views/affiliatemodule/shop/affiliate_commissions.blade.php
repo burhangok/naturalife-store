@@ -1,8 +1,13 @@
 @extends('layouts.shop-layout')
+@php
+    if(request('lang')) session(['lang' => request('lang')]);
+    $lang = session('lang', 'de');
+@endphp
+@section('title', $lang == 'tr' ? 'Kazançlarınız' : 'Ihre Einnahmen')
 
-@section('title', 'Komisyonlar Listesi')
 
 @section('content')
+
 <div class="page-wrapper">
 
 
@@ -47,7 +52,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h3 class="card-title"><i class="fas fa-euro-sign"></i> Toplam Kazanç</h3>
+                                    <h3 class="card-title"><i class="fas fa-euro-sign"></i> {{ $lang == 'tr' ? 'Toplam Kazanç' : 'Gesamteinkommen' }}</h3>
                                     <h4>€{{ number_format($affiliate->commissions()->sum('amount'), 2) }}</h4>
                                 </div>
                                 <div class="align-self-center">
@@ -62,7 +67,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h3 class="card-title"><i class="fas fa-money-check"></i> Bu Ay ki Kazanç
+                                    <h3 class="card-title"><i class="fas fa-money-check"></i> {{ $lang == 'tr' ? 'Bu Ayaki Kazanç' : 'Einkommen diesen Monat' }}
                                     </h3>
 
                                     <h4>{{ core()->formatPrice($affiliate->commissions->where('created_at', '>=', now()->startOfMonth())->sum('amount')) }}</h4>
@@ -79,7 +84,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h3 class="card-title"><i class="fas fa-users"></i>Alt Temsilci Sayınız
+                                    <h3 class="card-title"><i class="fas fa-users"></i>{{ $lang == 'tr' ? 'Alt Temsilci Sayınız' : 'Anzahl Ihrer Untervertreter' }}
                                     </h3>
                                     <h4>{{ $affiliate->children->count()}}
                                     </h4>
@@ -121,28 +126,28 @@
                         <div class="row g-2 align-items-center">
                             <div class="col">
                                 <h3 class="card-title mb-1">
-                                    <i class="fas fa-receipt text-primary me-2"></i> Sipariş #{{ $orderId }}
+                                    <i class="fas fa-receipt text-primary me-2"></i> {{ $lang == 'tr' ? 'Sipariş' : 'Bestellung' }} #{{ $orderId }}
                                 </h3>
 
                                 @if($order)
                                     <div class="small text-muted">
                                         <i class="fas fa-calendar-alt me-1"></i> {{ $order->created_at->format('d.m.Y H:i') }}
                                         <span class="mx-2">|</span>
-                                        <i class="fas fa-hand-holding-usd me-1"></i> Dağıtılan Komisyon:
+                                        <i class="fas fa-hand-holding-usd me-1"></i> {{ $lang == 'tr' ? 'Dağıtılan Komisyon:' : 'Verteilte Provision:' }}
                                         <strong class="text-success">{{ core()->formatBasePrice($totalCommission) }} €</strong>
-                                        + Temsilci İndirimi: <strong class="text-warning">{{ core()->formatBasePrice($order->base_discount_amount) }}</strong>
+                                        + {{ $lang == 'tr' ? 'Temsilci İndirimi:' : 'Vertreterrabatt:' }} <strong class="text-warning">{{ core()->formatBasePrice($order->base_discount_amount) }}</strong>
                                         = <strong class="text-primary">{{ core()->formatBasePrice($order->base_discount_amount + $totalCommission) }} </strong>
                                         <span class="mx-2">|</span>
-                                        <i class="fas fa-user me-1"></i> Siparişi Veren:
+                                        <i class="fas fa-user me-1"></i> {{ $lang == 'tr' ? 'Siparişi Veren:' : 'Besteller:' }}
                                         <strong>{{ optional($order->customer)->first_name .' '.optional($order->customer)->last_name }}</strong>
                                         <span class="mx-2">|</span>
-                                        <i class="fas fa-shopping-cart me-1"></i> Sepet Tutarı:
+                                        <i class="fas fa-shopping-cart me-1"></i> {{ $lang == 'tr' ? 'Sepet Tutarı:' : 'Warenkorbwert:' }}
                                         <strong class="text-dark">{{ core()->formatBasePrice($order->grand_total) }} €</strong>
                                     </div>
                                 @else
                                     <div class="small text-danger">
-                                        <i class="fas fa-exclamation-circle me-1"></i> Sipariş silinmiş -
-                                        Toplam Komisyon: <strong>{{ number_format($totalCommission, 2) }} €</strong>
+                                        <i class="fas fa-exclamation-circle me-1"></i> {{ $lang == 'tr' ? 'Sipariş silinmiş -' : 'Bestellung gelöscht -' }}
+                                        {{ $lang == 'tr' ? 'Toplam Komisyon:' : 'Gesamtprovision:' }} <strong>{{ number_format($totalCommission, 2) }} €</strong>
                                     </div>
                                 @endif
                             </div>
@@ -150,8 +155,8 @@
     <!-- Siparişlere Göre Gruplandırılmış Komisyonlar
                             @if($order)
                                 <div class="col-auto">
-                                    <a href="#" class="text-decoration-none" title="Siparişi Görüntüle">
-                                        <i class="fas fa-external-link-alt text-primary fs-5"></i> Siparişi Görüntüle
+                                    <a href="#" class="text-decoration-none" title="{{ $lang == 'tr' ? 'Siparişi Görüntüle' : 'Bestellung anzeigen' }}">
+                                        <i class="fas fa-external-link-alt text-primary fs-5"></i> {{ $lang == 'tr' ? 'Siparişi Görüntüle' : 'Bestellung anzeigen' }}
                                     </a>
                                 </div>
                             @endif
@@ -163,13 +168,13 @@
                         <table class="table table-vcenter card-table table-striped">
                             <thead class="bg-light">
                                 <tr>
-                                    <th><i class="fas fa-hashtag text-muted me-1"></i>Komisyon ID</th>
-                                    <th><i class="fas fa-user-tie text-muted me-1"></i>Temsilci</th>
-                                    <th><i class="fas fa-user-friends text-muted me-1"></i>Alt Temsilci</th>
-                                    <th><i class="fas fa-layer-group text-muted me-1"></i>Seviye</th>
-                                    <th><i class="fas fa-percentage text-muted me-1"></i>Oran</th>
-                                    <th><i class="fas fa-euro-sign text-muted me-1"></i>Tutar</th>
-                                    <th><i class="fas fa-calendar-alt text-muted me-1"></i>Tarih</th>
+                                    <th><i class="fas fa-hashtag text-muted me-1"></i>{{ $lang == 'tr' ? 'Komisyon ID' : 'Provisions-ID' }}</th>
+                                    <th><i class="fas fa-user-tie text-muted me-1"></i>{{ $lang == 'tr' ? 'Temsilci' : 'Vertreter' }}</th>
+                                    <th><i class="fas fa-user-friends text-muted me-1"></i>{{ $lang == 'tr' ? 'Alt Temsilci' : 'Untervertreter' }}</th>
+                                    <th><i class="fas fa-layer-group text-muted me-1"></i>{{ $lang == 'tr' ? 'Seviye' : 'Ebene' }}</th>
+                                    <th><i class="fas fa-percentage text-muted me-1"></i>{{ $lang == 'tr' ? 'Oran' : 'Satz' }}</th>
+                                    <th><i class="fas fa-euro-sign text-muted me-1"></i>{{ $lang == 'tr' ? 'Tutar' : 'Betrag' }}</th>
+                                    <th><i class="fas fa-calendar-alt text-muted me-1"></i>{{ $lang == 'tr' ? 'Tarih' : 'Datum' }}</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -186,7 +191,7 @@
                                                     <small class="text-muted">({{ $commission->affiliate->customer->getNameAttribute() }})</small>
                                                 </a>
                                             @else
-                                                <span class="text-muted"><i class="fas fa-user-slash me-1"></i>Temsilci Silinmiş</span>
+                                                <span class="text-muted"><i class="fas fa-user-slash me-1"></i>{{ $lang == 'tr' ? 'Temsilci Silinmiş' : 'Vertreter gelöscht' }}</span>
                                             @endif
                                         </td>
                                         <td>
@@ -200,7 +205,7 @@
                                                 <span class="text-muted">-</span>
                                             @endif
                                         </td>
-                                        <td><span class="badge bg-blue-lt">Seviye {{ $commission->level }}</span></td>
+                                        <td><span class="badge bg-blue-lt">{{ $lang == 'tr' ? 'Seviye' : 'Ebene' }} {{ $commission->level }}</span></td>
                                         <td><span class="text-green fw-bold">%{{ $commission->percentage }}</span></td>
                                         <td><span class="fw-bold">{{ number_format($commission->amount, 2) }} €</span></td>
                                         <td><span class="text-muted">{{ $commission->created_at->format('d.m.Y H:i') }}</span></td>
@@ -208,7 +213,7 @@
                                             <button type="button"
                                                 onclick="toggleDetails('commission-{{ $commission->id }}')"
                                                 class="btn btn-icon btn-md btn-outline-primary"
-                                                title="Detayları Göster">
+                                                title="{{ $lang == 'tr' ? 'Detayları Göster' : 'Details anzeigen' }}">
                                                 <i class="fas fa-search"></i>
                                             </button>
                                         </td>
@@ -220,24 +225,24 @@
                                             <div class="card border shadow-sm">
                                                 <div class="card-body">
                                                     <div class="d-flex justify-content-between align-items-center mb-3">
-                                                        <h4 class="card-title mb-0"><i class="fas fa-info-circle me-2 text-primary"></i><strong class="text-muted">Komisyon ID:</strong> {{ $commission->id }}   <span class="badge bg-blue-lt">Seviye {{ $commission->level }}</span>
+                                                        <h4 class="card-title mb-0"><i class="fas fa-info-circle me-2 text-primary"></i><strong class="text-muted">{{ $lang == 'tr' ? 'Komisyon ID:' : 'Provisions-ID:' }}</strong> {{ $commission->id }}   <span class="badge bg-blue-lt">{{ $lang == 'tr' ? 'Seviye' : 'Ebene' }} {{ $commission->level }}</span>
                                                         </h4>
 
                                                     </div>
                                                     <div class="row g-3">
                                                         <div class="col-md-6">
                                                             <ul class="list-unstyled">
-                                                                <li class="mb-2"><strong class="text-muted">Komisyon Alan Temsilci:</strong>
+                                                                <li class="mb-2"><strong class="text-muted">{{ $lang == 'tr' ? 'Komisyon Alan Temsilci:' : 'Provisionsempfänger:' }}</strong>
                                                                     @if ($commission->affiliate)
                                                                     <a href="{{ route('shop.customers.affiliatemodule.profile', $commission->affiliate_id) }}" class="text-primary">
                                                                         <i class="fas fa-user-tie me-1"></i>
                                                                         {{ $commission->affiliate->id }} - {{ $commission->affiliate->affiliate_code }}
                                                                         <small class="text-muted">({{ $commission->affiliate->customer->getNameAttribute() }})</small>
                                                                     </a>        @else
-                                                                        <span class="text-danger">Temsilci Silinmiş</span>
+                                                                        <span class="text-danger">{{ $lang == 'tr' ? 'Temsilci Silinmiş' : 'Vertreter gelöscht' }}</span>
                                                                     @endif
                                                                 </li>
-                                                                <li class="mb-2"><strong class="text-muted">Komisyon Kazandıran Alt Temsilci:</strong>
+                                                                <li class="mb-2"><strong class="text-muted">{{ $lang == 'tr' ? 'Komisyon Kazandıran Alt Temsilci:' : 'Provisionserzeuger (Untervertreter):' }}</strong>
                                                                     @if ($commission->fromAffiliate)
                                                                     <a href="{{ route('shop.customers.affiliatemodule.profile', $commission->from_affiliate_id) }}" class="text-secondary">
                                                                         <i class="fas fa-user-friends me-1"></i>
@@ -248,23 +253,23 @@
                                                                     @endif
                                                                 </li>
 
-                                                                <li class="mb-2"><strong class="text-muted">Açıklama:</strong> {{ $commission->description }}</li>
+                                                                <li class="mb-2"><strong class="text-muted">{{ $lang == 'tr' ? 'Açıklama:' : 'Beschreibung:' }}</strong> {{ $commission->description }}</li>
 
                                                             </ul>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <ul class="list-unstyled">
 
-                                                                <li class="mb-2"><strong class="text-muted">Oran:</strong> %{{ $commission->percentage }}</li>
-                                                                <li class="mb-2"><strong class="text-muted">Tutar:</strong> <span class="fw-bold text-success">{{ number_format($commission->amount, 2) }} €</span></li>
-                                                                    <li class="mb-2"><strong class="text-muted">Oluşturulma:</strong> {{ $commission->created_at->format('d.m.Y H:i') }}</li>
+                                                                <li class="mb-2"><strong class="text-muted">{{ $lang == 'tr' ? 'Oran:' : 'Satz:' }}</strong> %{{ $commission->percentage }}</li>
+                                                                <li class="mb-2"><strong class="text-muted">{{ $lang == 'tr' ? 'Tutar:' : 'Betrag:' }}</strong> <span class="fw-bold text-success">{{ number_format($commission->amount, 2) }} €</span></li>
+                                                                    <li class="mb-2"><strong class="text-muted">{{ $lang == 'tr' ? 'Oluşturulma:' : 'Erstellt am:' }}</strong> {{ $commission->created_at->format('d.m.Y H:i') }}</li>
                                                             </ul>
                                                         </div>
                                                     </div>
 
                                                     @if($commission->note)
                                                         <div class="mt-4">
-                                                            <label class="form-label"><i class="fas fa-sticky-note text-muted me-2"></i>Not:</label>
+                                                            <label class="form-label"><i class="fas fa-sticky-note text-muted me-2"></i>{{ $lang == 'tr' ? 'Not:' : 'Notiz:' }}</label>
                                                             <div class="form-control bg-light">{{ $commission->note }}</div>
                                                         </div>
                                                     @endif
@@ -290,15 +295,15 @@
                             <path d="M9.5 15.25a3.5 3.5 0 0 1 5 0"></path>
                         </svg>
                     </div>
-                    <p class="empty-title">Kayıt Bulunamadı</p>
+                    <p class="empty-title">{{ $lang == 'tr' ? 'Kayıt Bulunamadı' : 'Keine Datensätze gefunden' }}</p>
                     <p class="empty-subtitle text-muted">
-                        Arama kriterlerinize uygun komisyon kaydı bulunmamaktadır.
+                        {{ $lang == 'tr' ? 'Arama kriterlerinize uygun komisyon kaydı bulunmamaktadır.' : 'Es wurden keine Provisionsdatensätze gefunden, die Ihren Suchkriterien entsprechen.' }}
                     </p>
                 </div>
             @endforelse
 
             <!-- Sayfalama -->
-            {{-- Bu kısmı tabler pagination ile düzenleyebilirsiniz --}}
+            {{-- {{ $lang == 'tr' ? 'Bu kısmı tabler pagination ile düzenleyebilirsiniz' : 'Dieser Bereich kann mit tabler pagination gestaltet werden' }} --}}
         </div>
     </div>
 </div>

@@ -66,6 +66,7 @@
     $customer = auth()->guard('customer')->user();
     $existingAffiliate = \App\Models\Affiliate::where('customer_id', $customer->id)->first();
 @endphp
+
     <div class="page">
         <!-- Horizontal Top Navigation -->
         <header class="navbar navbar-expand-md d-print-none">
@@ -114,70 +115,91 @@
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <div class="navbar">
                     <div class="container-xl">
-                        <ul class="navbar-nav">
+                        @php
+                        if(request('lang')) session(['lang' => request('lang')]);
+                        $lang = session('lang', 'de');
+                     @endphp
 
+                     <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link  {{ request()->is('customer/affiliatemodule/profile*') ? 'active' : '' }}" href="{{ route('shop.customers.affiliatemodule.profile',$existingAffiliate) }}">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <i class="ti ti-user-circle"></i>
+                                </span>
+                                <span class="nav-link-title">{{ $lang == 'tr' ? 'Profilim' : 'Mein Profil' }}</span>
+                            </a>
+                        </li>
+                           <!--      <li class="nav-item">
+                            <a class="nav-link  {{ request()->is('admin/affiliatemodule/admin/myaffiliates*') ? 'active' : '' }}" href="{{ route('shop.customers.affiliatemodule.myaffiliates') }}">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <i class="ti ti-user-circle"></i>
+                                </span>
+                                <span class="nav-link-title">{{ $lang == 'tr' ? 'Temsilcilerim' : 'Meine Partner' }}</span>
+                            </a>
+                        </li>-->
 
-                            <li class="nav-item">
-                                <a class="nav-link  {{ request()->is('customer/affiliatemodule/profile*') ? 'active' : '' }}" href="{{ route('shop.customers.affiliatemodule.profile',$existingAffiliate) }}">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="ti ti-user-circle"></i>
-                                    </span>
-                                    <span class="nav-link-title">Profilim</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  {{ request()->is('admin/affiliatemodule/admin/myaffiliates*') ? 'active' : '' }}" href="{{ route('shop.customers.affiliatemodule.myaffiliates') }}">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="ti ti-user-circle"></i>
-                                    </span>
-                                    <span class="nav-link-title">Temsilcilerim</span>
-                                </a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link  {{ request()->is('admin/affiliatemodule/admin/payments*') ? 'active' : '' }}" href="{{ route('shop.customers.affiliatemodule.payments') }}">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <i class="ti ti-file-invoice"></i>
+                                </span>
+                                <span class="nav-link-title">{{ $lang == 'tr' ? 'Ödemelerim' : 'Meine Zahlungen' }}</span>
+                            </a>
+                        </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link  {{ request()->is('admin/affiliatemodule/admin/payments*') ? 'active' : '' }}" href="{{ route('shop.customers.affiliatemodule.payments') }}">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="ti ti-file-invoice"></i>
-                                    </span>
-                                    <span class="nav-link-title">Ödemelerim</span>
-                                </a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link  {{ request()->is('scustomers/affiliatemodule/commissions*') ? 'active' : '' }}" href="{{ route('shop.customers.affiliatemodule.commissions',$existingAffiliate) }}">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <i class="ti ti-cash"></i>
+                                </span>
+                                <span class="nav-link-title">{{ $lang == 'tr' ? 'Komisyonlarım' : 'Meine Provisionen' }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link  {{ request()->is('scustomers/affiliatemodule/coupons*') ? 'active' : '' }}" href="{{ route('shop.customers.affiliatemodule.coupons',$existingAffiliate) }}">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <i class="ti ti-cash"></i>
+                                </span>
+                                <span class="nav-link-title">{{ $lang == 'tr' ? 'Kuponlarım' : 'Meine Gutscheine' }}</span>
+                            </a>
+                        </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link  {{ request()->is('scustomers/affiliatemodule/commissions*') ? 'active' : '' }}" href="{{ route('shop.customers.affiliatemodule.commissions',$existingAffiliate) }}">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="ti ti-cash"></i>
-                                    </span>
-                                    <span class="nav-link-title">Komisyonlarım</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  {{ request()->is('scustomers/affiliatemodule/coupons*') ? 'active' : '' }}" href="{{ route('shop.customers.affiliatemodule.coupons',$existingAffiliate) }}">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="ti ti-cash"></i>
-                                    </span>
-                                    <span class="nav-link-title">Kuponlarım</span>
-                                </a>
-                            </li>
-
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{route('shop.customers.account.profile.index')}}">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="ti ti-user    "></i>
-                                    </span>
-                                    <span class="nav-link-title">Müşteri Profilim</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{route('shop.home.index')}}">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="ti ti-shopping-cart"></i>
-                                    </span>
-                                    <span class="nav-link-title">Alışverişe Devam Et</span>
-                                </a>
-                            </li>
-                        </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('shop.customers.account.profile.index')}}">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <i class="ti ti-user"></i>
+                                </span>
+                                <span class="nav-link-title">{{ $lang == 'tr' ? 'Müşteri Profilim' : 'Mein Kundenprofil' }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('shop.home.index')}}">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <i class="ti ti-shopping-cart"></i>
+                                </span>
+                                <span class="nav-link-title">{{ $lang == 'tr' ? 'Alışverişe Devam Et' : 'Weiter einkaufen' }}</span>
+                            </a>
+                        </li>
+                     </ul>
+                       {{-- Tabler.io dil seçici --}}
+<div class="nav-item dropdown">
+    <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
+        <span class="avatar avatar-sm" style="background-image: url({{ $lang == 'tr' ? 'https://flagcdn.com/w40/tr.png' : 'https://flagcdn.com/w40/de.png' }})"></span>
+        <div class="d-none d-xl-block ps-2">
+            <div>{{ $lang == 'tr' ? 'Türkçe' : 'Deutsch' }}</div>
+        </div>
+    </a>
+    <div class="dropdown-menu">
+        <a href="?lang=de" class="dropdown-item {{ $lang == 'de' ? 'active' : '' }}">
+            <span class="avatar avatar-sm me-2" style="background-image: url(https://flagcdn.com/w40/de.png)"></span>
+            Deutsch
+        </a>
+        <a href="?lang=tr" class="dropdown-item {{ $lang == 'tr' ? 'active' : '' }}">
+            <span class="avatar avatar-sm me-2" style="background-image: url(https://flagcdn.com/w40/tr.png)"></span>
+            Türkçe
+        </a>
+    </div>
+ </div>
                     </div>
                 </div>
             </div>

@@ -3,6 +3,10 @@
 @section('title', 'Alt Temscilcilerim')
 
 @section('content')
+@php
+    if(request('lang')) session(['lang' => request('lang')]);
+    $lang = session('lang', 'de');
+@endphp
 <div class="page-wrapper">
 
 

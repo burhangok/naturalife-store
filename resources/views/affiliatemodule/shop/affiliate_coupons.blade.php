@@ -1,17 +1,23 @@
 @extends('layouts.shop-layout')
 
-@section('title', 'Kupon Kodları Listesi')
+@php
+    if(request('lang')) session(['lang' => request('lang')]);
+    $lang = session('lang', 'de');
+@endphp
+@section('title', $lang == 'tr' ? 'Kuponlarınız' : 'Ihre Gutscheine')
+
 
 @section('content')
+
 <div class="container-xl">
   <!-- Page title -->
   <div class="page-header d-print-none">
     <div class="row align-items-center">
       <div class="col">
         <h2 class="page-title">
-         Kuponlarım
+         {{ $lang == 'tr' ? 'Kuponlarım' : 'Meine Gutscheine' }}
         </h2>
-        <div class="text-muted mt-1">Toplam {{ $cart_rules->count() }} kupon listeleniyor</div>
+        <div class="text-muted mt-1">{{ $lang == 'tr' ? 'Toplam ' . $cart_rules->count() . ' kupon listeleniyor' : 'Insgesamt ' . $cart_rules->count() . ' Gutscheine aufgelistet' }}</div>
       </div>
 
     </div>
@@ -52,7 +58,7 @@
             </p>
               <small class="text-muted me-3">
                 <i class="fas fa-tag me-1"></i>
-                {{ $cart_rule->coupon_code ?? 'Kod Yok' }}
+                {{ $cart_rule->coupon_code ?? ($lang == 'tr' ? 'Kod Yok' : 'Kein Code') }}
               </small>
               @if ($cart_rule->affiliate)
 
@@ -64,13 +70,13 @@
               @endif
             </div>
             <span class="badge {{ $cart_rule->status ? 'bg-success' : 'bg-danger' }} text-white">
-              {{ $cart_rule->status ? 'Aktif' : 'Pasif' }}
+              {{ $cart_rule->status ? ($lang == 'tr' ? 'Aktif' : 'Aktiv') : ($lang == 'tr' ? 'Pasif' : 'Inaktiv') }}
             </span>
           </div>
 
           <div class="row text-center mb-3">
             <div class="col-6">
-              <div class="text-muted small">İndirim</div>
+              <div class="text-muted small">{{ $lang == 'tr' ? 'İndirim' : 'Rabatt' }}</div>
               @if($cart_rule->action_type == 'by_percent')
                 <div class="fw-bold text-success">%{{ $cart_rule->discount_amount }}</div>
               @else
@@ -78,7 +84,7 @@
               @endif
             </div>
             <div class="col-6">
-              <div class="text-muted small">Sipariş Adeti</div>
+              <div class="text-muted small">{{ $lang == 'tr' ? 'Sipariş Adeti' : 'Anzahl Bestellungen' }}</div>
               <div class="fw-bold">
                 {{ $cart_rule->orders->count() }}
               </div>
@@ -88,20 +94,20 @@
           <div class="mb-3">
             <div class="row">
               <div class="col-4">
-                <small class="text-muted">Komisyon:</small>
+                <small class="text-muted">{{ $lang == 'tr' ? 'Komisyon:' : 'Provision:' }}</small>
                 <div class="fw-bold">
                   <i class="ti ti-percentage text-primary me-1"></i>
                   {{ $cart_rule->commission_percentage ? $cart_rule->commission_percentage.'%' : '-' }}
                 </div>
               </div>
               <div class="col-4">
-                <small class="text-muted">Toplam Sipariş:</small>
+                <small class="text-muted">{{ $lang == 'tr' ? 'Toplam Sipariş:' : 'Gesamtbestellungen:' }}</small>
                 <div class="fw-bold text-success">
                   {{ core()->formatPrice($cart_rule->orders->sum('grand_total')) }}
                 </div>
               </div>
               <div class="col-4">
-                <small class="text-muted">Toplam Gelir:</small>
+                <small class="text-muted">{{ $lang == 'tr' ? 'Toplam Gelir:' : 'Gesamteinnahmen:' }}</small>
                 <div class="fw-bold text-success">
                   {{ core()->formatPrice(4  ) }}
                 </div>
@@ -111,18 +117,18 @@
 
           @if($cart_rule->conditions)
           <div class="mb-3">
-            <small class="text-muted">Koşullar:</small>
+            <small class="text-muted">{{ $lang == 'tr' ? 'Koşullar:' : 'Bedingungen:' }}</small>
             <div class="small text-info">
               @php
                 $conditions = json_decode($cart_rule->conditions, true);
               @endphp
               @if(isset($conditions['cart']['total_quantity']))
                 <i class="fas fa-shopping-cart me-1"></i>
-                Min. {{ $conditions['cart']['total_quantity'] }} ürün<br>
+                {{ $lang == 'tr' ? 'Min. ' . $conditions['cart']['total_quantity'] . ' ürün' : 'Min. ' . $conditions['cart']['total_quantity'] . ' Produkte' }}<br>
               @endif
               @if(isset($conditions['cart']['base_total']))
                 <i class="fas fa-money-bill me-1"></i>
-                Min. ₺{{ number_format($conditions['cart']['base_total'], 2) }}
+                {{ $lang == 'tr' ? 'Min. ₺' . number_format($conditions['cart']['base_total'], 2) : 'Min. ₺' . number_format($conditions['cart']['base_total'], 2) }}
               @endif
             </div>
           </div>
@@ -137,7 +143,7 @@
                     data-bs-toggle="modal"
                     data-bs-target="#couponDetailModal">
               <i class="fas fa-eye me-1"></i>
-              Detaylar
+              {{ $lang == 'tr' ? 'Detaylar' : 'Details' }}
             </button>
             @if($cart_rule->orders && $cart_rule->orders->count() > 0)
             <button type="button"
@@ -146,7 +152,7 @@
                     data-bs-toggle="modal"
                     data-bs-target="#couponOrdersModal">
               <i class="fas fa-list-alt me-1"></i>
-              Siparişler ({{ $cart_rule->orders->count() }})
+              {{ $lang == 'tr' ? 'Siparişler (' . $cart_rule->orders->count() . ')' : 'Bestellungen (' . $cart_rule->orders->count() . ')' }}
             </button>
             @endif
           </div>
@@ -158,8 +164,8 @@
       <div class="card bg-light">
         <div class="card-body text-center py-5">
           <i class="fas fa-ticket-alt fa-3x text-muted mb-3"></i>
-          <h5 class="text-muted">Henüz Kupon Bulunamadı</h5>
-          <p class="text-muted mb-4">Bu temsilci ile ilişkilendirilmiş herhangi bir kupon kodu bulunmuyor.</p>
+          <h5 class="text-muted">{{ $lang == 'tr' ? 'Henüz Kupon Bulunamadı' : 'Noch keine Gutscheine gefunden' }}</h5>
+          <p class="text-muted mb-4">{{ $lang == 'tr' ? 'Bu temsilci ile ilişkilendirilmiş herhangi bir kupon kodu bulunmuyor.' : 'Es wurden keine Gutscheincodes gefunden, die mit diesem Vertreter verknüpft sind.' }}</p>
 
         </div>
       </div>
@@ -175,14 +181,14 @@
       <div class="modal-header">
         <h5 class="modal-title" id="couponDetailModalLabel">
           <i class="fas fa-ticket-alt me-2"></i>
-          Kupon Detayları
+          {{ $lang == 'tr' ? 'Kupon Detayları' : 'Gutschein Details' }}
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="couponDetailContent">
         <div class="text-center py-4">
           <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Yükleniyor...</span>
+            <span class="visually-hidden">{{ $lang == 'tr' ? 'Yükleniyor...' : 'Laden...' }}</span>
           </div>
         </div>
       </div>
@@ -197,14 +203,14 @@
       <div class="modal-header">
         <h5 class="modal-title" id="couponOrdersModalLabel">
           <i class="fas fa-list-alt me-2"></i>
-          Kupon Siparişleri
+          {{ $lang == 'tr' ? 'Kupon Siparişleri' : 'Gutschein Bestellungen' }}
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="couponOrdersContent">
         <div class="text-center py-4">
           <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Yükleniyor...</span>
+            <span class="visually-hidden">{{ $lang == 'tr' ? 'Yükleniyor...' : 'Laden...' }}</span>
           </div>
         </div>
       </div>
@@ -220,8 +226,10 @@ function showCouponDetails(couponId) {
       document.getElementById('couponDetailContent').innerHTML = html;
     })
     .catch(error => {
+      const lang = '{{ $lang }}';
+      const errorMessage = lang === 'tr' ? 'Detaylar yüklenirken hata oluştu.' : 'Fehler beim Laden der Details.';
       document.getElementById('couponDetailContent').innerHTML =
-        '<div class="alert alert-danger">Detaylar yüklenirken hata oluştu.</div>';
+        `<div class="alert alert-danger">${errorMessage}</div>`;
     });
 }
 
@@ -232,22 +240,23 @@ function showCouponOrders(couponId) {
       document.getElementById('couponOrdersContent').innerHTML = html;
     })
     .catch(error => {
+      const lang = '{{ $lang }}';
+      const errorMessage = lang === 'tr' ? 'Siparişler yüklenirken hata oluştu.' : 'Fehler beim Laden der Bestellungen.';
       document.getElementById('couponOrdersContent').innerHTML =
-        '<div class="alert alert-danger">Siparişler yüklenirken hata oluştu.</div>';
+        `<div class="alert alert-danger">${errorMessage}</div>`;
     });
 }
 </script>
 <script>
     function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            alert(
-'Link başarıyla kopyalandı!'
-);
+        const lang = '{{ $lang }}';
+        const successMessage = lang === 'tr' ? 'Link başarıyla kopyalandı!' : 'Link erfolgreich kopiert!';
+        const errorMessage = lang === 'tr' ? 'Link kopyalanamadı!' : 'Link konnte nicht kopiert werden!';
 
+        navigator.clipboard.writeText(text).then(() => {
+            alert(successMessage);
         }).catch(err => {
-            alert(
-'Link kopyalanamadı!'
-);
+            alert(errorMessage);
         });
     }
 </script>

@@ -3,6 +3,10 @@
 @section('title', 'Temsilcilik Modülü Yönetim Paneli')
 
 @section('content')
+@php
+    if(request('lang')) session(['lang' => request('lang')]);
+    $lang = session('lang', 'de');
+@endphp
 <div class="container-xl">
 <div class="row row-deck row-cards">
     <div class="col-sm-6 col-lg-3">
