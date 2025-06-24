@@ -181,7 +181,7 @@
                             </a>
                         </li>
                      </ul>
-                       {{-- Tabler.io dil seçici --}}
+
 <div class="nav-item dropdown">
     <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
         <span class="avatar avatar-sm" style="background-image: url({{ $lang == 'tr' ? 'https://flagcdn.com/w40/tr.png' : 'https://flagcdn.com/w40/de.png' }})"></span>
