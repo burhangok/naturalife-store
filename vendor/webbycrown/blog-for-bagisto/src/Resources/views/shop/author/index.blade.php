@@ -15,7 +15,7 @@
 <x-shop::layouts>
     {{-- Page Title --}}
     <x-slot:title>
-        Posts by {{ $author_data->author }}
+        Beiträge von{{ $author_data->author }}
     </x-slot>
 
     @push ('styles')
@@ -32,9 +32,9 @@
                     <div class="container-right row no-margin col-12 no-padding">
                         <div id="blog" class="container mt-5">
                             <div class="full-content-wrapper">
-                                <div class="col-lg-12"><h1 class="mb-3 page-title">Posts by {{ $author_data->author }}</h1></div>
+                                <!---   <div class="col-lg-12"><h1 class="mb-3 page-title">Posts by {{ $author_data->author }}</h1></div>-->
                                 <div class="flex flex-wrap grid-wrap">
-                                    
+
                                     <div class="column-9">
 
                                         @if( !empty($blogs) &&  count($blogs) > 0 )
@@ -62,7 +62,7 @@
                                                                             @endif
                                                                         </p>
                                                                     </div>
-                                                                    
+
                                                                     @if( !empty($blog->assign_categorys) && count($blog->assign_categorys) > 0 )
                                                                         <div class="post-categories">
                                                                             <p>
@@ -93,7 +93,7 @@
 
                                         @else
 
-                                            <div class="post-not-available">No post published yet!!</div>
+                                            <div class="post-not-available">Noch kein Beitrag veröffentlicht!!</div>
 
                                         @endif
 
@@ -102,11 +102,11 @@
                                     <div class=" column-3 blog-sidebar">
                                         <div class="row">
                                             <div class="col-lg-12 mb-4 categories">
-                                                <h3>Categories</h3>
+                                                <h3>Kategorien</h3>
                                                 <ul class="list-group">
                                                     @foreach($categories as $category)
                                                         <li><a href="{{route('shop.blog.category.index',[$category->slug])}}" class="list-group-item list-group-item-action">
-                                                                <span>{{ $category->name }}</span> 
+                                                                <span>{{ $category->name }}</span>
                                                                 @if( (int)$show_categories_count == 1 )
                                                                     <span class="badge badge-pill badge-primary">{{ $category->assign_blogs }}</span>
                                                                 @endif
@@ -115,14 +115,14 @@
                                                 </ul>
 
                                                 <div class="tags-part">
-                                                    <h3>Tags</h3> 
+                                                    <h3>Schlagwörter</h3>
                                                     <div class="tag-list">
                                                         @foreach($tags as $tag)
-                                                            <a href="{{route('shop.blog.tag.index',[$tag->slug])}}" role="button" class="btn btn-primary btn-lg">{{ $tag->name }} 
+                                                            <a href="{{route('shop.blog.tag.index',[$tag->slug])}}" role="button" class="btn btn-primary btn-lg">{{ $tag->name }}
                                                                 @if( (int)$show_tags_count == 1 )
                                                                     <span class="badge badge-light">{{ $tag->count }}</span>
                                                                 @endif
-                                                            </a> 
+                                                            </a>
                                                         @endforeach
                                                     </div>
                                                 </div>

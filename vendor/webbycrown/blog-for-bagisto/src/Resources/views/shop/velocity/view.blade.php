@@ -49,7 +49,7 @@
                                             <div class="text-justify mb-3 blog-post-content">
                                                 <h3 class="page-title">{{ $blog->name }}</h3>
                                                 <div class="post-tags mb-3">
-                                                    <strong>Tags:</strong>
+                                                    <strong>Schlagwörter:</strong>
                                                     <div class="post-tag-lists">
                                                         @if( !empty($blog_tags) && count($blog_tags) > 0 )
                                                             @foreach( $blog_tags as $blog_tag )
@@ -66,11 +66,11 @@
 
                                     <sidebar class="column-3 blog-sidebar">
                                         <div class="row">
-                                            <div class="col-lg-12 mb-4 categories"><h3>Categories</h3>
+                                            <div class="col-lg-12 mb-4 categories"><h3>Kategorien</h3>
                                                 <ul class="list-group">
                                                     @foreach($categories as $category)
                                                         <li><a href="{{route('shop.blog.category.index',[$category->slug])}}" class="list-group-item list-group-item-action">
-                                                                <span>{{ $category->name }}</span> 
+                                                                <span>{{ $category->name }}</span>
                                                                 @if( (int)$show_categories_count == 1 )
                                                                     <span class="badge badge-pill badge-primary">{{ $category->assign_blogs }}</span>
                                                                 @endif
@@ -79,14 +79,14 @@
                                                 </ul>
 
                                                 <div class="tags-part">
-                                                    <h3>Tags</h3> 
+                                                    <h3>Schlagwörter</h3>
                                                     <div class="tag-list">
                                                         @foreach($tags as $tag)
-                                                            <a href="{{route('shop.blog.tag.index',[$tag->slug])}}" role="button" class="btn btn-primary btn-lg">{{ $tag->name }} 
+                                                            <a href="{{route('shop.blog.tag.index',[$tag->slug])}}" role="button" class="btn btn-primary btn-lg">{{ $tag->name }}
                                                                 @if( (int)$show_tags_count == 1 )
                                                                     <span class="badge badge-light">{{ $tag->count }}</span>
                                                                 @endif
-                                                            </a> 
+                                                            </a>
                                                         @endforeach
                                                     </div>
                                                 </div>
@@ -98,7 +98,7 @@
                             </div>
 
                             <div id="comment-list" class="column-12 comment-part related-bolg-part">
-                                <div class="col-lg-12"><h1 class="mb-3 page-title">Related Blog</h1></div>
+                                <div class="col-lg-12"><h1 class="mb-3 page-title">Verwandter Blog</h1></div>
                                 <div class="flex flex-wrap blog-grid-list">
 
                                     @foreach($related_blogs as $related_blog)
@@ -138,7 +138,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-footer">
-                                                        <a href="{{route('shop.article.view',[$related_blog->category->slug . '/' . $related_blog->slug])}}" class="text-uppercase btn-text-link">Read more ></a>
+                                                        <a href="{{route('shop.article.view',[$related_blog->category->slug . '/' . $related_blog->slug])}}" class="text-uppercase btn-text-link">Mehr lesen ></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -146,7 +146,7 @@
                                     @endforeach
 
                                 </div>
-                                
+
                             </div>
 
                             @if( (int)$enable_comment == 1 )
@@ -155,7 +155,7 @@
                                     <div class="row flex flex-wrap grid-wrap">
                                         <div class="column-12">
                                             @if( (int)$blog->allow_comments == 1 )
-                                                <h2>Comments ({{ $total_comments_cnt }})</h2> 
+                                                <h2>Comments ({{ $total_comments_cnt }})</h2>
                                                 <div class="row flex flex-wrap grid-wrap">
 
                                                     @php
@@ -176,7 +176,7 @@
                                                         <div class="column-12">
                                                             <div class="row justify-content-center mt-3 comment-form-holder flex flex-wrap grid-wrap">
                                                                 <div class="column-12">
-                                                                    <h3>Leave a comment</h3> 
+                                                                    <h3>Leave a comment</h3>
                                                                     <form method="POST" action="{{route('shop.blog.comment.store')}}" class="frmComment comment-form">
                                                                         @csrf
                                                                         <input type="hidden" name="parent_id" value="0">
@@ -186,7 +186,7 @@
                                                                                 <div class="input-group">
                                                                                     <div class="input-group-prepend">
                                                                                         <span class="input-group-text"><i class="fa fa-user"> </i></span>
-                                                                                    </div> 
+                                                                                    </div>
                                                                                     <input type="text" name="name" placeholder="Your Name" required="required" class="form-control" value="{{ ( isset($loggedIn_user_name) && !empty($loggedIn_user_name) && !is_null($loggedIn_user_name) ) ? $loggedIn_user_name : ''; }}">
                                                                                 </div>
                                                                             </div>
@@ -229,7 +229,7 @@
                                                             @include ('blog::shop.comment.list', ['comment_data' => $comments])
 
                                                         </div>
-                                                        
+
                                                     @endif
 
                                                 </div>
@@ -254,7 +254,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
         <script type="text/javascript">
-            
+
             jQuery(document).on('click', '.btn-reply', function(event) {
                 var element = jQuery(this);
                 element.parent().find('.comment-form-holder:eq(0)').show();
