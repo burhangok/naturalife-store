@@ -96,25 +96,27 @@
 
                             <!-- Resource -->
                             <x-admin::form.control-group>
-                                <x-admin::form.control-group.label class="required">
+                                <!--      <x-admin::form.control-group.label class="required">
                                     @lang('admin::app.sales.shipments.create.source')
-                                </x-admin::form.control-group.label>
+                                </x-admin::form.control-group.label>-->
 
                                 <x-admin::form.control-group.control
-                                    type="select"
+                                    type="input"
                                     id="shipment[source]"
                                     name="shipment[source]"
                                     rules="required"
                                     v-model="source"
+                                    hidden="true"
                                     :label="trans('admin::app.sales.shipments.create.source')"
                                     :placeholder="trans('admin::app.sales.shipments.create.source')"
                                     @change="onSourceChange"
+                                    value="1"
                                 >
-                                    @foreach ($order->channel->inventory_sources as $inventorySource)
+                                       <!--   @foreach ($order->channel->inventory_sources as $inventorySource)
                                         <option value="{{ $inventorySource->id }}">
                                             {{ $inventorySource->name }}
                                         </option>
-                                    @endforeach
+                                    @endforeach-->
                                 </x-admin::form.control-group.control>
 
                                 <x-admin::form.control-group.error control-name="shipment[source]" />

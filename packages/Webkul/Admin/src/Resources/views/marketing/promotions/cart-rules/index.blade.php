@@ -10,7 +10,7 @@
 
         <div class="flex items-center gap-x-2.5">
             @if (bouncer()->hasPermission('marketing.promotions.cart_rules.create'))
-                <a 
+                <a
                     href="{{ route('admin.marketing.promotions.cart_rules.create') }}"
                     class="primary-button"
                 >
@@ -19,7 +19,7 @@
             @endif
         </div>
     </div>
-    
+
     {!! view_render_event('bagisto.admin.marketing.promotions.cart-rules.list.before') !!}
 
     <x-admin::datagrid :src="route('admin.marketing.promotions.cart_rules.index')" />

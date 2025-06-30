@@ -577,9 +577,9 @@
                     <div class="card mb-3">
                         <div class="card-header bg-light d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">
-                                @if ($order->coupon_code) <span class="badge bg-danger me-1">Kupon Satış Komisyonu</span>   @else     <span class="badge bg-warning me-1">{{ $commission->level }}. Seviye </span> @endif  <span class="badge bg-success me-1">Kazanılan Komisyon: {{ core()->formatPrice($commission->amount) }} </span>
+                                @if ($order->coupon_code) <span class="badge bg-danger me-1 fs-6">Kupon Satış Komisyonu</span>   @else     <span class="badge bg-warning me-1 fs-6">{{ $commission->level }}. Seviye </span> @endif  <span class="badge bg-success fs-6 me-1">Kazanılan Komisyon: {{ core()->formatPrice($commission->amount) }} </span>
                                 @if($commission->affiliate)
-                                <a href="{{ route('admin.affiliatemodule.admin.affiliates.edit', $commission->affiliate_id) }}" class="badge bg-primary me-1">
+                                <a href="{{ route('admin.affiliatemodule.admin.affiliates.edit', $commission->affiliate_id) }}" class="badge bg-primary me-1 fs-6">
                                     {{ $commission->affiliate_id }} - {{ $commission->affiliate->affiliate_code }}
                                 {{ $commission->affiliate->customer->getNameAttribute()  ?? $commission->affiliate->email }}</a>
                                 @else
@@ -588,7 +588,7 @@
                             </h5>
                             <div>
 
-                                <span class="badge bg-info me-1">(%{{ number_format($commission->percentage, 2) }})</span>
+                                <span class="badge bg-info me-1 fs-6">(%{{ number_format($commission->percentage, 2) }})</span>
                             </div>
                         </div>
                         <div class="card-body">

@@ -62,7 +62,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="subheader">Son 7 Gün Satış</div>
                             </div>
-                            <div class="h1 mb-3">₺{{ number_format($lastWeekSales, 2) }}</div>
+                            <div class="h1 mb-3">€{{ number_format($lastWeekSales, 2) }}</div>
                             <div class="d-flex mb-2">
                                 <div class="flex-fill">
                                     <div class="progress progress-sm">
@@ -83,7 +83,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="subheader">Son 7 Gün Komisyon</div>
                             </div>
-                            <div class="h1 mb-3">₺{{ number_format($lastWeekCommission, 2) }}</div>
+                            <div class="h1 mb-3">€ {{ number_format($lastWeekCommission, 2) }}</div>
                             <div class="d-flex mb-2">
                                 <div class="flex-fill">
                                     <div class="progress progress-sm">
@@ -104,7 +104,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="subheader">Bugünkü Komisyon</div>
                             </div>
-                            <div class="h1 mb-3">₺{{ number_format($additionalStats['todayCommissions'], 2) }}</div>
+                            <div class="h1 mb-3">€ {{ number_format($additionalStats['todayCommissions'], 2) }}</div>
                             <div class="d-flex mb-2">
                                 <div class="flex-fill">
                                     <div class="progress progress-sm">
@@ -144,13 +144,13 @@
                                 <div class="col-12">
                                     <div class="mb-3">
                                         <div class="text-muted small">Bu Ay Toplam Komisyon</div>
-                                        <div class="h3 text-success">₺{{ number_format($additionalStats['thisMonthCommission'], 2) }}</div>
+                                        <div class="h3 text-success">€ {{ number_format($additionalStats['thisMonthCommission'], 2) }}</div>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="mb-3">
                                         <div class="text-muted small">Genel Toplam Komisyon</div>
-                                        <div class="h3 text-primary">₺{{ number_format($additionalStats['totalCommissions'], 2) }}</div>
+                                        <div class="h3 text-primary">€ {{ number_format($additionalStats['totalCommissions'], 2) }}</div>
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -185,7 +185,7 @@
                                     <div class="text-muted small">{{ $level->count }} komisyon</div>
                                 </div>
                                 <div class="ms-auto">
-                                    <div class="font-weight-medium">₺{{ number_format($level->total_amount, 2) }}</div>
+                                    <div class="font-weight-medium">€ {{ number_format($level->total_amount, 2) }}</div>
                                 </div>
                             </div>
                             @endforeach
@@ -212,7 +212,7 @@
                                     <div class="text-muted small">{{ $affiliate->affiliate->affiliate_code ?? '' }}</div>
                                 </div>
                                 <div class="ms-auto">
-                                    <div class="font-weight-medium text-success">₺{{ number_format($affiliate->total_earnings, 2) }}</div>
+                                    <div class="font-weight-medium text-success">€ {{ number_format($affiliate->total_earnings, 2) }}</div>
                                 </div>
                             </div>
                             @endforeach
@@ -267,7 +267,7 @@
                                                 </span>
                                             </td>
                                             <td class="text-success font-weight-medium">
-                                                ₺{{ number_format($commission->amount, 2) }}
+                                                € {{ number_format($commission->amount, 2) }}
                                             </td>
                                             <td>
                                                 <span class="text-white bg-warning rounded px-2 py-1">
