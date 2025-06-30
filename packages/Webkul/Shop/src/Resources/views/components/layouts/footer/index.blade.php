@@ -12,7 +12,7 @@
     ]);
 @endphp
 
-<footer style="background: #f8fffe; padding:20px 20px 0; margin: 0;">
+<footer style="background: #f8fffe; padding:20px 20px 0; margin-top: 50px;">
     <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
 
         <!-- Logo ve Başlık -->

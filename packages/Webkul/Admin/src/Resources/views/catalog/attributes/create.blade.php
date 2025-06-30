@@ -37,7 +37,7 @@
                 </button>
             </div>
         </div>
-        
+
         <!-- Create Attributes Vue Components -->
         <v-create-attributes>
             <!-- Shimmer Effect -->
@@ -449,7 +449,7 @@
                             </x-admin::form.control-group>
                         </x-slot>
                     </x-admin::accordion>
-                    
+
                     <!-- Validations -->
                     <x-admin::accordion>
                         <x-slot:header>

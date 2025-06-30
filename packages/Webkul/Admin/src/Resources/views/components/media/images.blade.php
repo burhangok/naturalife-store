@@ -351,7 +351,7 @@
                 :style="{'width': this.width, 'height': this.height}"
             />
 
-            <div class="invisible absolute bottom-0 top-0 flex w-full flex-col justify-between bg-white p-3 opacity-80 transition-all group-hover:visible dark:bg-gray-900">
+            <div class="absolute bottom-0 top-0 flex w-full flex-col justify-between bg-white p-3 opacity-80 transition-all group-hover:visible dark:bg-gray-900">
                 <!-- Image Name -->
                 <p class="break-all text-xs font-semibold text-gray-600 dark:text-gray-300"></p>
 
