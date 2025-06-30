@@ -1,7 +1,11 @@
 {!! view_render_event('bagisto.shop.layout.footer.before') !!}
-
+@php
+//30.06.2025 burhangok
+@endphp
 @inject('themeCustomizationRepository', 'Webkul\Theme\Repositories\ThemeCustomizationRepository')
-
+@php
+//30.06.2025 burhangok
+@endphp
 @php
     $channel = core()->getCurrentChannel();
     $customization = $themeCustomizationRepository->findOneWhere([
