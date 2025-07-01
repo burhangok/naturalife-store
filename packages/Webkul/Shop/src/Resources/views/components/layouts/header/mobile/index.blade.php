@@ -2,6 +2,19 @@
     This code needs to be refactored to reduce the amount of PHP in the Blade
     template as much as possible.
 -->
+@inject('themeCustomizationRepository', 'Webkul\Theme\Repositories\ThemeCustomizationRepository')
+@php
+//30.06.2025 burhangok
+@endphp
+@php
+    $channel = core()->getCurrentChannel();
+    $customization = $themeCustomizationRepository->findOneWhere([
+        'type'       => 'footer_links',
+        'status'     => 1,
+        'theme_code' => $channel->theme,
+        'channel_id' => $channel->id,
+    ]);
+@endphp
 @php
     $showCompare = (bool) core()->getConfigData('catalog.products.settings.compare_option');
 
@@ -67,11 +80,38 @@
 
                     {!! view_render_event('bagisto.shop.components.layouts.header.mobile.drawer.categories.before') !!}
 
-                    <!-- Mobile category view -->
-                    <v-mobile-category></v-mobile-category>
+                  <!-- Mobile category view -->
+                  <v-mobile-category></v-mobile-category>
 
-                    {!! view_render_event('bagisto.shop.components.layouts.header.mobile.drawer.categories.after') !!}
-                </x-slot>
+                  <!-- Footer Links Section -->
+                  @if ($customization?->options)
+                      <div class="border-t border-zinc-200 mt-4 pt-4">
+                          <div class="grid gap-2">
+                              @foreach ($customization->options as $footerLinkSection)
+                                  @php
+                                      usort($footerLinkSection, function ($a, $b) {
+                                          return $a['sort_order'] - $b['sort_order'];
+                                      });
+                                  @endphp
+
+                                  @foreach ($footerLinkSection as $link)
+                                      <div class="flex items-center justify-between gap-4">
+
+                                             <a href="{{ $link['url'] ?? '#' }}"
+                                              class="flex items-center justify-between py-2 text-base font-medium transition-all hover:text-navyBlue"
+                                              @if(isset($link['target']) && $link['target'] === '_blank') target="_blank" @endif
+                                          >
+                                              {{ $link['title'] }}
+                                          </a>
+                                      </div>
+                                  @endforeach
+                              @endforeach
+                          </div>
+                      </div>
+                  @endif
+
+                  {!! view_render_event('bagisto.shop.components.layouts.header.mobile.drawer.categories.after') !!}
+              </x-slot>
 
                 <x-slot:footer></x-slot>
             </x-shop::drawer>
@@ -92,7 +132,7 @@
                     height="29"
                 >
             </a>
-            
+
             {!! view_render_event('bagisto.shop.components.layouts.header.mobile.logo.after') !!}
         </div>
 
@@ -126,7 +166,7 @@
                         <x-slot:toggle>
                             <span class="icon-users cursor-pointer text-2xl"></span>
                         </x-slot>
-    
+
                         <!-- Guest Dropdown -->
                         @guest('customer')
                             <x-slot:content>
@@ -134,14 +174,14 @@
                                     <p class="font-dmserif text-xl">
                                         @lang('shop::app.components.layouts.header.welcome-guest')
                                     </p>
-    
+
                                     <p class="text-sm">
                                         @lang('shop::app.components.layouts.header.dropdown-text')
                                     </p>
                                 </div>
-    
+
                                 <p class="mt-3 w-full border border-zinc-200"></p>
-    
+
                                 {!! view_render_event('bagisto.shop.components.layouts.header.mobile.index.customers_action.before') !!}
 
                                 <div class="mt-6 flex gap-4">
@@ -153,21 +193,21 @@
                                     >
                                         @lang('shop::app.components.layouts.header.sign-in')
                                     </a>
-    
+
                                     <a
                                         href="{{ route('shop.customers.register.index') }}"
                                         class="m-0 mx-auto block w-max cursor-pointer rounded-2xl border-2 border-navyBlue bg-white px-7 py-3.5 text-center text-base font-medium text-navyBlue ltr:ml-0 rtl:mr-0"
                                     >
                                         @lang('shop::app.components.layouts.header.sign-up')
                                     </a>
-    
+
                                     {!! view_render_event('bagisto.shop.components.layouts.header.mobile.index.sign_in_button.after') !!}
                                 </div>
 
                                 {!! view_render_event('bagisto.shop.components.layouts.header.mobile.index.customers_action.after') !!}
                             </x-slot>
                         @endguest
-    
+
                         <!-- Customers Dropdown -->
                         @auth('customer')
                             <x-slot:content class="!p-0">
@@ -176,31 +216,31 @@
                                         @lang('shop::app.components.layouts.header.welcome')’
                                         {{ auth()->guard('customer')->user()->first_name }}
                                     </p>
-    
+
                                     <p class="text-sm">
                                         @lang('shop::app.components.layouts.header.dropdown-text')
                                     </p>
                                 </div>
-    
+
                                 <p class="mt-3 w-full border border-zinc-200"></p>
-    
+
                                 <div class="mt-2.5 grid gap-1 pb-2.5">
                                     {!! view_render_event('bagisto.shop.components.layouts.header.mobile.index.profile_dropdown.links.before') !!}
-    
+
                                     <a
                                         class="cursor-pointer px-5 py-2 text-base hover:bg-gray-100"
                                         href="{{ route('shop.customers.account.profile.index') }}"
                                     >
                                         @lang('shop::app.components.layouts.header.profile')
                                     </a>
-    
+
                                     <a
                                         class="cursor-pointer px-5 py-2 text-base hover:bg-gray-100"
                                         href="{{ route('shop.customers.account.orders.index') }}"
                                     >
                                         @lang('shop::app.components.layouts.header.orders')
                                     </a>
-    
+
                                     @if ($showWishlist)
                                         <a
                                             class="cursor-pointer px-5 py-2 text-base hover:bg-gray-100"
@@ -209,7 +249,7 @@
                                             @lang('shop::app.components.layouts.header.wishlist')
                                         </a>
                                     @endif
-    
+
                                     <!--Customers logout-->
                                     @auth('customer')
                                         <x-shop::form
@@ -217,7 +257,7 @@
                                             action="{{ route('shop.customer.session.destroy') }}"
                                             id="customerLogout"
                                         />
-    
+
                                         <a
                                             class="cursor-pointer px-5 py-2 text-base hover:bg-gray-100"
                                             href="{{ route('shop.customer.session.destroy') }}"
@@ -226,7 +266,7 @@
                                             @lang('shop::app.components.layouts.header.logout')
                                         </a>
                                     @endauth
-    
+
                                     {!! view_render_event('bagisto.shop.components.layouts.header.mobile.index.profile_dropdown.links.after') !!}
                                 </div>
                             </x-slot>
@@ -234,7 +274,7 @@
                     </x-shop::dropdown>
                 </div>
 
-                <!-- For Medium and small screen --> 
+                <!-- For Medium and small screen -->
                 <div class="md:hidden">
                     @guest('customer')
                         <a
@@ -263,8 +303,8 @@
 
     <!-- Serach Catalog Form -->
     <form action="{{ route('shop.search.index') }}" class="flex w-full items-center">
-        <label 
-            for="organic-search" 
+        <label
+            for="organic-search"
             class="sr-only"
         >
             @lang('shop::app.components.layouts.header.search')
@@ -308,6 +348,8 @@
                     @{{ category.name }}
                 </a>
 
+
+
                 <span
                     class="cursor-pointer text-2xl font-medium"
                     :class="{
@@ -317,6 +359,7 @@
                     @click="toggle(category)"
                 >
                 </span>
+
             </div>
 
             <div
