@@ -2,6 +2,9 @@
 
 namespace Webkul\Shop\Http\Controllers\Customer;
 
+use App\Models\Affiliate;
+use App\Models\AffiliateClick;
+use Carbon\Carbon;
 use Cookie;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
@@ -88,6 +91,64 @@ class RegistrationController extends Controller
             }
         }
 
+
+        //02.07.2025 burhangok
+// Affiliate kontrolü - Session'dan bilgileri al
+$parentAffiliateCode = session('parent_affiliate_code');
+
+$newAffiliateCode = null;
+
+if ($parentAffiliateCode) {
+            // Yeni affiliate kodu oluştur
+            $newAffiliateCode = $this->generateUniqueAffiliateCode($customer->id);
+
+            // Affiliate kodu kontrolü
+            if ($parentAffiliateCode != 'AFFLN_O01') {
+                $parentAffiliate = Affiliate::where('affiliate_code', $parentAffiliateCode)->first();
+
+                if (!$parentAffiliate) {
+                    return back()->with('error', 'Ungültiger Delegiertencode. Bitte versuchen Sie es erneut.');
+                }
+
+                $parentId = $parentAffiliate->id;
+                $level = $parentAffiliate->level + 1;
+            }
+
+            // Kullanıcının zaten temsilci olup olmadığını kontrol et
+            $existingAffiliate = Affiliate::where('customer_id', $customer->id)->first();
+            if ($existingAffiliate) {
+                return back()->with('error', 'Sie sind bereits im Vertretersystem registriert.');
+            }
+
+
+            $affiliate = new Affiliate();
+            $affiliate->parent_id = $parentId;
+            $affiliate->customer_id = $customer->id;
+            $affiliate->affiliate_code = $newAffiliateCode;
+            $affiliate->level = $level;
+            $affiliate->status = "active";
+            $affiliate->joined_at = Carbon::now('Europe/Berlin');
+            $affiliate->save();
+
+            // Müşteri grubunu güncelle
+            $customer->customer_group_id = 4;
+            $customer->save();
+            $affiliateClick = session('affiliate_click_id');
+            $affiliateClick = AffiliateClick::where('id', $affiliateClick)
+                ->first();
+
+            if ($affiliateClick) {
+                $affiliateClick->update([
+                    'customer_id' => $customer->id,
+                    'converted' => 1,
+                    'conversion_id' => $newAffiliateCode,
+                    'last_visit_time' => now(),
+                    'visit_count' => $affiliateClick->visit_count + 1,
+                ]);
+            }
+
+
+        }
         Event::dispatch('customer.create.after', $customer);
 
         Event::dispatch('customer.registration.after', $customer);
@@ -99,6 +160,27 @@ class RegistrationController extends Controller
         }
 
         return redirect()->route('shop.customer.session.index');
+    }
+
+    public function generateUniqueAffiliateCode($customerId)
+    {
+        // Prefix oluşturuluyor: LNAFF{müşteri_id}_
+        $prefix = "AFF{$customerId}_";
+
+        // Rasgele karakter uzunluğu (toplam uzunluğun sabit kalması için)
+        $randomLength = 4;
+
+        do {
+            // Rasgele karakterler oluştur
+            $randomPart = strtoupper(Str::random($randomLength));
+
+            // Tam kodu birleştir
+            $code = $prefix . $randomPart;
+
+            // Kodun veritabanında var olup olmadığını kontrol et
+        } while (Affiliate::where('affiliate_code', $code)->exists());
+
+        return $code;
     }
 
     /**
@@ -152,11 +234,11 @@ class RegistrationController extends Controller
             Mail::queue(new EmailVerificationNotification($verificationData));
 
             if (Cookie::has('enable-resend')) {
-                \Cookie::queue(\Cookie::forget('enable-resend'));
+                Cookie::queue(Cookie::forget('enable-resend'));
             }
 
             if (Cookie::has('email-for-resend')) {
-                \Cookie::queue(\Cookie::forget('email-for-resend'));
+                Cookie::queue(Cookie::forget('email-for-resend'));
             }
         } catch (\Exception $e) {
             report($e);

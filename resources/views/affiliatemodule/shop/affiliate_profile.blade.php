@@ -266,7 +266,7 @@
         <div class="card-body">
             <div class="input-group mb-3">
                 <input type="text" class="form-control" id="referralLink"
-                    value="https://lifenature.eu/ref/{{ $affiliate->affiliate_code }}" readonly>
+                    value="{{config('app.url')}}/ref/{{ $affiliate->affiliate_code }}" readonly>
                 <button class="btn btn-outline-primary" type="button" onclick="copyToClipboard('referralLink')">
                     <i class="fas fa-copy"></i> {{ $lang == 'tr' ? 'Kopyala' : 'Kopieren' }}
                 </button>
@@ -310,8 +310,9 @@
                                 <th>{{ $lang == 'tr' ? 'Zaman' : 'Zeitpunkt' }}</th>
                                 <th>{{ $lang == 'tr' ? 'IP / Konum' : 'IP / Standort' }}</th>
                                 <th>{{ $lang == 'tr' ? 'Cihaz' : 'Gerät' }}</th>
-                                <th>{{ $lang == 'tr' ? 'Referer' : 'Verweis' }}</th>
                                 <th>{{ $lang == 'tr' ? 'Dönüşüm' : 'Konversion' }}</th>
+                                <th>{{ $lang == 'tr' ? 'Temsilci Kodu ' : 'Vertretercode' }}</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -327,17 +328,18 @@
                                         <small class="text-muted">{{ $click->browser }}</small>
                                     </td>
                                     <td>
-                                        <small class="text-truncate d-block" style="max-width:150px;">
-                                            {{ Str::limit($click->referrer_url, 30) }}
-                                        </small>
-                                    </td>
-                                    <td>
                                         @if ($click->converted)
                                             <span class="badge bg-success text-white">{{ $lang == 'tr' ? 'Evet' : 'Ja' }}</span>
                                         @else
                                             <span class="badge bg-warning text-white">{{ $lang == 'tr' ? 'Hayır' : 'Nein' }}</span>
                                         @endif
                                     </td>
+                                    <td>
+                                        <small class="text-truncate d-block" style="max-width:150px;">
+                                            {{ $click->conversion_id ? $click->conversion_id : '-' }}
+                                        </small>
+                                    </td>
+
                                 </tr>
                             @endforeach
                         </tbody>

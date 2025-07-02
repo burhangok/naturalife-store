@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Affiliate;
 
 use App\Models\Affiliate;
-use App\Models\AffiliateClick;
+
 use App\Models\AffiliatePayment;
 use App\Models\CommissionRule;
 use App\Models\User;

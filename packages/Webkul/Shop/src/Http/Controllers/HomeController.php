@@ -2,6 +2,8 @@
 
 namespace Webkul\Shop\Http\Controllers;
 
+use App\Models\Affiliate;
+use App\Models\AffiliateClick;
 use Illuminate\Support\Facades\Mail;
 use Webkul\Shop\Http\Requests\ContactRequest;
 use Webkul\Shop\Mail\ContactUs;
@@ -94,4 +96,52 @@ class HomeController extends Controller
         // Ana sayfaya veya ürün sayfasına yönlendir
         return redirect('/')->with('success', 'Gutscheincode erfolgreich angewendet. ' . $code);
     }
+
+    public function registerAffiliateWithReference($refAffCode) {// Affiliate kodunu kontrol et
+        $affiliate = Affiliate::where('affiliate_code', $refAffCode)
+            ->first();
+
+        if ($affiliate) {
+            // Session'a kaydet
+            session([
+                'parent_affiliate_id' => $affiliate->id,
+                'parent_affiliate_code' => $refAffCode,
+                'parent_affiliate_name' => $affiliate->getFullName(),
+
+            ]);
+
+            // Click'i kaydet
+            $this->recordAffiliateClick($affiliate);
+
+
+
+            return redirect('/customer/register')
+                ->with('success', 'Ihr Sponsor/oberer Vertreter, der Sie im System registriert: ' . $affiliate->getFullName());
+        } else {
+            return redirect('/customer/register')
+                ->with('error', 'Ungültiger Sponsor-/Upline-Code: ' . $refAffCode);
+        }
+    }
+
+    private function recordAffiliateClick($affiliate)
+    {
+        try {
+            // Affiliate click tablosuna kaydet
+       $affiliateClick= AffiliateClick::create([
+                'affiliate_id' => $affiliate->id,
+                'ip_address' => request()->ip(),
+                'user_agent' => request()->userAgent(),
+                'referrer' => request()->headers->get('referer'),
+                'clicked_at' => now()
+            ]);
+
+            session([
+                'affiliate_click_id' => $affiliateClick->id
+
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Affiliate click kayıt hatası: ' . $e->getMessage());
+        }
+    }
+
 }

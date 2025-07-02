@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Affiliate;
 
 use App\Models\Affiliate;
-use App\Models\AffiliateClick;
+
 use App\Models\AffiliatePayment;
 use App\Models\CommissionRule;
 use App\Models\User;
@@ -596,7 +596,12 @@ public function store(Request $request)
         if ($existingAffiliate) {
             return back()->with('error', 'Sie sind bereits im Vertretersystem registriert.');
         }
-
+            $customer = Customer::find($customerId);
+            if (!$customer) {
+                return
+                back()->with('error', 'Keine Kundeninformationen gefunden.');
+            }
+            
         $affiliate = new Affiliate();
         $affiliate->parent_id = $parentId;
         $affiliate->customer_id = $customerId;
@@ -606,10 +611,7 @@ public function store(Request $request)
         $affiliate->joined_at = Carbon::now('Europe/Berlin');
         $affiliate->save();
 
-        $customer = Customer::find($customerId);
-        if (!$customer) {
-            return back()->with('error', 'Keine Kundeninformationen gefunden.');
-        }
+
 
         $customer->customer_group_id = 4;
         $customer->save();
