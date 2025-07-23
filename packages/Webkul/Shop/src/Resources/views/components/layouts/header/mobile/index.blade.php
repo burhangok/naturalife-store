@@ -79,6 +79,13 @@
                     </div>
 
                     {!! view_render_event('bagisto.shop.components.layouts.header.mobile.drawer.categories.before') !!}
+<!-- Custom Link for Homepage in German -->
+<div class="flex items-center justify-between gap-4 mt-4">
+    <a href="{{ route('shop.home.index') }}"
+       class="flex items-center justify-between py-2 text-base font-semibold transition-all hover:text-navyBlue">
+        Startseite
+    </a>
+</div>
 
                   <!-- Mobile category view -->
                   <v-mobile-category></v-mobile-category>

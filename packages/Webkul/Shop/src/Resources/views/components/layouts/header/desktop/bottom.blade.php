@@ -24,7 +24,19 @@
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.logo.after') !!}
 
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.category.before') !!}
-
+<!-- Ana Sayfa Linki ve Kategoriler -->
+<div class="flex items-center">
+    <!-- Ana Sayfa Linki -->
+    <div class="group relative flex h-[77px] items-center border-b-4 border-transparent hover:border-b-4 hover:border-navyBlue">
+        <span>
+            <a
+                href="{{ route('shop.home.index') }}"
+                class="inline-block px-5 uppercase"
+            >
+                Startseite
+            </a>
+        </span>
+    </div>
         <v-desktop-category>
             <div class="flex items-center gap-5">
                 <span
@@ -43,7 +55,7 @@
                 ></span>
             </div>
         </v-desktop-category>
-
+    </div >
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.category.after') !!}
     </div>
 
@@ -155,7 +167,7 @@
                         <p class="mt-3 w-full border border-zinc-200"></p>
 
                         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.customers_action.before') !!}
-                        
+
                         <div class="mt-6 flex gap-4">
                             {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.sign_in_button.before') !!}
 
@@ -172,7 +184,7 @@
                             >
                                 @lang('shop::app.components.layouts.header.sign-up')
                             </a>
-                            
+
                             {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.sign_up_button.after') !!}
                         </div>
 
