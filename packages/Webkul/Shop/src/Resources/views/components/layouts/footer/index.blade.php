@@ -106,6 +106,10 @@
                             </a>
                         @endforeach
                     @endforeach
+                    <a href="/blog" style="color:white; text-decoration: none; font-size: 14px; display: inline-block; margin: 5px 15px; transition: color 0.3s ease;"
+                    >
+                     Blog
+                  </a>
                 </div>
             @endif
 
