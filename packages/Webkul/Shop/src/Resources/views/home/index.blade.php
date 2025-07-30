@@ -86,9 +86,11 @@
     <section class="container mb-4">
         <h2 class="font-dmserif text-3xl max-md:text-2xl max-sm:text-xl" style="margin-bottom: 20px">Alle Produkte</h2>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-3 gap-8 max-[1060px]:grid-cols-2 max-md:grid-cols-1 max-md:gap-4 max-md:justify-items-center">
+
+
             @foreach ($allProducts as $product)
-            <div class="1180:transtion-all group w-full rounded-md 1180:relative 1180:grid 1180:content-start 1180:overflow-hidden 1180:duration-300 1180:hover:shadow-[0_5px_10px_rgba(0,0,0,0.1)] max-w-full">
+            <div class="1180:transition-all group w-full max-w-[320px] rounded-md border border-transparent p-2.5 hover:border-gray-300 mx-auto">
 
                 <!-- Product Image Container -->
                 <div class="relative max-h-[300px] w-full overflow-hidden max-md:max-h-60 max-md:max-w-full max-md:rounded-lg max-sm:max-h-[200px] max-sm:max-w-full">
@@ -169,6 +171,10 @@
             </div>
         @endforeach
 
+
+
+
+        </div>
         <a
         href="{{ url('/') }}"
         class="secondary-button mx-auto mt-5 block w-max rounded-2xl px-11 py-3 text-center text-base max-lg:mt-0 max-lg:hidden max-lg:py-3.5 max-md:rounded-lg"
@@ -176,9 +182,6 @@
     >
         @lang('shop::app.components.products.carousel.view-all')
     </a>
-
-
-        </div>
     </section>
 @endif
 
