@@ -25,7 +25,7 @@
     <x-slot:title>
         {{  $channel->home_seo['meta_title'] ?? '' }}
     </x-slot>
-    
+
     <!-- Loop over the theme customization -->
     @foreach ($customizations as $customization)
         @php ($data = $customization->options) @endphp
@@ -78,4 +78,109 @@
                 @break
         @endswitch
     @endforeach
+ @php
+    $allProducts = app('Webkul\Product\Repositories\ProductRepository')->getAll();
+@endphp
+
+@if ($allProducts->count())
+    <section class="container mb-4">
+        <h2 class="font-dmserif text-3xl max-md:text-2xl max-sm:text-xl" style="margin-bottom: 20px">Alle Produkte</h2>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            @foreach ($allProducts as $product)
+            <div class="1180:transtion-all group w-full rounded-md 1180:relative 1180:grid 1180:content-start 1180:overflow-hidden 1180:duration-300 1180:hover:shadow-[0_5px_10px_rgba(0,0,0,0.1)] max-w-full">
+
+                <!-- Product Image Container -->
+                <div class="relative max-h-[300px] w-full overflow-hidden max-md:max-h-60 max-md:max-w-full max-md:rounded-lg max-sm:max-h-[200px] max-sm:max-w-full">
+
+                    <!-- Product Image -->
+                    <a href="{{ url($product->url_key) }}" aria-label="{{ $product->name }}">
+                        <img
+                            src="{{ $product->base_image_url }}"
+                            alt="{{ $product->name }}"
+                            class="after:content-[' '] relative bg-zinc-100 transition-all duration-300 after:block after:pb-[calc(100%+9px)] group-hover:scale-105 w-full h-48 object-cover"
+                        />
+                    </a>
+
+                    <!-- Sale/New Badges -->
+                    <div class="action-items">
+                        @if($product->getTypeInstance()->haveDiscount())
+                        <p
+                        class="absolute top-5 inline-block rounded-[44px] bg-red-500 px-2.5 text-sm text-white ltr:left-5 max-sm:ltr:left-2 rtl:right-5"
+
+                    >
+                        @lang('shop::app.components.products.card.sale')
+                    </p>
+
+                        @elseif($product->new)
+                        <p
+                        class="absolute top-5 inline-block rounded-[44px] bg-navyBlue px-2.5 text-sm text-white ltr:left-5 max-sm:ltr:left-2 rtl:right-5"
+
+                    >
+                        @lang('shop::app.components.products.card.new')
+                    </p>
+                        @endif
+
+                        <!-- Action Buttons (Wishlist, Compare) -->
+                        <div class="opacity-0 transition-all duration-300 group-hover:bottom-0 group-hover:opacity-100 max-lg:opacity-100 max-sm:opacity-100">
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Information Section -->
+                <div class="-mt-9 grid w-full translate-y-9 content-start gap-2.5 bg-white p-2.5 transition-transform duration-300 ease-out group-hover:-translate-y-0 group-hover:rounded-t-lg max-md:relative max-md:mt-0 max-md:translate-y-0 max-md:gap-0 max-md:px-0 max-md:py-1.5">
+
+                    <!-- Product Name -->
+                    <p class="break-all text-base font-medium max-md:mb-1.5 max-md:whitespace-break-spaces max-md:leading-6 max-sm:text-sm max-sm:leading-4">
+                        {{ $product->name }}
+                    </p>
+
+                    <!-- Product Price -->
+                    <div class="flex items-center gap-2.5 text-lg font-semibold max-sm:text-sm max-sm:leading-6">
+                        <p class="font-semibold max-sm:leading-4">
+                            {{ core()->currency($product->price)  }}
+                        </p>
+                    </div>
+
+
+                    <div class="action-items flex items-center justify-between gap-2 opacity-0 transition-all duration-300 ease-in-out group-hover:opacity-100 max-md:opacity-100">
+
+                        @if (core()->getConfigData('sales.checkout.shopping_cart.cart_page'))
+
+                        <button
+                        class="secondary-button w-full max-w-full p-2.5 text-sm font-medium max-sm:rounded-xl max-sm:p-2"
+
+                        @click="addToCart()"
+                    >
+                        @lang('shop::app.components.products.card.add-to-cart')
+                    </button>
+
+
+                        @endif
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+        <a
+        href="{{ url('/') }}"
+        class="secondary-button mx-auto mt-5 block w-max rounded-2xl px-11 py-3 text-center text-base max-lg:mt-0 max-lg:hidden max-lg:py-3.5 max-md:rounded-lg"
+        aria-label="Alle anzeigen"
+    >
+        @lang('shop::app.components.products.carousel.view-all')
+    </a>
+
+
+        </div>
+    </section>
+@endif
+
+
 </x-shop::layouts>

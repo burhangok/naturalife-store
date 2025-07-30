@@ -38,7 +38,8 @@ class HomeController extends Controller
             'theme_code' => core()->getCurrentChannel()->theme,
         ]);
 
-        return view('shop::home.index', compact('customizations'));
+
+        return view('shop::home.index', compact('customizations', ));
     }
 
     /**
