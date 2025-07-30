@@ -84,7 +84,7 @@
 
 @if ($allProducts->count())
     <section class="container mb-4">
-        <h2 class="font-dmserif text-3xl max-md:text-2xl max-sm:text-xl" style="margin-bottom: 20px">Alle Produkte</h2>
+        <h2 class="font-dmserif text-3xl max-md:text-2xl max-sm:text-xl" style="margin-bottom: 20px; margin-top: 20px">Alle Produkte</h2>
 
         <div class="grid grid-cols-3 gap-8 max-[1060px]:grid-cols-2 max-md:grid-cols-1 max-md:gap-4 max-md:justify-items-center">
 
