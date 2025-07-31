@@ -1,15 +1,9 @@
 @php
     $channel = core()->getCurrentChannel();
-    use Webkul\Product\Models\Product;
 
-    // Eğer $allProducts tanımlı değilse, buradan çek
-    if (!isset($allProducts)) {
-        $allProducts = Product::where('status', 1)
-            ->where('visible_individually', 1)
-            ->with(['images', 'attribute_values', 'price_indices'])
-            ->take(12)
-            ->get();
-    }
+
+    // burhangok 07.2025
+
 @endphp
 
 <!-- SEO Meta Content -->
@@ -18,7 +12,7 @@
         name="title"
         content="{{ $channel->home_seo['meta_title'] ?? '' }}"
     />
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta
         name="description"
         content="{{ $channel->home_seo['meta_description'] ?? '' }}"
@@ -150,7 +144,7 @@
                                         data-product-id="{{ $product->id }}"
                                         data-product-name="{{ $product->name }}"
                                         @if (!$product->isSaleable())  disabled @endif
-                                        onclick="addToCartSimple(this)"
+                                        onclick="addToCart({{ $product->id }}, '{{ route("shop.api.checkout.cart.store") }}')"
                                     >
                                     @lang('shop::app.components.products.card.add-to-cart')
                                     </button>
@@ -166,6 +160,68 @@
 
 
     @endif
+
+    <script>
+        function addToCart(productId, cartStoreUrl) {
+            const addButton = document.querySelector('.add-to-cart-btn');
+            if (addButton) {
+                addButton.disabled = true;
+                addButton.textContent = 'Ekleniyor...';
+            }
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            if (!csrfToken) {
+                console.error('CSRF token bulunamadı.');
+                showFlashMessage('error', 'Güvenlik hatası. Sayfayı yenileyin.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('quantity', '1');
+            formData.append('product_id', productId);
+            formData.append('_token', csrfToken);
+
+            fetch(cartStoreUrl, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const cartData = data.data;
+
+
+                if (data.message) {
+
+                } else {
+
+                }
+
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
+            })
+            .catch(error => {
+                console.error('Add to cart error:', error);
+
+            })
+            .finally(() => {
+
+            });
+        }
+
+        // Flash mesaj gösterme fonksiyonu
+
+        </script>
 
 
 
