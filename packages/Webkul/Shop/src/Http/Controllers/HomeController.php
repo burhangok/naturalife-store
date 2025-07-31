@@ -5,6 +5,7 @@ namespace Webkul\Shop\Http\Controllers;
 use App\Models\Affiliate;
 use App\Models\AffiliateClick;
 use Illuminate\Support\Facades\Mail;
+use Webkul\Product\Models\Product;
 use Webkul\Shop\Http\Requests\ContactRequest;
 use Webkul\Shop\Mail\ContactUs;
 use Webkul\Theme\Repositories\ThemeCustomizationRepository;
@@ -38,8 +39,8 @@ class HomeController extends Controller
             'theme_code' => core()->getCurrentChannel()->theme,
         ]);
 
-
-        return view('shop::home.index', compact('customizations', ));
+        $allProducts = Product::all();
+        return view('shop::home.index', compact('customizations', 'allProducts'));
     }
 
     /**
