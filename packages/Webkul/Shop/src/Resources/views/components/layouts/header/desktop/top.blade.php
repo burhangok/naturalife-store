@@ -28,13 +28,19 @@
                     <i class="fas fa-info-circle text-xs" style="color: inherit !important;"></i>
                     <span style="color: inherit !important;">Impressum</span>
                 </a>
-
+                <a href="{{ route('shop.cms.page', 'uber-uns') }}"
+                class="top-nav-link flex items-center gap-2 text-sm font-medium"
+                style="color: #f8f6f0 !important;">
+                <i class="fa fa-building text-xs" style="color: inherit !important;"></i>
+                <span style="color: inherit !important;">Über uns</span>
+            </a>
                 <a href="{{ route('shop.cms.page', 'kontakt') }}"
                     class="top-nav-link flex items-center gap-2 text-sm font-medium"
                     style="color: #f8f6f0 !important;">
                     <i class="fas fa-envelope text-xs" style="color: inherit !important;"></i>
                     <span style="color: inherit !important;">Kontakt</span>
                 </a>
+
             </div>
 
             <!-- Sağ Taraf - Sosyal Medya ve İletişim -->
