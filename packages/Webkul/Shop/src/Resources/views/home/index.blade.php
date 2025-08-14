@@ -100,6 +100,7 @@
                             <img
                                 src="{{ $product->base_image_url ?: asset('themes/shop/default/assets/images/product-placeholders/front.png') }}"
                                 alt="{{ $product->name }}"
+                                loading="lazy"
                                 class="after:content-[' '] relative bg-zinc-100 transition-all duration-300 after:block after:pb-[calc(100%+9px)] group-hover:scale-105 w-full h-48 object-cover"
                             />
                         </a>
