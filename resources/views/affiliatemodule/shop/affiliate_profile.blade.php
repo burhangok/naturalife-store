@@ -63,7 +63,7 @@
                             </li>
                             @endif
                             <li class="list-group-item d-flex justify-content-between px-0">
-                                <span class="text-muted">{{ $lang == 'tr' ? 'Alt Temsilci Sayısı:' : 'Anzahl der Untervertreter:' }}</span>
+                                <span class="text-muted">{{ $lang == 'tr' ? 'Sponsorlu Müşteri Sayısı:' : 'Anzahl der Untervertreter:' }}</span>
                                 <span class="fw-bold">{{ $affiliate->children->count() }}</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between px-0">
@@ -101,7 +101,7 @@
                             </button>
                             <button class="nav-link text-start py-3 px-4 border-bottom" id="network-tab"
                                 data-bs-toggle="pill" data-bs-target="#network" type="button">
-                                <i class="fas fa-sitemap me-2"></i> {{ $lang == 'tr' ? 'Alt Temsilcilerim' : 'Meine Untervertreter' }}
+                                <i class="fas fa-sitemap me-2"></i> {{ $lang == 'tr' ? 'Sponsorlu Müşterilerim' : 'Meine gesponserten Kunden' }}
                             </button>
                             <button class="nav-link text-start py-3 px-4 border-bottom" id="earnings-tab"
                                 data-bs-toggle="pill" data-bs-target="#earnings" type="button">
@@ -153,7 +153,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h3 class="card-title"><i class="fas fa-users"></i> {{ $lang == 'tr' ? 'Alt Temsilcilerim' : 'Meine Untervertreter' }}</h3>
+                            <h3 class="card-title"><i class="fas fa-users"></i> {{ $lang == 'tr' ? 'Sponsorlu Müşterilerim' : 'Meine gesponserten Kunden' }}</h3>
                             <h4>{{ $downlineAffiliates->count() }}</h4>
                         </div>
                         <div class="align-self-center">
@@ -220,7 +220,7 @@
                         <span class="fw-bold">{{ $clicks->where('created_at', '>=', now()->startOfMonth())->count() }}</span>
                     </div>
                     <div class="d-flex justify-content-between">
-                        <span>{{ $lang == 'tr' ? 'Yeni Alt Temsilci:' : 'Neue Untervertreter:' }}</span>
+                        <span>{{ $lang == 'tr' ? 'Yeni Sponsorlu Müşterim:' : 'Neue gesponserte Kunden:' }}</span>
                         <span class="fw-bold">{{ $affiliate->children->where('joined_at', '>=', now()->startOfMonth())->count() }}</span>
                     </div>
                 </div>
@@ -358,7 +358,7 @@
         <div class="col-md-6">
             <div class="card bg-light">
                 <div class="card-body">
-                    <h3 class="text-muted mb-1">{{ $lang == 'tr' ? 'Toplam Alt Temsilci' : 'Gesamtanzahl Untervertreter' }}</h3>
+                    <h3 class="text-muted mb-1">{{ $lang == 'tr' ? 'Toplam Sponsorlu Müşterim' : 'Gesamtanzahl gesponserte Kunden' }}</h3>
                     <h3 class="mb-0">{{ $downlineAffiliates->count() }}</h3>
                 </div>
             </div>
@@ -366,7 +366,7 @@
         <div class="col-md-6">
             <div class="card bg-light">
                 <div class="card-body">
-                    <h3 class="text-muted mb-1">{{ $lang == 'tr' ? 'Alt Temsilcilerden Kazanç' : 'Einnahmen von Untervertretern' }}</h3>
+                    <h3 class="text-muted mb-1">{{ $lang == 'tr' ? 'Sponsorlu Müşterilerimden Kazanç' : 'Einnahmen von gesponserten Kunden' }}</h3>
                     <h3 class="mb-0">
                         €{{ number_format($downlineAffiliates->sum(function ($affiliate) {
                             return $affiliate->generatedCommissions()->sum('amount');
@@ -420,13 +420,13 @@
     <!-- Alt Temsilciler Listesi -->
     <div class="card">
         <div class="card-header">
-            <h3 class="mb-0"><i class="fas fa-sitemap me-2"></i>{{ $lang == 'tr' ? 'Alt Temsilcilerim' : 'Meine Untervertreter' }}</h3>
+            <h3 class="mb-0"><i class="fas fa-sitemap me-2"></i>{{ $lang == 'tr' ? 'Sponsorlu Müşterilerim' : 'Meine gesponserten Kunden' }}</h3>
         </div>
 
         <div class="card-body p-0">
             @if ($downlineAffiliates->isEmpty())
                 <div class="p-4 text-center text-muted">
-                    {{ $lang == 'tr' ? 'Henüz alt temsilciniz bulunmuyor.' : 'Sie haben derzeit keine Untervertreter.' }}
+                    {{ $lang == 'tr' ? 'Henüz sponsorlu müşteriniz bulunmuyor.' : 'Sie haben derzeit keine gesponserten Kunden.' }}
                 </div>
             @else
                 <div class="table-responsive">

@@ -198,7 +198,7 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <div class="stats-value">{{ core()->formatPrice($affiliate->getTotalEarningsAttribute()) }}</div>
-                <div class="stats-label">{{ $lang == 'tr' ? 'Toplam Kazanç' : 'Gesamteinnahmen' }}</div>
+                <div class="stats-label">{{ $lang == 'tr' ? 'Toplam Hakediş' : 'Gesamteinnahmen' }}</div>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 mb-3">

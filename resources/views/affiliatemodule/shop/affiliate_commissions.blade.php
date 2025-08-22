@@ -3,7 +3,7 @@
     if(request('lang')) session(['lang' => request('lang')]);
     $lang = session('lang', 'de');
 @endphp
-@section('title', $lang == 'tr' ? 'Kazançlarınız' : 'Ihre Einnahmen')
+@section('title', $lang == 'tr' ? 'Hakedişleriniz' : 'Ihre Einnahmen')
 
 
 @section('content')
@@ -232,7 +232,7 @@
                                                     <div class="row g-3">
                                                         <div class="col-md-6">
                                                             <ul class="list-unstyled">
-                                                                <li class="mb-2"><strong class="text-muted">{{ $lang == 'tr' ? 'Komisyon Alan Temsilci:' : 'Provisionsempfänger:' }}</strong>
+                                                                <li class="mb-2"><strong class="text-muted">{{ $lang == 'tr' ? 'Komisyon Alan Kişi:' : 'Provisionsempfänger:' }}</strong>
                                                                     @if ($commission->affiliate)
                                                                     <a href="{{ route('shop.customers.affiliatemodule.profile', $commission->affiliate_id) }}" class="text-primary">
                                                                         <i class="fas fa-user-tie me-1"></i>
@@ -242,7 +242,7 @@
                                                                         <span class="text-danger">{{ $lang == 'tr' ? 'Temsilci Silinmiş' : 'Vertreter gelöscht' }}</span>
                                                                     @endif
                                                                 </li>
-                                                                <li class="mb-2"><strong class="text-muted">{{ $lang == 'tr' ? 'Komisyon Kazandıran Alt Temsilci:' : 'Provisionserzeuger (Untervertreter):' }}</strong>
+                                                                <li class="mb-2"><strong class="text-muted">{{ $lang == 'tr' ? 'Komisyon Kazandıran Müşteri:' : 'Provisionserzeuger (Untervertreter):' }}</strong>
                                                                     @if ($commission->fromAffiliate)
                                                                     <a href="{{ route('shop.customers.affiliatemodule.profile', $commission->from_affiliate_id) }}" class="text-secondary">
                                                                         <i class="fas fa-user-friends me-1"></i>
