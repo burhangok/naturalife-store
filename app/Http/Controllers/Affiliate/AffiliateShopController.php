@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Affiliate;
 
 use App\Models\Affiliate;
 
+use App\Models\AffiliateCommission;
 use App\Models\AffiliatePayment;
 use App\Models\CommissionRule;
 use App\Models\User;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Log;
 use Webkul\Customer\Models\Customer;
+use Webkul\Sales\Models\Order;
 
 class AffiliateShopController extends Controller
 {
@@ -49,6 +51,49 @@ class AffiliateShopController extends Controller
         // Toplam değerleri hesapla
         $totalEarnings = $affiliate->commissions->sum('amount');
 
+        $currentMonth = now()->month;
+        $currentYear = now()->year;
+
+        // Commission rules'ı al
+        $commissionRules = CommissionRule::orderBy('level')->get();
+
+        // Renkler dizisi
+        $colors = ['#206bc4', '#79a6dc', '#a8cce8', '#d7e5f0', '#f0f7ff'];
+
+        $commissionLevels = [];
+
+        foreach ($commissionRules as $index => $rule) {
+            $level = $rule->level;
+            $percentage = $rule->percentage;
+
+            // Bu seviyedeki müşterileri bul
+            $customers = $this->getCustomersByLevel($affiliate->customer_id, $level);
+
+            // Bu müşterilerin bu ayki siparişlerini al
+            $monthlyOrders = Order::whereIn('customer_id', $customers->pluck('id'))
+                ->whereMonth('created_at', $currentMonth)
+                ->whereYear('created_at', $currentYear)
+                ->whereNotIn('status', ['canceled', 'closed'])
+                ->get();
+
+            // Bu seviyeden gelen komisyonları al
+            $monthlyCommissions = AffiliateCommission::where('affiliate_id', $affiliate->id)
+                ->where('level', $level)
+                ->whereMonth('created_at', $currentMonth)
+                ->whereYear('created_at', $currentYear)
+                ->get();
+
+            $commissionLevels[] = [
+                'level' => $level,
+                'percentage' => $percentage,
+                'customer_count' => $customers->count(),
+                'order_count' => $monthlyOrders->count(),
+                'revenue' => $monthlyOrders->sum('base_grand_total_invoiced'),
+                'commission' => $monthlyCommissions->sum('amount'),
+                'color' => $colors[$index % count($colors)]
+            ];
+        }
+
         return view('affiliatemodule.shop.affiliate_profile', compact(
             'affiliate',
             'clicks',
@@ -57,9 +102,27 @@ class AffiliateShopController extends Controller
             'rules',
             'maxLevel',
             'monthlyEarnings',
+            'commissionLevels',
             'totalEarnings'
         ));
 
+    }
+
+    private function getCustomersByLevel($parentId, $targetLevel, $currentLevel = 1)
+    {
+        if ($currentLevel == $targetLevel) {
+            return Affiliate::where('parent_id', $parentId)->get();
+        }
+
+        $customers = collect();
+        $directChildren = Affiliate::where('parent_id', $parentId)->get();
+
+        foreach ($directChildren as $child) {
+            $levelCustomers = $this->getCustomersByLevel($child->id, $targetLevel, $currentLevel + 1);
+            $customers = $customers->merge($levelCustomers);
+        }
+
+        return $customers;
     }
     /**
      * Dönüşüm oranını hesapla
@@ -601,7 +664,7 @@ public function store(Request $request)
                 return
                 back()->with('error', 'Keine Kundeninformationen gefunden.');
             }
-            
+
         $affiliate = new Affiliate();
         $affiliate->parent_id = $parentId;
         $affiliate->customer_id = $customerId;
