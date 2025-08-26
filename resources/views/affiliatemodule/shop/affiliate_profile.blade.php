@@ -553,7 +553,7 @@
 
 {{-- Sponsorlu Müşteri Ağı Tab İçeriği --}}
 {{-- Sponsorlu Müşteri Ağı Tab İçeriği --}}
-<div class="tab-pane fade show active" id="network">
+<div class="tab-pane fade" id="network">
     <div class="container-xl">
         <!-- Üst İstatistik Kartları -->
         <div class="row mb-4">
@@ -561,7 +561,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div class="subheader">Toplam Ağ Büyüklüğü</div>
+                            <div class="subheader"> {{ $lang == 'tr' ? 'Toplam Ağ Büyüklüğü' : 'Gesamtgröße des Netzwerks' }}</div>
                             <div class="ms-auto">
                                 <i class="fas fa-users text-primary fs-3"></i>
                             </div>
@@ -574,7 +574,7 @@
                         @endphp
                         <div class="h1 mb-3">{{ $totalNetworkSize }}</div>
                         <div class="d-flex mb-2">
-                            <div class="text-muted">Doğrudan alt</div>
+                            <div class="text-muted">{{ $lang == 'tr' ? 'Doğrudan alt' : 'Direkte Unterebene' }}</div>
                             <div class="ms-auto text-success">
                                 <span>{{ $downlineAffiliates->count() }}</span>
                                 <i class="fas fa-arrow-up"></i>
@@ -588,7 +588,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div class="subheader">Ağ Toplam Ciro</div>
+                            <div class="subheader"> {{ $lang == 'tr' ? 'Toplam Ağ Cirosu' : 'Gesamtumsatz des Netzwerks' }}</div>
                             <div class="ms-auto">
                                 <i class="fas fa-chart-line text-success fs-3"></i>
                             </div>
@@ -600,7 +600,7 @@
                         @endphp
                         <div class="h1 mb-3">₺{{ number_format($totalNetworkRevenue, 2) }}</div>
                         <div class="d-flex mb-2">
-                            <div class="text-muted">Bu ay</div>
+                            <div class="text-muted">{{ $lang == 'tr' ? 'Bu ay' : 'Diesen Monat' }}</div>
                             <div class="ms-auto">
                                 <span class="text-success">₺{{ number_format($totalNetworkRevenue, 2) }}</span>
                             </div>
@@ -613,14 +613,14 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div class="subheader">Toplam Komisyonum</div>
+                            <div class="subheader">{{ $lang == 'tr' ? 'Toplam Komisyonum' : 'Meine Gesamtprovision' }}</div>
                             <div class="ms-auto">
                                 <i class="fas fa-wallet text-warning fs-3"></i>
                             </div>
                         </div>
                         <div class="h1 mb-3">₺{{ number_format($totalEarnings, 2) }}</div>
                         <div class="d-flex mb-2">
-                            <div class="text-muted">Bu ay</div>
+                            <div class="text-muted">{{ $lang == 'tr' ? 'Bu ay' : 'Diesen Monat' }}</div>
                             <div class="ms-auto">
                                 <span class="text-warning">₺{{ number_format(collect($commissionLevels)->sum('commission'), 2) }}</span>
                             </div>
@@ -633,7 +633,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div class="subheader">1. Seviye Müşteriler</div>
+                            <div class="subheader">{{ $lang == 'tr' ? '1. Seviye Müşteriler' : '1. Ebene Kunden' }}</div>
                             <div class="ms-auto">
                                 <i class="fas fa-user-friends text-info fs-3"></i>
                             </div>
@@ -643,7 +643,7 @@
                         @endphp
                         <div class="h1 mb-3">{{ $level1Data['customer_count'] ?? 0 }}</div>
                         <div class="d-flex mb-2">
-                            <div class="text-muted">Sipariş sayısı</div>
+                            <div class="text-muted">{{ $lang == 'tr' ? 'Sipariş sayısı' : 'Anzahl Bestellungen' }}</div>
                             <div class="ms-auto">
                                 <span class="text-info">{{ $level1Data['order_count'] ?? 0 }}</span>
                             </div>
@@ -660,7 +660,7 @@
                     <div class="card-header">
                         <h3 class="card-title">
                             <i class="fas fa-users me-2"></i>
-                            1. Seviye Sponsorlu Müşterilerim
+                            {{ $lang == 'tr' ? '1. Seviye Sponsorlu Müşterilerim' : 'Meine 1. Ebene gesponserte Kunden' }}
                         </h3>
                         <div class="card-actions">
                             <div class="dropdown">
@@ -669,9 +669,9 @@
                                     {{ now()->format('F Y') }}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">Bu Ay</a>
-                                    <a class="dropdown-item" href="#">Geçen Ay</a>
-                                    <a class="dropdown-item" href="#">Son 3 Ay</a>
+                                    <a class="dropdown-item" href="#">{{ $lang == 'tr' ? 'Bu Ay' : 'Diesen Monat' }}</a>
+                                    <a class="dropdown-item" href="#">{{ $lang == 'tr' ? 'Geçen Ay' : 'Letzten Monat' }}</a>
+                                    <a class="dropdown-item" href="#">{{ $lang == 'tr' ? 'Son 3 Ay' : 'Letzte 3 Monate' }}</a>
                                 </div>
                             </div>
                         </div>
@@ -680,13 +680,14 @@
                         <table class="table card-table table-vcenter text-nowrap">
                             <thead>
                                 <tr>
-                                    <th style="min-width: 200px;">Müşteri</th>
-                                    <th style="min-width: 100px;">Kayıt Tarihi</th>
-                                    <th style="min-width: 120px;">Kişisel Ciro</th>
-                                    <th style="min-width: 100px;">Alt Ağ Sayısı</th>
-                                    <th style="min-width: 120px;">Alt Ağ Cirosu</th>
-                                    <th style="min-width: 140px;">Benim Komisyonum</th>
-                                    <th style="min-width: 80px;">Durum</th>
+                                  <th style="min-width: 200px;">{{ $lang == 'tr' ? 'Müşteri' : 'Kunde' }}</th>
+<th style="min-width: 100px;">{{ $lang == 'tr' ? 'Kayıt Tarihi' : 'Registrierungsdatum' }}</th>
+<th style="min-width: 120px;">{{ $lang == 'tr' ? 'Kişisel Ciro' : 'Persönlicher Umsatz' }}</th>
+<th style="min-width: 100px;">{{ $lang == 'tr' ? 'Alt Müşteri Sayısı' : 'Anzahl der Unterkunden' }}</th>
+<th style="min-width: 120px;">{{ $lang == 'tr' ? 'Alt Müşteri Cirosu' : 'Umsatz der Unterkunden' }}</th>
+<th style="min-width: 140px;">{{ $lang == 'tr' ? 'Benim Kazancım' : 'Mein Gewinn' }}</th>
+
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -722,7 +723,7 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <div class="fw-bold">{{ $downlineAffiliate->customer->name ?? 'Bilinmeyen' }}</div>
+                                                <div class="fw-bold">{{ $downlineAffiliate->customer->name ?? ($lang == 'tr' ? 'Bilinmeyen' : 'Unbekannt') }}</div>
                                                 <div class="text-muted">{{ $downlineAffiliate->customer->email ?? '' }}</div>
                                             </div>
                                         </div>
@@ -732,7 +733,7 @@
                                     </td>
                                     <td>
                                         <div class="fw-bold text-success">₺{{ number_format($personalRevenue, 2) }}</div>
-                                        <div class="text-muted small">{{ $personalOrders->count() }} sipariş</div>
+                                        <div class="text-muted small">{{ $personalOrders->count() }} {{ $lang == 'tr' ? 'sipariş' : 'Bestellung' }}</div>
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center">
@@ -749,16 +750,10 @@
                                     <td>
                                         <div class="fw-bold text-warning">₺{{ number_format($myCommission, 2) }}</div>
                                         <div class="text-muted small">
-                                            {{ $maxLevel }} seviye
+                                            {{ $maxLevel }} {{ $lang == 'tr' ? 'seviye' : 'Ebene' }}
                                         </div>
                                     </td>
-                                    <td>
-                                        @if($personalOrders->count() > 0)
-                                            <span class="badge bg-success">Aktif</span>
-                                        @else
-                                            <span class="badge bg-secondary">Pasif</span>
-                                        @endif
-                                    </td>
+
                                 </tr>
                                 @empty
                                 <tr>
@@ -767,9 +762,9 @@
                                             <div class="empty-img">
                                                 <i class="fas fa-users text-muted" style="font-size: 48px;"></i>
                                             </div>
-                                            <p class="empty-title">Henüz sponsorlu müşteriniz yok</p>
+                                            <p class="empty-title">{{ $lang == 'tr' ? 'Henüz sponsorlu müşteriniz yok' : 'Sie haben noch keine gesponserten Kunden' }}</p>
                                             <p class="empty-subtitle text-muted">
-                                                İlk sponsorlu müşterinizi ekleyerek ağınızı büyütmeye başlayın
+                                                {{ $lang == 'tr' ? 'İlk sponsorlu müşterinizi ekleyerek ağınızı büyütmeye başlayın' : 'Beginnen Sie mit dem Aufbau Ihres Netzwerks, indem Sie Ihren ersten gesponserten Kunden hinzufügen' }}
                                             </p>
                                         </div>
                                     </td>
@@ -789,7 +784,7 @@
                     <div class="card-header">
                         <h3 class="card-title">
                             <i class="fas fa-layer-group me-2"></i>
-                            Seviye Bazlı Komisyon Dağılımı
+                            {{ $lang == 'tr' ? 'Seviye Bazlı Komisyon Dağılımı' : 'Ebenenbasierte Provisionsverteilung' }}
                         </h3>
                     </div>
                     <div class="card-body">
@@ -806,12 +801,12 @@
                                             </div>
                                             <div class="col">
                                                 <div class="font-weight-medium">
-                                                    {{ $levelData['level'] }}. Seviye
+                                                    {{ $levelData['level'] }}. {{ $lang == 'tr' ? 'Seviye' : 'Ebene' }}
                                                     <span class="badge bg-primary ms-1 text-white">%{{ number_format($levelData['percentage'], 1) }}</span>
                                                 </div>
                                                 <div class="text-muted small">
                                                     <i class="fas fa-users me-1"></i>
-                                                    {{ $levelData['customer_count'] }} kişi - {{ $levelData['order_count'] }} sipariş
+                                                    {{ $levelData['customer_count'] }} {{ $lang == 'tr' ? 'müşteri' : 'Kunden' }} - {{ $levelData['order_count'] }} {{ $lang == 'tr' ? 'sipariş' : 'Bestellungen' }}
                                                 </div>
                                                 <div class="text-success small fw-bold">
                                                     <i class="fas fa-chart-line me-1"></i>
@@ -819,7 +814,7 @@
                                                 </div>
                                                 <div class="text-warning small fw-bold">
                                                     <i class="fas fa-coins me-1"></i>
-                                                    ₺{{ number_format($levelData['commission'], 2) }}
+                                                    {{ $lang == 'tr' ? 'Komisyon:' : 'Provision:' }} ₺{{ number_format($levelData['commission'], 2) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -830,7 +825,7 @@
                             <div class="col-12">
                                 <div class="text-center text-muted py-4">
                                     <i class="fas fa-info-circle me-2"></i>
-                                    Alt seviye verisi bulunamadı
+                                    {{ $lang == 'tr' ? 'Alt seviye verisi bulunamadı' : 'Keine Daten für Unterebenen gefunden' }}
                                 </div>
                             </div>
                             @endforelse
@@ -847,7 +842,7 @@
                     <div class="card-header">
                         <h3 class="card-title">
                             <i class="fas fa-chart-area me-2"></i>
-                            Aylık Komisyon Trendi
+                            {{ $lang == 'tr' ? 'Aylık Komisyon Trendi' : 'Monatlicher Provisionstrend' }}
                         </h3>
                     </div>
                     <div class="card-body">
@@ -862,7 +857,7 @@
                     <div class="card-header">
                         <h3 class="card-title">
                             <i class="fas fa-chart-pie me-2"></i>
-                            Seviye Bazlı Komisyon Dağılımı
+                            {{ $lang == 'tr' ? 'Seviye Bazlı Komisyon Dağılımı' : 'Ebenenbasierte Provisionsverteilung' }}
                         </h3>
                     </div>
                     <div class="card-body">
@@ -881,32 +876,32 @@
                     <div class="card-header">
                         <h3 class="card-title">
                             <i class="fas fa-info-circle me-2"></i>
-                            Bu Ay Özet
+                            {{ $lang == 'tr' ? 'Bu Ay Özet' : 'Monatsübersicht' }}
                         </h3>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <div class="text-muted">Toplam Tıklama</div>
+                                    <div class="text-muted">{{ $lang == 'tr' ? 'Toplam Tıklama' : 'Gesamtklicks' }}</div>
                                     <div class="h4">{{ number_format($clicks->count()) }}</div>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <div class="text-muted">Dönüşüm Oranı</div>
+                                    <div class="text-muted">{{ $lang == 'tr' ? 'Dönüşüm Oranı' : 'Konversionsrate' }}</div>
                                     <div class="h4">%{{ number_format($conversionRate, 2) }}</div>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <div class="text-muted">Aktif Seviye</div>
+                                    <div class="text-muted">{{ $lang == 'tr' ? 'Aktif Seviye' : 'Aktive Ebenen' }}</div>
                                     <div class="h4">{{ collect($commissionLevels)->where('customer_count', '>', 0)->count() }} / {{ $maxLevel }}</div>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <div class="text-muted">Ortalama Sipariş</div>
+                                    <div class="text-muted">{{ $lang == 'tr' ? 'Ortalama Sipariş' : 'Durchschnittliche Bestellung' }}</div>
                                     @php
                                         $totalOrders = collect($commissionLevels)->sum('order_count');
                                         $totalRevenue = collect($commissionLevels)->sum('revenue');
@@ -922,6 +917,143 @@
         </div>
     </div>
 </div>
+
+<style>
+/* Özel CSS eklemeleri */
+.table-responsive {
+    overflow-x: auto !important;
+}
+
+.table td, .table th {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.progress-sm {
+    height: 0.25rem;
+}
+
+.card-sm {
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
+
+.card-sm:hover {
+    border-color: #0054a6;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.avatar {
+    font-size: 0.875rem;
+}
+
+.empty-img i {
+    opacity: 0.3;
+}
+
+.fs-3 {
+    font-size: 1.75rem !important;
+}
+
+.table th {
+    font-weight: 600;
+    color: #495057;
+    border-top: none;
+}
+
+.badge {
+    font-size: 0.75rem;
+}
+
+.text-warning {
+    color: #f59f00 !important;
+}
+
+.chart-container {
+    position: relative;
+    height: 200px;
+}
+</style>
+
+{{-- JavaScript için gerekli scriptler --}}
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    // Aylık Komisyon Trendi Grafiği
+    const commissionCtx = document.getElementById('commission-chart').getContext('2d');
+    const monthlyEarningsData = @json($monthlyEarnings);
+
+    new Chart(commissionCtx, {
+        type: 'line',
+        data: {
+            labels: monthlyEarningsData.map(item => item.month),
+            datasets: [{
+                label: '{{ $lang == "tr" ? "Komisyon (₺)" : "Provision (₺)" }}',
+                data: monthlyEarningsData.map(item => item.amount),
+                borderColor: '#206bc4',
+                backgroundColor: 'rgba(32, 107, 196, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '₺' + value.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Seviye Bazlı Dağılım Grafiği
+    const levelCtx = document.getElementById('level-distribution-chart').getContext('2d');
+    const commissionLevels = @json($commissionLevels);
+
+    new Chart(levelCtx, {
+        type: 'doughnut',
+        data: {
+            labels: commissionLevels.map(level => level.level + '. {{ $lang == "tr" ? "Seviye" : "Ebene" }}'),
+            datasets: [{
+                data: commissionLevels.map(level => level.commission),
+                backgroundColor: commissionLevels.map(level => level.color),
+                borderWidth: 2,
+                borderColor: '#ffffff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15
+                    }
+                }
+            }
+        }
+    });
+
+    console.log('Sponsorlu Müşteri Ağı sayfası yüklendi');
+});
+</script>
+@endpush
 
 <style>
 /* Özel CSS eklemeleri */
