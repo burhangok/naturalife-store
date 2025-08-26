@@ -265,10 +265,7 @@ public function getCommissionEarnedFrom(Affiliate $fromAffiliate): float
             ->sum('amount');
     }
 
-    public function getLastCommission()
-    {
-        return $this->commissions()->latest()->first();
-    }
+
 
 
     public function getDescendantOrderTotalsPerLevel()
@@ -321,5 +318,63 @@ public function getCommissionEarnedFrom(Affiliate $fromAffiliate): float
     }
 
 
+    /**
+     * Belirli seviyedeki alt hattı getirir
+     */
+    public function getDownlineByLevel($level)
+    {
+        $downline = [];
+        $this->findDownlineAtLevel($this->id, $level, 1, $downline);
+
+        return collect($downline)->map(function ($id) {
+            return self::find($id);
+        })->filter();
+    }
+
+
+     /* Rekürsif olarak belirli seviyedeki alt hattı bulur
+     */
+    private function findDownlineAtLevel($affiliateId, $targetLevel, $currentLevel, &$downline)
+    {
+        if ($currentLevel > $targetLevel) {
+            return;
+        }
+
+        $children = self::where('parent_id', $affiliateId)->get();
+
+        foreach ($children as $child) {
+            if ($currentLevel == $targetLevel) {
+                $downline[] = $child->id;
+            } else {
+                $this->findDownlineAtLevel($child->id, $targetLevel, $currentLevel + 1, $downline);
+            }
+        }
+    }
+
+    /**
+     * Bu ayki kazançları getirir
+     */
+    public function getThisMonthEarningsAttribute_new()
+    {
+        return $this->commissions()
+            ->whereRaw('DATE_FORMAT(created_at, "%Y-%m") = ?', [now()->format('Y-m')])
+            ->sum('amount');
+    }
+
+    /**
+     * Son komisyonu getirir
+     */
+    public function getLastCommission()
+    {
+        return $this->commissions()->latest()->first();
+    }
+
+    /**
+     * Komisyonlar ilişkisi
+     */
+    public function commissions_new()
+    {
+        return $this->hasMany(AffiliateCommission::class);
+    }
 
 }

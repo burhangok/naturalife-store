@@ -180,6 +180,172 @@
         </div>
     </div>
 
+    <!-- Seviye Bazlı Kazanç Özeti -->
+<div class="row mb-4 me-4">
+    @php
+        $currentMonth = now()->format('Y-m');
+        $commissionRules = \App\Models\CommissionRule::orderBy('level')->get();
+    @endphp
+
+    @foreach($commissionRules as $rule)
+        @php
+            // Bu seviyeden bu ayki komisyonları al
+            $monthlyCommissions = \App\Models\AffiliateCommission::where('from_affiliate_id', $affiliate->id)
+                ->where('level', $rule->level)
+                ->whereRaw('DATE_FORMAT(created_at, "%Y-%m") = ?', [$currentMonth])
+                ->with('order')
+                ->get();
+
+            $monthlyCommissionAmount = $monthlyCommissions->sum('amount');
+
+            // Bu komisyonların geldiği siparişlerin toplam tutarı (ciro)
+            $monthlyTurnover = $monthlyCommissions->sum(function($commission) {
+                return $commission->order ? $commission->order->grand_total : 0;
+            });
+
+            // Bu seviyedeki aktif kişi sayısı
+            $activeCount = $monthlyCommissions->unique('order.customer_id')->count();
+        @endphp
+
+        <div class="col-md-3 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="subheader">{{ $lang == 'tr' ? 'Seviye' : 'Ebene' }} {{ $rule->level }}</div>
+                        <div class="ms-auto">
+                            <span class="badge bg-primary text-white">%{{ number_format($rule->percentage, 1) }}</span>
+                        </div>
+                    </div>
+                    <div class="h1 mb-3">€{{ number_format($monthlyTurnover, 2) }}</div>
+                    <div class="d-flex mb-2">
+                        <div>{{ $lang == 'tr' ? 'Ciro' : 'Umsatz' }}</div>
+                        @if($activeCount > 0)
+                            <div class="ms-auto">
+                                <span class="badge bg-blue text-white">{{ $activeCount }} {{ $lang == 'tr' ? 'kişi' : 'Person(en)' }}</span>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="d-flex">
+                        <div>
+                            <div class="text-green d-inline-flex align-items-center lh-1">
+                                €{{ number_format($monthlyCommissionAmount, 2) }}
+                                @if($monthlyCommissionAmount > 0)
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <polyline points="3,17 9,11 13,15 21,7"/>
+                                        <polyline points="14,7 21,7 21,14"/>
+                                    </svg>
+                                @endif
+                            </div>
+                            <div class="text-muted">{{ $lang == 'tr' ? 'Komisyon' : 'Provision' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+</div>
+
+<!-- Detaylı Tablo -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">{{ $lang == 'tr' ? 'Seviye Detayları' : 'Ebenen-Details' }} - {{ now()->format('F Y') }}</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-vcenter card-table">
+                    <thead>
+                        <tr>
+                            <th>{{ $lang == 'tr' ? 'Seviye' : 'Ebene' }}</th>
+                            <th>{{ $lang == 'tr' ? 'Komisyon Oranı' : 'Provision %' }}</th>
+                            <th>{{ $lang == 'tr' ? 'Aktif Kişi' : 'Aktive Personen' }}</th>
+                            <th>{{ $lang == 'tr' ? 'Toplam Ciro' : 'Gesamtumsatz' }}</th>
+                            <th>{{ $lang == 'tr' ? 'Komisyon' : 'Provision' }}</th>
+                            <th>{{ $lang == 'tr' ? 'Ortalama Sipariş' : 'Ø Bestellung' }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $totalTurnover = 0;
+                            $totalCommission = 0;
+                            $totalActiveUsers = 0;
+                        @endphp
+
+                        @foreach($commissionRules as $rule)
+                            @php
+                                $monthlyCommissions = \App\Models\AffiliateCommission::where('from_affiliate_id', $affiliate->id)
+                                    ->where('level', $rule->level)
+                                    ->whereRaw('DATE_FORMAT(created_at, "%Y-%m") = ?', [$currentMonth])
+                                    ->with('order')
+                                    ->get();
+
+                                $monthlyCommissionAmount = $monthlyCommissions->sum('amount');
+                                $monthlyTurnover = $monthlyCommissions->sum(function($commission) {
+                                    return $commission->order ? $commission->order->grand_total : 0;
+                                });
+                                $activeCount = $monthlyCommissions->unique('order.customer_id')->count();
+                                $avgOrderValue = $activeCount > 0 ? $monthlyTurnover / $activeCount : 0;
+
+                                $totalTurnover += $monthlyTurnover;
+                                $totalCommission += $monthlyCommissionAmount;
+                                $totalActiveUsers += $activeCount;
+                            @endphp
+
+                            <tr>
+                                <td>
+                                    <span class="badge bg-blue text-white">{{ $lang == 'tr' ? 'Seviye' : 'Ebene' }} {{ $rule->level }}</span>
+                                </td>
+                                <td>
+                                    <strong>%{{ number_format($rule->percentage, 1) }}</strong>
+                                </td>
+                                <td>
+                                    @if($activeCount > 0)
+                                        <span class="text-success">{{ $activeCount }}</span>
+                                    @else
+                                        <span class="text-muted">0</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <strong>€{{ number_format($monthlyTurnover, 2) }}</strong>
+                                </td>
+                                <td>
+                                    <span class="text-green">
+                                        <strong>€{{ number_format($monthlyCommissionAmount, 2) }}</strong>
+                                    </span>
+                                </td>
+                                <td>
+                                    @if($avgOrderValue > 0)
+                                        <span class="text-muted">€{{ number_format($avgOrderValue, 2) }}</span>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-active">
+                            <td><strong>{{ $lang == 'tr' ? 'TOPLAM' : 'GESAMT' }}</strong></td>
+                            <td></td>
+                            <td><strong>{{ $totalActiveUsers }}</strong></td>
+                            <td><strong>€{{ number_format($totalTurnover, 2) }}</strong></td>
+                            <td><strong class="text-green">€{{ number_format($totalCommission, 2) }}</strong></td>
+                            <td>
+                                @if($totalActiveUsers > 0)
+                                    <strong>€{{ number_format($totalTurnover / $totalActiveUsers, 2) }}</strong>
+                                @else
+                                    <strong>-</strong>
+                                @endif
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
     <!-- Link Performansı -->
     <div class="row mb-4">
         <div class="col-md-6">
@@ -511,6 +677,7 @@
                         </div>
                         @endif
                     </div>
+
 
                     <!-- Komisyon Geçmişi -->
                     <div class="card">

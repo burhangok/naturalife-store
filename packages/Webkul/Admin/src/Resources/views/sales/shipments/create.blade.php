@@ -37,7 +37,7 @@
                 <x-admin::drawer ref="shipment">
                     <!-- Drawer Header -->
                     <x-slot:header>
-                        <div class="grid h-8 gap-3">
+                        <div class="grid sm:h-8 gap-3">
                             <div class="flex items-center justify-between">
                                 <p class="text-xl font-medium dark:text-white">
                                     @lang('admin::app.sales.shipments.create.title')
@@ -96,27 +96,25 @@
 
                             <!-- Resource -->
                             <x-admin::form.control-group>
-                                <!--      <x-admin::form.control-group.label class="required">
+                                <x-admin::form.control-group.label class="required">
                                     @lang('admin::app.sales.shipments.create.source')
-                                </x-admin::form.control-group.label>-->
+                                </x-admin::form.control-group.label>
 
                                 <x-admin::form.control-group.control
-                                    type="input"
+                                    type="select"
                                     id="shipment[source]"
                                     name="shipment[source]"
                                     rules="required"
                                     v-model="source"
-                                    hidden="true"
                                     :label="trans('admin::app.sales.shipments.create.source')"
                                     :placeholder="trans('admin::app.sales.shipments.create.source')"
                                     @change="onSourceChange"
-                                    value="1"
                                 >
-                                       <!--   @foreach ($order->channel->inventory_sources as $inventorySource)
+                                    @foreach ($order->channel->inventory_sources as $inventorySource)
                                         <option value="{{ $inventorySource->id }}">
                                             {{ $inventorySource->name }}
                                         </option>
-                                    @endforeach-->
+                                    @endforeach
                                 </x-admin::form.control-group.control>
 
                                 <x-admin::form.control-group.error control-name="shipment[source]" />
