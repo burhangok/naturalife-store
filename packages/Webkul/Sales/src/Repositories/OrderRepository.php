@@ -356,17 +356,17 @@ class OrderRepository extends Repository
             }
 
             // Komisyon tutarını hesapla
-            $commissionAmount = ($order->grand_total * $cartRule->commission_percentage) / 100;
+            $commissionAmount = ($order->grand_total - $order->shipping_amount) * $cartRule->commission_percentage / 100;
 
 
             AffiliateCommission::create([
                 'affiliate_id' => $cartRule->affiliate_id,
-                'order_id' => $order->increment_id,
+                'order_id' => $order->id,
                 'from_affiliate_id' => $cartRule->affiliate_id,
                 'level' => 1,
                 'amount' => $commissionAmount,
                 'percentage' => $cartRule->commission_percentage,
-                'description' => "Sipariş #{$order->increment_id} için kupon kodu ({$order->coupon_code}) komisyonu (Sepet Tutarı: " . number_format($order->grand_total, 2) . " €)"
+                'description' => "Sipariş #{$order->increment_id} için kupon kodu ({$order->coupon_code}) komisyonu (Sepet Tutarı: " . number_format($order->grand_total - $order->shipping_amount, 2) . " €)"
             ]);
 
 
