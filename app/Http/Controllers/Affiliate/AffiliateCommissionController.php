@@ -116,12 +116,13 @@ public static function createCommissions(\Webkul\Sales\Models\Order $order)
 
 
     DB::transaction(function () use ($order, $affiliate) {
+
         // Sipariş veren kişinin affiliate ID'si - sadece parent zinciri için kullanılacak
         $orderAffiliateId = $affiliate->id;
         $level = 1;
 
         // Siparişin uygun tutarını al (vergi hariç vs.)
-        $commissionalAmount = $order->grand_total;
+        $commissionalAmount = $order->grand_total - $order->shipping_amount;
 
         // Aktif komisyon kurallarını al
         $commissionRules = CommissionRule::where('is_active', 1)->orderBy('level')->get();
