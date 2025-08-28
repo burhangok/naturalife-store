@@ -43,7 +43,7 @@ class AffiliateCommission extends Model
      */
     public function order()
     {
-        return $this->belongsTo(Order::class, 'increment_id');
+        return $this->belongsTo(Order::class, 'id');
     }
 
     /**

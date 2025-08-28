@@ -28,7 +28,7 @@ return new class extends Migration
                 ->references('id')->on('affiliates')
                 ->onDelete('cascade');
             $table->foreign('order_id')
-                ->references('increment_id')->on('orders')
+                ->references('id')->on('orders')
                 ->onDelete('set null');
             $table->foreign('from_affiliate_id')
                 ->references('id')->on('affiliates')

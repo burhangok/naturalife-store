@@ -640,7 +640,7 @@ Kupon Satış Komisyonu
                             <div class="mt-3">
                                 <h6 class="font-weight-bold">Komisyon Açıklaması:</h6>
                                 <div class="p-3 bg-light rounded">
-                                    Sipariş #{{ $commission->order_id }} için {{ $commission->level }}. seviye komisyon (Sepet Tutarı: {{ number_format(($commission->amount / ($commission->percentage/100)), 2) }} Euro)
+                                    Sipariş #{{ $commission->order_id }} için {{ $commission->level }}. seviye komisyon (Sepet Tutarı: {{ core()->formatBasePrice($order->base_grand_total) }} Euro)
                                 </div>
                             </div>
                             @endif

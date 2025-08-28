@@ -121,7 +121,7 @@ public static function createCommissions(\Webkul\Sales\Models\Order $order)
         $level = 1;
 
         // Siparişin uygun tutarını al (vergi hariç vs.)
-        $commissionalAmount = $order->grand_total - $order->shipping_amount;
+        $commissionalAmount = $order->grand_total;
 
         // Aktif komisyon kurallarını al
         $commissionRules = CommissionRule::where('is_active', 1)->orderBy('level')->get();
@@ -162,7 +162,7 @@ public static function createCommissions(\Webkul\Sales\Models\Order $order)
                 // Komisyon kaydını oluştur
                 $result = AffiliateCommission::create([
                     'affiliate_id' => $currentAffiliate->id,
-                    'order_id' => $order->increment_id,
+                    'order_id' => $order->id,
                     'from_affiliate_id' => $currentFromAffiliateId,
                     'level' => $level,
                     'amount' => $commissionAmount,
