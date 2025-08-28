@@ -22,90 +22,123 @@ use Webkul\Sales\Models\Order;
 class AffiliateShopController extends Controller
 {
 
-    public function profile(Affiliate $affiliate) {
+    public function profile(Affiliate $affiliate)
+    {
+        try {
+            // Temel verileri getir
+            $clicks = $affiliate->clicks;
+            $totalEarnings = $affiliate->commissions->sum('amount');
 
+            // Alt temsilcileri getir (eager loading ile)
+            $downlineAffiliates = $affiliate->children()->with([
+                'customer.orders',
+                'children',
+                'commissions',
+                'generatedCommissions'
+            ])->get();
 
-        // Tıklama verilerini getir
-        $clicks = $affiliate->clicks;
+            // Dönüşüm oranını hesapla
+            $conversionRate = $this->calculateConversionRate($clicks);
 
-        // Alt temsilcileri getir (eager loading ile)
-        $downlineAffiliates = $affiliate->children()->with([
-            'customer.orders',
-            'children',
-            'commissions',
-            'generatedCommissions'
-        ])->get();
+            // Komisyon kurallarını getir
+            $rules = $this->getCommissionRules();
+            $maxLevel = $rules->max('level');
 
-        // Dönüşüm oranını hesapla
-        $conversionRate = $this->calculateConversionRate($clicks);
+            // Aylık kazanç verilerini hazırla
+            $monthlyEarnings = $this->getMonthlyEarnings($affiliate);
 
-        // Komisyon kurallarını getir
-        $rules = $this->getCommissionRules();
-        // Maksimum seviyeyi belirle
-        $maxLevel = $rules->max('level');
+            // Mevcut ay ve yıl
+            $currentMonth = now()->month;
+            $currentYear = now()->year;
 
+            // Commission rules'ları al
+            $commissionRules = CommissionRule::orderBy('level')->get();
 
-        // Aylık kazanç verilerini hazırla
-        $monthlyEarnings = $this->getMonthlyEarnings($affiliate);
+            // Renkler dizisi
+            $colors = ['#206bc4', '#79a6dc', '#a8cce8', '#d7e5f0', '#f0f7ff'];
 
-        // Toplam değerleri hesapla
-        $totalEarnings = $affiliate->commissions->sum('amount');
+            $commissionLevels = [];
 
-        $currentMonth = now()->month;
-        $currentYear = now()->year;
+            foreach ($commissionRules as $index => $rule) {
+                $level = $rule->level;
+                $percentage = $rule->percentage;
 
-        // Commission rules'ı al
-        $commissionRules = CommissionRule::orderBy('level')->get();
+                // Bu seviyeden gelen komisyonları al
+                $monthlyCommissions = AffiliateCommission::where('affiliate_id', $affiliate->id)
+                    ->where('level', $level)
+                    ->whereMonth('created_at', $currentMonth)
+                    ->whereYear('created_at', $currentYear)
+                    ->get();
 
-        // Renkler dizisi
-        $colors = ['#206bc4', '#79a6dc', '#a8cce8', '#d7e5f0', '#f0f7ff'];
+                // Siparişleri komisyonlardan al (order_id üzerinden)
+                $monthlyOrders = collect();
+                $uniqueCustomers = collect();
 
-        $commissionLevels = [];
+                if ($monthlyCommissions->count() > 0) {
+                    $orderIds = $monthlyCommissions->pluck('order_id')->filter()->unique()->toArray();
 
-        foreach ($commissionRules as $index => $rule) {
-            $level = $rule->level;
-            $percentage = $rule->percentage;
+                    if (!empty($orderIds)) {
+                        $monthlyOrders = Order::whereIn('id', $orderIds)
+                            ->with('customer') // customer bilgisini de al
+                            ->get();
 
-            // Bu seviyedeki müşterileri bul
-            $customers = $this->getCustomersByLevel($affiliate->customer_id, $level);
+                        // Unique müşteri sayısını hesapla
+                        $uniqueCustomers = $monthlyOrders->pluck('customer_id')->unique();
+                    }
+                }
 
-            // Bu müşterilerin bu ayki siparişlerini al
-            $monthlyOrders = Order::whereIn('customer_id', $customers->pluck('id'))
-                ->whereMonth('created_at', $currentMonth)
-                ->whereYear('created_at', $currentYear)
-                ->whereNotIn('status', ['canceled', 'closed'])
-                ->get();
+                $commissionLevels[] = [
+                    'level' => $level,
+                    'percentage' => $percentage,
+                    'customer_count' => $uniqueCustomers->count(),
+                    'order_count' => $monthlyOrders->count(),
+                    'revenue' => $monthlyOrders->sum('grand_total'),
+                    'commission' => $monthlyCommissions->sum('amount'),
+                    'color' => $colors[$index % count($colors)]
+                ];
+            }
 
-            // Bu seviyeden gelen komisyonları al
-            $monthlyCommissions = AffiliateCommission::where('affiliate_id', $affiliate->id)
-                ->where('level', $level)
-                ->whereMonth('created_at', $currentMonth)
-                ->whereYear('created_at', $currentYear)
-                ->get();
+            return view('affiliatemodule.shop.affiliate_profile', compact(
+                'affiliate',
+                'clicks',
+                'downlineAffiliates',
+                'conversionRate',
+                'rules',
+                'maxLevel',
+                'monthlyEarnings',
+                'commissionLevels',
+                'totalEarnings'
+            ));
 
-            $commissionLevels[] = [
-                'level' => $level,
-                'percentage' => $percentage,
-                'customer_count' => $customers->count(),
-                'order_count' => $monthlyOrders->count(),
-                'revenue' => $monthlyOrders->sum('grand_total'),
-                'commission' => $monthlyCommissions->sum('amount'),
-                'color' => $colors[$index % count($colors)]
-            ];
+        } catch (\Exception $e) {
+            // Hata Logmunda log kaydet
+            Log::error('Affiliate Profile Error: ' . $e->getMessage(), [
+                'affiliate_id' => $affiliate->id,
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            // Boş verilerle sayfayı döndür
+            $commissionLevels = [];
+            $totalEarnings = 0;
+            $clicks = collect();
+            $downlineAffiliates = collect();
+            $conversionRate = 0;
+            $rules = collect();
+            $maxLevel = 0;
+            $monthlyEarnings = [];
+
+            return view('affiliatemodule.shop.affiliate_profile', compact(
+                'affiliate',
+                'clicks',
+                'downlineAffiliates',
+                'conversionRate',
+                'rules',
+                'maxLevel',
+                'monthlyEarnings',
+                'commissionLevels',
+                'totalEarnings'
+            ));
         }
-
-        return view('affiliatemodule.shop.affiliate_profile', compact(
-            'affiliate',
-            'clicks',
-            'downlineAffiliates',
-            'conversionRate',
-            'rules',
-            'maxLevel',
-            'monthlyEarnings',
-            'commissionLevels',
-            'totalEarnings'
-        ));
-
     }
 
     private function getCustomersByLevel($parentId, $targetLevel, $currentLevel = 1)
@@ -142,12 +175,7 @@ class AffiliateShopController extends Controller
      */
     private function getCommissionRules()
     {
-        // CommissionRule modeli varsa
-        if (class_exists('\App\Models\CommissionRule')) {
-            return CommissionRule::orderBy('level')->get();
-        }
-
-        return collect([]); // Boş collection döndür
+        return CommissionRule::orderBy('level')->get();
     }
 
     /**
@@ -337,7 +365,8 @@ class AffiliateShopController extends Controller
 
 
 
-    public function myaffiliates() {
+    public function myaffiliates()
+    {
 
         $customer = auth()->guard('customer')->user();
         $affiliate = Affiliate::where('customer_id', $customer->id)->first();
@@ -363,9 +392,9 @@ class AffiliateShopController extends Controller
 
 
 
-           }
+    }
 
-           private function calculateStats($affiliate)
+    private function calculateStats($affiliate)
     {
         $children = $affiliate->children;
 
@@ -376,10 +405,10 @@ class AffiliateShopController extends Controller
             'thisMonthRegistrations' => $children->where('created_at', '>=', now()->startOfMonth())->count(),
             'averageSales' => $children->avg('total_commission_earned') ?? 0,
             'totalCommissions' => $children->commissions()->sum('amount'),
-            'totalClicks' => $children->sum(function($child) {
+            'totalClicks' => $children->sum(function ($child) {
                 return $child->total_clicks;
             }),
-            'totalConversions' => $children->sum(function($child) {
+            'totalConversions' => $children->sum(function ($child) {
                 return $child->total_conversions;
             }),
         ];
@@ -390,7 +419,8 @@ class AffiliateShopController extends Controller
      */
     private function getRegionFromCustomer($customer)
     {
-        if (!$customer) return 'Bilinmiyor';
+        if (!$customer)
+            return 'Bilinmiyor';
 
         // Müşteri modelinde city alanına göre bölge belirleme
         $cityRegionMap = [
@@ -562,7 +592,7 @@ class AffiliateShopController extends Controller
             ]);
         }
 
-        return view('affiliatemodule.shop.affiliate_payments',compact(
+        return view('affiliatemodule.shop.affiliate_payments', compact(
             'affiliate',
             'payments',
             'paymentMethods',
@@ -630,63 +660,63 @@ class AffiliateShopController extends Controller
     }
 
 
-public function store(Request $request)
-{
-    try {
-        $customerId = auth()->guard('customer')->user()->id;
+    public function store(Request $request)
+    {
+        try {
+            $customerId = auth()->guard('customer')->user()->id;
 
-        // Generate unique affiliate code
-        $affiliateCode = $this->generateUniqueAffiliateCode($customerId);
+            // Generate unique affiliate code
+            $affiliateCode = $this->generateUniqueAffiliateCode($customerId);
 
-        // Calculate level based on parent
-        $level = 0;
-        $parentId = null;
+            // Calculate level based on parent
+            $level = 0;
+            $parentId = null;
 
-        // Affiliate kodu kontrolü
-        if ($request->affiliate_code != 'AFFLN_O01') {
-            $parentAffiliate = Affiliate::where('affiliate_code', $request->affiliate_code)->first();
+            // Affiliate kodu kontrolü
+            if ($request->affiliate_code != 'AFFLN_O01') {
+                $parentAffiliate = Affiliate::where('affiliate_code', $request->affiliate_code)->first();
 
-            if (!$parentAffiliate) {
-                return back()->with('error', 'Ungültiger Delegiertencode. Bitte versuchen Sie es erneut.');
+                if (!$parentAffiliate) {
+                    return back()->with('error', 'Ungültiger Delegiertencode. Bitte versuchen Sie es erneut.');
+                }
+
+                $parentId = $parentAffiliate->id;
+                $level = $parentAffiliate->level + 1;
             }
 
-            $parentId = $parentAffiliate->id;
-            $level = $parentAffiliate->level + 1;
-        }
-
-        // Kullanıcının zaten temsilci olup olmadığını kontrol et
-        $existingAffiliate = Affiliate::where('customer_id', $customerId)->first();
-        if ($existingAffiliate) {
-            return back()->with('error', 'Sie sind bereits im Vertretersystem registriert.');
-        }
+            // Kullanıcının zaten temsilci olup olmadığını kontrol et
+            $existingAffiliate = Affiliate::where('customer_id', $customerId)->first();
+            if ($existingAffiliate) {
+                return back()->with('error', 'Sie sind bereits im Vertretersystem registriert.');
+            }
             $customer = Customer::find($customerId);
             if (!$customer) {
                 return
-                back()->with('error', 'Keine Kundeninformationen gefunden.');
+                    back()->with('error', 'Keine Kundeninformationen gefunden.');
             }
 
-        $affiliate = new Affiliate();
-        $affiliate->parent_id = $parentId;
-        $affiliate->customer_id = $customerId;
-        $affiliate->affiliate_code = $affiliateCode;
-        $affiliate->level = $level;
-        $affiliate->status = "active";
-        $affiliate->joined_at = Carbon::now('Europe/Berlin');
-        $affiliate->save();
+            $affiliate = new Affiliate();
+            $affiliate->parent_id = $parentId;
+            $affiliate->customer_id = $customerId;
+            $affiliate->affiliate_code = $affiliateCode;
+            $affiliate->level = $level;
+            $affiliate->status = "active";
+            $affiliate->joined_at = Carbon::now('Europe/Berlin');
+            $affiliate->save();
 
 
 
-        $customer->customer_group_id = 4;
-        $customer->save();
+            $customer->customer_group_id = 4;
+            $customer->save();
 
-        return back()->with('success', 'Ihre Registrierung im Vertretersystem wurde erfolgreich abgeschlossen.');
+            return back()->with('success', 'Ihre Registrierung im Vertretersystem wurde erfolgreich abgeschlossen.');
 
-    } catch (\Exception $e) {
-        Log::error('Temsilci kayıt hatası: ' . $e->getMessage());
+        } catch (\Exception $e) {
+            Log::error('Temsilci kayıt hatası: ' . $e->getMessage());
 
-        return back()->with('error', 'Bei der Registrierung ist ein Fehler aufgetreten. Bitte versuchen Sie den Sponsorcode erneut.');
+            return back()->with('error', 'Bei der Registrierung ist ein Fehler aufgetreten. Bitte versuchen Sie den Sponsorcode erneut.');
+        }
     }
-}
 
     /**
      * Benzersiz bir affiliate kodu oluşturur
