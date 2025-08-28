@@ -28,6 +28,13 @@
             >
                 @lang('admin::app.account.edit.back-btn')
             </a>
+
+                <a
+                href="{{ route('admin.affiliatemodule.admin.commissions.distributecommissions', $order->id) }}"
+                class="btn btn-primary text-xl font-bold leading-6 dark:text-white"
+            >
+                Komisyonları Dağıt
+            </a>
         </div>
     </div>
 

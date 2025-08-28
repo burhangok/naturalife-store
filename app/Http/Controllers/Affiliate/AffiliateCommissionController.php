@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Webkul\Sales\Models\Order;
 
 class AffiliateCommissionController extends Controller
 {
@@ -103,7 +104,7 @@ class AffiliateCommissionController extends Controller
 
      * @return void
      */
-public static function createCommissions(\Webkul\Sales\Models\Order $order)
+public static function createCommissions(Order $order)
 {
     $customerId = $order->customer->id;
     $affiliate = Affiliate::where('customer_id', $customerId)->first();
@@ -187,5 +188,19 @@ public static function createCommissions(\Webkul\Sales\Models\Order $order)
             $level++;
         }
     });
+}
+
+public function distributeCommissions(Order $order)
+{
+    $commissionExist = AffiliateCommission::where('order_id', $order->id)->first();
+    if(!$commissionExist ) {
+        $this->createCommissions($order);
+            return back()->with('success', 'Komisyonlar başarıyla dağıtıldı.');
+    }
+    else {
+        return back()->with('info', 'Komisyonlar zaten dağıtılmış.');
+    }
+
+
 }
 }

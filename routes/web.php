@@ -108,6 +108,8 @@ Route::group(['middleware' => ['web', 'admin'], 'prefix' => config('app.admin_ur
                 Route::get('/', [AffiliateCommissionController::class, 'index'])->name('admin.affiliatemodule.admin.commissions.index');
                 Route::get('/{commission}', [AffiliateCommissionController::class, 'edit'])->name('admin.affiliatemodule.admin.commissions.edit');
                 Route::put('/{commission}', [AffiliateCommissionController::class, 'update'])->name('admin.affiliatemodule.admin.commissions.update');
+                Route::get('/distributecommission/{order}', [AffiliateCommissionController::class, 'distributeCommissions'])->name('admin.affiliatemodule.admin.commissions.distributecommissions');
+
             });
 
             // couponreports management

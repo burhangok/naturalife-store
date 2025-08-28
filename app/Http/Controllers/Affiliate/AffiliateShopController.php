@@ -92,7 +92,7 @@ class AffiliateShopController extends Controller
                     'percentage' => $percentage,
                     'customer_count' => $uniqueCustomers->count(),
                     'order_count' => $monthlyOrders->count(),
-                    'revenue' => $monthlyOrders->sum('grand_total'),
+                    'revenue' => $monthlyOrders->sum('grand_total-shipping_amount'),
                     'commission' => $monthlyCommissions->sum('amount'),
                     'color' => $colors[$index % count($colors)]
                 ];
@@ -268,7 +268,7 @@ class AffiliateShopController extends Controller
         $periodOrders = $affiliate->customer->orders()
             ->where('created_at', '>=', $startDate)
             ->whereNotIn('status', ['canceled', 'closed'])
-            ->sum('base_grand_total_invoiced');
+            ->sum('grand_total - shipping_amount');
 
         return response()->json([
             'period' => $period,
