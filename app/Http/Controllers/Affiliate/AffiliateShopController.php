@@ -92,7 +92,7 @@ class AffiliateShopController extends Controller
                     'percentage' => $percentage,
                     'customer_count' => $uniqueCustomers->count(),
                     'order_count' => $monthlyOrders->count(),
-                    'revenue' => $monthlyOrders->sum('grand_total-shipping_amount'),
+                    'revenue' => $monthlyOrders->sum('grand_total') - $monthlyOrders->sum('shipping_amount'),
                     'commission' => $monthlyCommissions->sum('amount'),
                     'color' => $colors[$index % count($colors)]
                 ];
