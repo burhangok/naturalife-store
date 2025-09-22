@@ -12,19 +12,8 @@
                 />
             </x-shop::form.control-group>
 
-            <!-- Company Name -->
-            <x-shop::form.control-group>
-                <x-shop::form.control-group.label>
-                    @lang('shop::app.checkout.onepage.address.company-name')
-                </x-shop::form.control-group.label>
+            <!-- Company Name rmeoved by burhangok 22.09.2025 -->
 
-                <x-shop::form.control-group.control
-                    type="text"
-                    ::name="controlName + '.company_name'"
-                    ::value="address.company_name"
-                    :placeholder="trans('shop::app.checkout.onepage.address.company-name')"
-                />
-            </x-shop::form.control-group>
 
             {!! view_render_event('bagisto.shop.checkout.onepage.address.form.company_name.after') !!}
 
