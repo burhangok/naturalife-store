@@ -1,11 +1,8 @@
 {!! view_render_event('bagisto.shop.layout.footer.before') !!}
 @php
-//30.06.2025 burhangok
+//30.06.2025 burhangok - Enhanced with trust badges
 @endphp
 @inject('themeCustomizationRepository', 'Webkul\Theme\Repositories\ThemeCustomizationRepository')
-@php
-//30.06.2025 burhangok
-@endphp
 @php
     $channel = core()->getCurrentChannel();
     $customization = $themeCustomizationRepository->findOneWhere([
@@ -16,23 +13,111 @@
     ]);
 @endphp
 
-<footer style="background: #f8fffe; padding:20px 20px 0; margin-top: 50px;">
+<footer style="background: #f8fffe; padding:20px 20px 0; margin-top: 20px;">
     <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
 
         <!-- Logo ve Başlık -->
         <div style="margin-bottom: 60px;">
             <div style="display: inline-flex; align-items: center;">
-
                 <a
                 href="{{ route('shop.home.index') }}"
                 aria-label="@lang('shop::app.components.layouts.header.bagisto')"
             >
-                <img
-                    src="{{ core()->getCurrentChannel()->logo_url ?? bagisto_asset('images/logo.svg') }}"
 
-                    alt="{{ config('app.name') }}"
-                >
             </a>
+            </div>
+        </div>
+
+        <!-- Trust Badges & Payment Methods Section -->
+        <div style="margin-bottom: 40px; background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+            <h4 style="font-size: 18px; font-weight: 600; color: #374151; margin-bottom: 25px;">
+                Sicher & Vertrauenswürdig Einkaufen
+            </h4>
+
+            <!-- Trust Badges Row -->
+            <div style="display: flex; justify-content: center; align-items: center; gap: 25px; margin-bottom: 30px; flex-wrap: wrap;">
+
+                <!-- SSL Certificate -->
+                <div style="display: flex; flex-direction: column; align-items: center; padding: 15px; background: #f0fdf4; border-radius: 12px; min-width: 120px;">
+                    <i class="fas fa-shield-alt" style="font-size: 32px; color: #16a34a; margin-bottom: 8px;"></i>
+                    <div style="font-size: 11px; font-weight: 600; color: #16a34a; text-align: center;">SSL SICHER</div>
+                    <div style="font-size: 9px; color: #16a34a; text-align: center;">256-Bit Verschlüsselung</div>
+                </div>
+
+                <!-- Secure Payment -->
+                <div style="display: flex; flex-direction: column; align-items: center; padding: 15px; background: #eff6ff; border-radius: 12px; min-width: 120px;">
+                    <i class="fas fa-lock" style="font-size: 32px; color: #2563eb; margin-bottom: 8px;"></i>
+                    <div style="font-size: 11px; font-weight: 600; color: #2563eb; text-align: center;">SICHERE ZAHLUNG</div>
+                    <div style="font-size: 9px; color: #2563eb; text-align: center;">Sichere Zahlung via Stripe</div>
+                </div>
+
+                <!-- Fast Shipping -->
+                <div style="display: flex; flex-direction: column; align-items: center; padding: 15px; background: #fef3c7; border-radius: 12px; min-width: 120px;">
+                    <i class="fas fa-shipping-fast" style="font-size: 32px; color: #d97706; margin-bottom: 8px;"></i>
+                    <div style="font-size: 11px; font-weight: 600; color: #d97706; text-align: center;">SCHNELLER VERSAND</div>
+                    <div style="font-size: 9px; color: #d97706; text-align: center;">Professioneller Versand garantiert</div>
+                </div>
+
+  <!-- Money Back -->
+                <div style="display: flex; flex-direction: column; align-items: center; padding: 15px; background: #fdf2f8; border-radius: 12px; min-width: 120px;">
+                    <i class="fas fa-heart" style="font-size: 32px; color: #ec4899; margin-bottom: 8px;"></i>
+                    <div style="font-size: 11px; font-weight: 600; color: #ec4899; text-align: center;">ORGANISCH</div>
+                    <div style="font-size: 9px; color: #ec4899; text-align: center;">Unsere Produkte sind 100% biologisch.</div>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div style="border-top: 1px solid #e5e7eb; padding-top: 25px;">
+                <h5 style="font-size: 16px; font-weight: 600; color: #374151; margin-bottom: 20px;">
+                    Akzeptierte Zahlungsmethoden
+                </h5>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
+
+                  <!-- Stripe -->
+                    <div style="background: white; padding: 15px 25px; border-radius: 8px; border: 2px solid #e5e7eb; display: flex; align-items: center; transition: all 0.3s ease;"
+                         onmouseover="this.style.borderColor='#635bff'; this.style.boxShadow='0 4px 12px rgba(99, 91, 255, 0.15)';"
+                         onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none';">
+                        <i class="fab fa-stripe" style="font-size: 28px; color: #635bff;"></i>
+                    </div>
+
+
+
+                    <!-- Credit Cards -->
+                    <div style="background: white; padding: 15px 25px; border-radius: 8px; border: 2px solid #e5e7eb; display: flex; align-items: center; gap: 15px; transition: all 0.3s ease;"
+                         onmouseover="this.style.borderColor='#1f2937'; this.style.boxShadow='0 4px 12px rgba(31, 41, 55, 0.15)';"
+                         onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none';">
+                        <i class="fab fa-cc-visa" style="font-size: 28px; color: #1a1f71;"></i>
+                        <i class="fab fa-cc-mastercard" style="font-size: 28px; color: #eb001b;"></i>
+                    </div>
+
+                    <!-- PayPal -->
+                    <div style="background: white; padding: 15px 25px; border-radius: 8px; border: 2px solid #e5e7eb; display: flex; align-items: center; transition: all 0.3s ease;"
+                         onmouseover="this.style.borderColor='#0070ba'; this.style.boxShadow='0 4px 12px rgba(0, 112, 186, 0.15)';"
+                         onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none';">
+                        <i class="fab fa-paypal" style="font-size: 28px; color: #0070ba;"></i>
+                    </div>
+ <!-- Apple Pay -->
+                    <div style="background: white; padding: 15px 25px; border-radius: 8px; border: 2px solid #e5e7eb; display: flex; align-items: center; transition: all 0.3s ease;"
+                         onmouseover="this.style.borderColor='#000000'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.15)';"
+                         onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none';">
+                        <i class="fab fa-apple-pay" style="font-size: 28px; color: #000000;"></i>
+                    </div>
+
+                    <!-- Google Pay -->
+                    <div style="background: white; padding: 15px 25px; border-radius: 8px; border: 2px solid #e5e7eb; display: flex; align-items: center; transition: all 0.3s ease;"
+                         onmouseover="this.style.borderColor='#4285f4'; this.style.boxShadow='0 4px 12px rgba(66, 133, 244, 0.15)';"
+                         onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none';">
+                        <i class="fab fa-google-pay" style="font-size: 28px; color: #4285f4;"></i>
+                    </div>
+
+                    <!-- Bank Transfer / SEPA -->
+                    <div style="background: white; padding: 15px 25px; border-radius: 8px; border: 2px solid #e5e7eb; display: flex; align-items: center; gap: 10px; transition: all 0.3s ease;"
+                         onmouseover="this.style.borderColor='#374151'; this.style.boxShadow='0 4px 12px rgba(55, 65, 81, 0.15)';"
+                         onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none';">
+                        <i class="fas fa-university" style="font-size: 24px; color: #374151;"></i>
+                        <span style="font-weight: 600; color: #374151; font-size: 14px;">SEPA</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -57,8 +142,6 @@
                 </svg>
             </a>
         </div>
-
-
 
         <!-- Newsletter -->
         @if (core()->getConfigData('customer.settings.newsletter.subscription'))
@@ -100,14 +183,12 @@
                             });
                         @endphp
                         @foreach ($footerLinkSection as $link)
-                            <a href="{{ $link['url'] }}" style="color:white; text-decoration: none; font-size: 14px; display: inline-block; margin: 5px 15px; transition: color 0.3s ease;"
-                              >
+                            <a href="{{ $link['url'] }}" style="color:white; text-decoration: none; font-size: 14px; display: inline-block; margin: 5px 15px; transition: color 0.3s ease;">
                                 {{ $link['title'] }}
                             </a>
                         @endforeach
                     @endforeach
-                    <a href="/blog" style="color:white; text-decoration: none; font-size: 14px; display: inline-block; margin: 5px 15px; transition: color 0.3s ease;"
-                    >
+                    <a href="/blog" style="color:white; text-decoration: none; font-size: 14px; display: inline-block; margin: 5px 15px; transition: color 0.3s ease;">
                      Blog
                   </a>
                 </div>
@@ -116,9 +197,17 @@
             <!-- Copyright -->
             <div style="text-align: center; padding-top: 30px; border-top: 1px solid #e2e8f0;">
                 <p style="color: white; font-size: 14px; margin: 0; line-height: 1.6;">
-
                     Copyright © 2025 <span style="color: white; font-weight: 600;">Life Natura</span> Alle Rechte vorbehalten.
                 </p>
+
+                <!-- Additional Trust Text -->
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p style="color: rgba(255,255,255,0.8); font-size: 12px; margin: 0; line-height: 1.5;">
+                        Alle Transaktionen sind SSL-verschlüsselt und werden sicher über Stripe verarbeitet.
+                        <br>
+                        Ihre persönlichen Daten sind bei uns sicher und werden niemals an Dritte weitergegeben.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
